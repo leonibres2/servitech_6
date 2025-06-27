@@ -309,17 +309,40 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (isValid) {
-        const registroExitoso = document.getElementById("registroExitoso");
-        if (registroExitoso) {
-          registroExitoso.style.display = "block";
-
-          form.querySelectorAll("input, button").forEach((el) => {
-            el.disabled = true;
+        // Enviar datos al backend
+        fetch("http://localhost:3000/api/usuarios", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nombre: nombreInput.value,
+            apellido: apellidoInput.value,
+            email: emailInput.value,
+            password: passwordInput.value,
+          }),
+        })
+          .then(async (res) => {
+            const data = await res.json();
+            if (res.ok) {
+              // Registro exitoso
+              const registroExitoso = document.getElementById("registroExitoso");
+              if (registroExitoso) {
+                registroExitoso.style.display = "block";
+                form.querySelectorAll("input, button").forEach((el) => {
+                  el.disabled = true;
+                });
+                setTimeout(function () {
+                  window.location.href = "login.html";
+                }, 2000);
+              }
+            } else {
+              // Mostrar error del backend
+              alert(data.error || "Error al registrar usuario");
+            }
+          })
+          .catch((err) => {
+            alert("Error de red o de servidor");
+            console.error(err);
           });
-          setTimeout(function () {
-            window.location.href = "login.html";
-          }, 2000);
-        }
       }
     });
   }

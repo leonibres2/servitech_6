@@ -9,7 +9,7 @@ async function main() {
     useUnifiedTopology: true
   });
 
-  // Ejemplo: crear categorías iniciales si no existen
+  // Ejemplo: crear categorías iniciales si no existe
   const categorias = [
     { nombre: 'Desarrollo Web', descripcion: 'Web, apps, software', icono: 'laptop-code' },
     { nombre: 'Ciencia de Datos', descripcion: 'Análisis, IA, ML', icono: 'database' },

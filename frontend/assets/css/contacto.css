@@ -1,0 +1,84 @@
+.container {
+    max-width: var(--content-max-width);
+    margin: 2.5rem auto;
+    padding: 0 5%;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.9375rem;
+    font-size: 1.5rem;
+}
+
+.card-title i {
+    color: var(--primary-color);
+}
+
+.card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.contact-form {
+    margin-top: 1.5625rem;
+}
+
+.form-control:focus {
+    transform: translateY(-0.125rem);
+}
+
+.contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+    gap: 1.5625rem;
+    margin-top: 1.25rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.9375rem;
+}
+
+.contact-icon {
+    color: var(--primary-color);
+    font-size: 1.125rem;
+    margin-right: 0.9375rem;
+    margin-top: 0.125rem;
+}
+
+.contact-text {
+    flex: 1;
+}
+
+.contact-text h4 {
+    margin: 0 0 0.3125rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.contact-text p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
+    gap: 1.25rem;
+}
+
+/* Efecto hover para botones de formulario */
+.card .btn-primary:hover {
+    transform: translateY(-0.1875rem);
+    box-shadow: var(--btn-shadow);
+}
+
+.send-btn {
+    margin-top: 0.625rem;
+    width: 100%;
+    padding: 0.75rem;
+}

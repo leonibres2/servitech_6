@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - ServiTech</title>
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/contacto.css">
+    <link rel="stylesheet" href="assets/css/componentes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header id="header-container"></header>
+
+    <main class="container">
+        <div class="card animate-fade">
+            <h3 class="card-title"><i class="fas fa-envelope"></i> Contacto</h3>
+            <p>Estamos aquí para ayudarte. Completa el formulario y nos pondremos en contacto contigo lo antes posible.</p>
+            
+            <form class="contact-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Nombre completo</label>
+                        <input type="text" class="form-control" placeholder="Tu nombre">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" placeholder="tucorreo@ejemplo.com">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Asunto</label>
+                    <input type="text" class="form-control" placeholder="Asunto del mensaje">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mensaje</label>
+                    <textarea class="form-control" rows="5" placeholder="Escribe tu mensaje aquí..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary send-btn"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+            </form>
+        </div>
+        
+        <div class="card animate-fade">
+            <h3 class="card-title"><i class="fas fa-map-marker-alt"></i> Información de contacto</h3>
+            
+            <div class="contact-info-grid">
+                <div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <div class="contact-text">
+                            <h4>Correo electrónico</h4>
+                            <p>contacto@servitech.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <div class="contact-text">
+                            <h4>Teléfono</h4>
+                            <p>+57 300 123 4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-clock contact-icon"></i>
+                        <div class="contact-text">
+                            <h4>Horario de atención</h4>
+                            <p>Lunes a Viernes 8:00 AM - 6:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-pin contact-icon"></i>
+                        <div class="contact-text">
+                            <h4>Dirección</h4>
+                            <p>Calle Principal #123, Bogotá, Colombia</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-building contact-icon"></i>
+                        <div class="contact-text">
+                            <h4>Oficina</h4>
+                            <p>Oficina Central - Piso 5</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+<!-- Footer -->
+    <footer id="footer-container"></footer>
+    
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/contacto.js"></script>
+</body>
+</html>

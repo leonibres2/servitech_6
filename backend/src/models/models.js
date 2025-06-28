@@ -1,18 +1,29 @@
+// Importa mongoose y desestructura Schema y model
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-const UsuarioSchema = new Schema({
-  nombre: { type: String, required: true },
-  apellido: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password_hash: { type: String, required: true },
-  avatar_url: String,
-  es_experto: { type: Boolean, default: false },
-  fecha_registro: { type: Date, default: Date.now },
-  estado: { type: String, enum: ['activo', 'inactivo', 'suspendido'], default: 'activo' },
-  experto: { type: Schema.Types.Mixed, default: null }
-}, { collection: 'usuarios' }); // Fuerza el nombre de la colección
+// Define el esquema de Usuario con los campos y restricciones
+const UsuarioSchema = new Schema({ 
+  nombre: { type: String, required: true }, // Nombre del usuario
 
+  apellido: { type: String, required: true }, // Apellido del usuario
+
+  email: { type: String, required: true, unique: true }, // Email único
+
+  password_hash: { type: String, required: true }, // Hash de la contraseña
+
+  avatar_url: String, // URL del avatar (opcional)
+
+  es_experto: { type: Boolean, default: false }, // Indica si es experto
+
+  fecha_registro: { type: Date, default: Date.now }, // Fecha de registro
+
+  estado: { type: String, enum: ['activo', 'inactivo', 'suspendido'], default: 'activo' }, // Estado del usuario
+
+  experto: { type: Schema.Types.Mixed, default: null } // Información adicional si es experto
+  }, { collection: 'usuarios' }); // Fuerza el nombre de la colección
+
+// Exporta el modelo Usuario para usarlo
 module.exports = {
   Usuario: model('Usuario', UsuarioSchema)
 };

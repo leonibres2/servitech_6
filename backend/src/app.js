@@ -1,32 +1,55 @@
+// Carga variables de entorno desde .env
 require("dotenv").config();
 const mongoose = require('mongoose');
+// Importa express para crear el servidor web
 const express = require('express');
+
+// Importa cors para permitir solicitudes de diferentes orígenes
 const cors = require('cors');
+// Importa path para manejar rutas de archivos
 const path = require('path');
 
+// Inicializa la aplicación Express
 const app = express();
+// Habilita CORS para todas las rutas
 app.use(cors());
+
+// Permite recibir y procesar JSON en las solicitudes
 app.use(express.json());
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/servitech';
+// Obtiene la URI de MongoDB desde variables de entorno
+const MONGODB_URI = process.env.MONGODB_URI;
 
+// Conecta a la base de datos MongoDB
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('Conectado a MongoDB:', MONGODB_URI))
   .catch(err => {
+    // Si hay error al conectar, muestra el error y termina el proceso
     console.error('Error al conectar a MongoDB:', err);
     process.exit(1);
   });
 
-// Servir archivos estáticos del frontend
+// Llama los archivos estáticos del frontend (HTML, CSS, JS, etc.)
 app.use(express.static(path.join(__dirname, '../../frontend')));
 
-// Importa las rutas DESPUÉS de la conexión y middlewares
+// Importa las rutas de usuarios DESPUÉS de la conexión y middlewares
 const userRoutes = require("./routes/usuarios");
+// Asocia las rutas de usuarios al prefijo /api/usuarios
 app.use("/api/usuarios", userRoutes);
 
+// Importa las rutas de categorías y expertos
+const categoriasRoutes = require('./routes/categorias');
+const expertosRoutes = require('./routes/expertos');
+
+// Asocia las rutas al prefijo /api
+app.use('/api/categorias', categoriasRoutes);
+app.use('/api/expertos', expertosRoutes);
+
 const PORT = process.env.PORT || 3000;
+// Inicia el servidor y muestra un mensaje en consola
 app.listen(PORT, () => {
   console.log(`Servidor backend escuchando en puerto ${PORT}`);
 });
 
+// Exporta la app para pruebas
 module.exports = app;

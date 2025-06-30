@@ -149,7 +149,7 @@ function setupUserInterface() {
   }
   // Si el usuario está logueado y estamos en una página de admin pero no es admin
   if (currentUser && isAdminPage && currentUser.role !== "admin") {
-    window.location.href = "../feed.html";
+    window.location.href = "../mis-asesorias.html";
     return;
   }
 

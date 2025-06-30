@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (usuario.email === "admin@servitech.com") {
             window.location.href = "admin/admin.html";
           } else {
-            window.location.href = "feed.html";
+            window.location.href = "/";
           }
         } catch (err) {
           if (loginError) {

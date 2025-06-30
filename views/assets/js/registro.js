@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // Validación final y feedback al enviar el formulario
+    // Validación final y mis-asesoriasback al enviar el formulario
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       let isValid = true;

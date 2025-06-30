@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - ServiTech</title>
-    <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/contacto.css">
-    <link rel="stylesheet" href="assets/css/componentes.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/contacto.css">
+    <link rel="stylesheet" href="/assets/css/componentes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
-    <header id="header-container"></header>
+    <%- include('componentes/header') %>
 
     <main class="container">
         <div class="card animate-fade">
@@ -96,10 +96,10 @@
             </div>
         </div>
     </main>
-<!-- Footer -->
-    <footer id="footer-container"></footer>
-    
-    <script src="assets/js/common.js"></script>
-    <script src="assets/js/contacto.js"></script>
+    <!-- Footer -->
+    <%- include('componentes/footer') %>
+    <script src="/assets/js/common.js"></script>
+    <script src="/assets/js/contacto.js"></script>
 </body>
+</html>
 </html>

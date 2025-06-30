@@ -57,8 +57,16 @@ app.get('/', (req, res) => res.render('index'));
 app.get('/feed.html', (req, res) => res.render('feed'));
 app.get('/expertos.html', (req, res) => res.render('expertos'));
 app.get('/registro.html', (req, res) => res.render('registro'));
+app.get('/login.html', (req, res) => res.render('login'));
+app.get('/recuperar-password.html', (req, res) => res.render('recuperar-password'));
+app.get('/calendario.html', (req, res) => res.render('calendario'));
+app.get('/perfil.html', (req, res) => res.render('perfil'));
 app.get('/terminos.html', (req, res) => res.render('terminos'));
 app.get('/privacidad.html', (req, res) => res.render('privacidad'));
+app.get('/contacto.html', (req, res) => res.render('contacto'));
+app.get('/confirmacion-asesoria.html', (req, res) => res.render('confirmacion-asesoria'));
+app.get('/pasarela-pagos.html', (req, res) => res.render('pasarela-pagos')); // Corrige el nombre del archivo .ejs
+app.get('/mis-asesorias.html', (req, res) => res.render('mis-asesorias'));
 // Agrega aquí más rutas según tus vistas .ejs
 
 // Middleware para manejar rutas no encontradas (solo para API)

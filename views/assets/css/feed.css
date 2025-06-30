@@ -360,3 +360,217 @@
     color: white;
     transform: translateY(-0.125rem);
 }
+
+/* Específico para la página de asesorías y mensajes */
+.asesorias-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  background: var(--color-bg-secondary, #181c23);
+  color: var(--color-text, #fff);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.asesorias-table th,
+.asesorias-table td {
+  padding: 1rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border, #23272f);
+}
+
+.asesorias-table th {
+  background: var(--color-bg-tertiary, #23272f);
+  font-weight: 600;
+  color: var(--color-accent, #ffd700);
+}
+
+.asesorias-table tr:last-child td {
+  border-bottom: none;
+}
+
+.asesorias-table tbody tr:hover {
+  background: var(--color-bg-hover, #23272f);
+}
+
+.btn-sm {
+  padding: 0.4em 1.2em;
+  font-size: 0.95em;
+  border-radius: 5px;
+}
+
+/* Tarjeta de asesoría */
+.asesorias-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.asesoria-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+}
+
+.asesoria-info {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+}
+
+.asesoria-fecha, .asesoria-hora {
+  display: block;
+  font-size: 1.1em;
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.asesoria-experto {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.experto-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-color);
+}
+
+.experto-nombre {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.experto-rol {
+  font-size: 0.95em;
+  color: var(--accent-color);
+}
+
+.asesoria-estado {
+  padding: 0.4em 1em;
+  border-radius: 6px;
+  font-size: 0.98em;
+  font-weight: 600;
+  background: var(--input-bg);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
+}
+
+.asesoria-estado.completada {
+  background: #23272f;
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.asesoria-acciones {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+}
+
+/* Modal de mensajes */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.6);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  color: var(--text-color);
+  padding: 2rem 2.5rem;
+  border-radius: var(--border-radius);
+  max-width: 400px;
+  width: 90%;
+  margin: 5vh auto;
+  position: relative;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.close-modal {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  cursor: pointer;
+}
+
+.mensajes-historial {
+  max-height: 180px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.mensaje-usuario .mensaje-avatar img {
+  border: 2px solid var(--accent-color);
+}
+
+.mensaje-experto .mensaje-avatar img {
+  border: 2px solid var(--primary-color);
+}
+
+.mensaje-texto {
+  background: var(--input-bg);
+  color: var(--text-color);
+  padding: 0.7em 1em;
+  border-radius: 8px;
+  max-width: 220px;
+  word-break: break-word;
+  font-size: 1em;
+}
+
+.mensaje-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.mensaje-form .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .asesoria-card {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .asesoria-info {
+    gap: 1rem;
+  }
+  .modal-content {
+    padding: 1.2rem 0.8rem;
+  }
+}

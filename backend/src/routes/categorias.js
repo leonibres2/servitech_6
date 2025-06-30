@@ -15,9 +15,12 @@ router.get('/', async (req, res) => {
 });
 
 // Crear una nueva categoría
-// Validar unicidad del nombre al crear
 router.post('/', async (req, res) => {
   try {
+    if (!req.body.nombre) {
+      return res.status(400).json({ message: 'El nombre es requerido' });
+    }
+    // Validar unicidad del nombre al crear
     const existe = await Categoria.findOne({ nombre: req.body.nombre });
     if (existe) {
       return res.status(400).json({ message: 'Ya existe una categoría con ese nombre' });
@@ -31,6 +34,7 @@ router.post('/', async (req, res) => {
     const nuevaCategoria = await categoria.save();
     res.status(201).json(nuevaCategoria);
   } catch (err) {
+    console.error('Error al crear categoría:', err);
     res.status(400).json({ message: err.message });
   }
 });
@@ -38,6 +42,9 @@ router.post('/', async (req, res) => {
 // Actualizar categoría
 router.put('/:id', async (req, res) => {
   try {
+    if (!req.body.nombre) {
+      return res.status(400).json({ message: 'El nombre es requerido' });
+    }
     // Validar que la categoría exista
     const existe = await Categoria.findOne({ nombre: req.body.nombre, _id: { $ne: req.params.id } });
     if (existe) {
@@ -54,6 +61,7 @@ router.put('/:id', async (req, res) => {
     if (!categoria) return res.status(404).json({ message: 'Categoría no encontrada' });
     res.json(categoria);
   } catch (err) {
+    console.error('Error al actualizar categoría:', err);
     res.status(400).json({ message: err.message });
   }
 });
@@ -71,6 +79,7 @@ router.delete('/:id', async (req, res) => {
     if (!categoria) return res.status(404).json({ message: 'Categoría no encontrada' });
     res.json({ message: 'Categoría eliminada' });
   } catch (err) {
+    console.error('Error al eliminar categoría:', err);
     res.status(500).json({ message: err.message });
   }
 });

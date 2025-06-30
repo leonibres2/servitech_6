@@ -18,6 +18,9 @@ router.get('/', async (req, res) => {
 // Crear un nuevo experto
 router.post('/', async (req, res) => {
   try {
+    if (!req.body.userId || !req.body.especialidad) {
+      return res.status(400).json({ message: 'userId y especialidad son requeridos' });
+    }
     // Validar que el usuario exista
     const usuario = await Usuario.findById(req.body.userId);
     if (!usuario) {
@@ -37,6 +40,7 @@ router.post('/', async (req, res) => {
     const nuevoExperto = await experto.save();
     res.status(201).json(nuevoExperto);
   } catch (err) {
+    console.error('Error al crear experto:', err);
     res.status(400).json({ message: err.message });
   }
 });
@@ -64,6 +68,7 @@ router.put('/:id', async (req, res) => {
     await experto.save();
     res.json(experto);
   } catch (err) {
+    console.error('Error al actualizar experto:', err);
     res.status(400).json({ message: err.message });
   }
 });
@@ -75,6 +80,7 @@ router.delete('/:id', async (req, res) => {
     if (!experto) return res.status(404).json({ message: 'Experto no encontrado' });
     res.json({ message: 'Experto eliminado' });
   } catch (err) {
+    console.error('Error al eliminar experto:', err);
     res.status(500).json({ message: err.message });
   }
 });

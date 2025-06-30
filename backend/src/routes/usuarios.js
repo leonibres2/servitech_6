@@ -5,6 +5,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');     
 // Importa el modelo Usuario desde models.js
 const { Usuario } = require('../models/models');
+const jwt = require('jsonwebtoken');
 
 // Ruta para login de usuario
 router.post('/login', async (req, res) => {  
@@ -29,10 +30,9 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: "Credenciales inválidas" });
     }
     // Genera un token JWT con los datos del usuario
-    const jwt = require('jsonwebtoken');
     const token = jwt.sign(
       { id: user._id, email: user.email },
-      process.env.JWT_CONTRASEÑA,
+      process.env.JWT_SECRET, // <--- CORREGIDO
       { expiresIn: "2h" }
     );
     // Elimina el hash de la respuesta por seguridad
@@ -41,8 +41,9 @@ router.post('/login', async (req, res) => {
     // Devuelve el usuario y el token
     res.json({ usuario: userObj, token });
   } catch (err) {
-    // Maneja errores internos
-    res.status(500).json({ error: "Error al iniciar sesión" });
+    // Maneja errores internos y muestra el error real en consola
+    console.error("Error real en login:", err);
+    res.status(500).json({ error: "Error al iniciar sesión", detalle: err.message });
   }
 });
 

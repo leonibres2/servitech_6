@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const pseForm = document.getElementById('pseForm');
   const nequiForm = document.getElementById('nequiForm');
   const payuForm = document.getElementById('payuForm');
+  const daviplataForm = document.getElementById('daviplataForm');
   const paymentMethodSection = document.querySelector('.payment-method-section');
   const returnBtn = document.getElementById('returnBtn');
   const continueBtn = document.getElementById('continueBtn');
@@ -38,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarFormulario('nequi');
       } else if (selectedMethod === 'payu') {
         mostrarFormulario('payu');
+      } else if (selectedMethod === 'daviplata') {
+        mostrarFormulario('daviplata');
       } else {
         // Para otros métodos de pago, solo mostrar como seleccionado
         paymentMethodSection.style.display = 'block';
@@ -53,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pseForm) pseForm.style.display = 'none';
     if (nequiForm) nequiForm.style.display = 'none';
     if (payuForm) payuForm.style.display = 'none';
+    if (daviplataForm) daviplataForm.style.display = 'none';
   }
   
   /**
@@ -82,6 +86,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (payuForm) {
           payuForm.style.display = 'block';
           configurarFormateoPayU();
+        }
+        break;
+      case 'daviplata':
+        if (daviplataForm) {
+          daviplataForm.style.display = 'block';
+          configurarFormateoDaviplata();
         }
         break;
     }
@@ -135,6 +145,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!validarDatosPayU()) {
         return; // La función validarDatosPayU ya muestra el error
       }
+    } else if (metodoSeleccionado.dataset.method === 'daviplata') {
+      if (!validarDatosDaviplata()) {
+        return; // La función validarDatosDaviplata ya muestra el error
+      }
     } else if (metodoSeleccionado.dataset.method === 'nequi') {
       if (!validarDatosNequi()) {
         return; // La función validarDatosNequi ya muestra el error
@@ -178,6 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
         email: document.getElementById('payuEmail').value,
         documento: document.getElementById('payuDocument').value
       };
+    } else if (metodoSeleccionado.dataset.method === 'daviplata') {
+      datosCompletos.pago.daviplata = {
+        numeroCelular: document.getElementById('daviplataPhone').value,
+        pin: document.getElementById('daviplataPin').value // En producción, NO guardar el PIN
+      };
     }
     
     // Guardar datos completos para la confirmación
@@ -205,6 +224,9 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (metodoSeleccionado.dataset.method === 'payu') {
       // Mostrar flujo específico de PayU
       mostrarProcesamientoPayU(datosCompletos);
+    } else if (metodoSeleccionado.dataset.method === 'daviplata') {
+      // Mostrar flujo específico de Daviplata
+      mostrarProcesamientoDaviplata(datosCompletos);
     } else {
       continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando pago...';
       
@@ -349,6 +371,43 @@ document.addEventListener('DOMContentLoaded', function() {
     if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
       mostrarError('El PIN de Nequi debe tener exactamente 4 dígitos.');
       document.getElementById('nequiPin').focus();
+      return false;
+    }
+    
+    return true;
+  }
+  
+  /**
+   * Valida los datos del formulario Daviplata
+   */
+  function validarDatosDaviplata() {
+    const numeroCelular = document.getElementById('daviplataPhone').value.trim();
+    const pin = document.getElementById('daviplataPin').value.trim();
+    
+    if (!numeroCelular) {
+      mostrarError('Por favor ingresa tu número de celular registrado en Daviplata.');
+      document.getElementById('daviplataPhone').focus();
+      return false;
+    }
+    
+    // Validar formato del número celular (10 dígitos)
+    const numeroLimpio = numeroCelular.replace(/\D/g, '');
+    if (numeroLimpio.length !== 10 || !numeroLimpio.startsWith('3')) {
+      mostrarError('Ingresa un número de celular válido (debe iniciar con 3 y tener 10 dígitos).');
+      document.getElementById('daviplataPhone').focus();
+      return false;
+    }
+    
+    if (!pin) {
+      mostrarError('Por favor ingresa tu PIN de Daviplata.');
+      document.getElementById('daviplataPin').focus();
+      return false;
+    }
+    
+    // Validar PIN de 4 dígitos
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+      mostrarError('El PIN de Daviplata debe tener exactamente 4 dígitos.');
+      document.getElementById('daviplataPin').focus();
       return false;
     }
     
@@ -869,6 +928,132 @@ document.addEventListener('DOMContentLoaded', function() {
     if (payuAmountDisplay && citaData) {
       const precio = calcularPrecio(citaData.servicio);
       payuAmountDisplay.textContent = precio;
+    }
+  }
+
+  /**
+   * Muestra el procesamiento específico de Daviplata con autenticación biométrica
+   */
+  function mostrarProcesamientoDaviplata(datosCompletos) {
+    continueBtn.innerHTML = '<i class="fas fa-mobile-alt"></i> Conectando con Daviplata...';
+    
+    // Fase 1: Validación inicial (1.5 segundos)
+    setTimeout(() => {
+      continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando datos...';
+      
+      // Fase 2: Autenticación biométrica (2.5 segundos)
+      setTimeout(() => {
+        continueBtn.innerHTML = '<i class="fas fa-fingerprint fa-pulse"></i> Esperando autenticación biométrica...';
+        
+        // Mostrar modal de autenticación biométrica
+        mostrarAutenticacionBiometrica();
+        
+        // Fase 3: Procesamiento del pago (2 segundos)
+        setTimeout(() => {
+          continueBtn.innerHTML = '<i class="fas fa-check fa-pulse"></i> Procesando pago...';
+          
+          // Fase 4: Finalización (1.5 segundos)
+          setTimeout(() => {
+            finalizarProcesamiento(datosCompletos);
+          }, 1500);
+        }, 2000);
+      }, 2500);
+    }, 1500);
+  }
+
+  /**
+   * Muestra modal de autenticación biométrica simulada
+   */
+  function mostrarAutenticacionBiometrica() {
+    // Crear overlay de autenticación
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+    
+    overlay.innerHTML = `
+      <div class="daviplata-auth-modal" style="
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 350px;
+        margin: 20px;
+      ">
+        <div class="daviplata-loading">
+          <div class="fingerprint-animation">
+            <i class="fas fa-fingerprint"></i>
+          </div>
+          <div class="auth-text">
+            <h3 style="color: white; margin-bottom: 10px;">Autenticación Biométrica</h3>
+            <p style="color: rgba(255,255,255,0.9); margin: 0; font-size: 0.9rem;">
+              Coloca tu huella digital en el sensor o usa reconocimiento facial
+            </p>
+          </div>
+        </div>
+        <p style="font-size: 0.8rem; color: #666; margin-top: 15px; margin-bottom: 0;">
+          Simulación de autenticación biométrica de Daviplata
+        </p>
+      </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // Remover overlay después de 2 segundos
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+    }, 2000);
+  }
+
+  /**
+   * Configura formateo para campos de Daviplata
+   */
+  function configurarFormateoDaviplata() {
+    const daviplataPhoneInput = document.getElementById('daviplataPhone');
+    const daviplataPinInput = document.getElementById('daviplataPin');
+    const daviplataAmountDisplay = document.getElementById('daviplataAmount');
+    
+    // Formateo del número de celular
+    if (daviplataPhoneInput) {
+      daviplataPhoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        // Limitar a 10 dígitos
+        if (value.length > 10) {
+          value = value.substring(0, 10);
+        }
+        
+        // Formatear como xxx xxx xxxx
+        if (value.length > 6) {
+          value = value.substring(0, 3) + ' ' + value.substring(3, 6) + ' ' + value.substring(6);
+        } else if (value.length > 3) {
+          value = value.substring(0, 3) + ' ' + value.substring(3);
+        }
+        
+        e.target.value = value;
+      });
+    }
+    
+    // Formateo del PIN (solo números, máximo 4 dígitos)
+    if (daviplataPinInput) {
+      daviplataPinInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+      });
+    }
+    
+    // Actualizar el monto mostrado según los datos de la cita
+    if (daviplataAmountDisplay && citaData) {
+      const precio = calcularPrecio(citaData.servicio);
+      daviplataAmountDisplay.textContent = precio;
     }
   }
 

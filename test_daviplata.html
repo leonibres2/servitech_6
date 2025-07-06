@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Daviplata - ServiTech</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { color: #ed1c24; margin-bottom: 10px; }
+        .header .subtitle { color: #666; font-size: 1.1rem; }
+        button { 
+            background: #ed1c24; 
+            color: white; 
+            border: none; 
+            padding: 14px 28px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin: 10px; 
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        button:hover { background: #c41e3a; transform: translateY(-2px); }
+        .info { 
+            background: linear-gradient(135deg, #fff5f5, #ffe6e6); 
+            padding: 24px; 
+            border-radius: 12px; 
+            margin: 20px 0; 
+            border-left: 5px solid #ed1c24;
+        }
+        .info h3 { color: #ed1c24; margin-bottom: 15px; }
+        .steps { margin: 25px 0; }
+        .step { 
+            background: white; 
+            padding: 18px; 
+            margin: 12px 0; 
+            border-radius: 10px; 
+            border: 2px solid #f0f0f0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .step:hover { border-color: #ed1c24; transform: translateY(-2px); }
+        .step-number { 
+            background: #ed1c24; 
+            color: white; 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 50%; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            margin-right: 12px;
+        }
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .feature { 
+            background: #fff5f5; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid rgba(237, 28, 36, 0.2);
+            text-align: center;
+        }
+        .feature-icon { font-size: 2rem; color: #ed1c24; margin-bottom: 8px; }
+        .highlight { background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Prueba del flujo de Daviplata</h1>
+            <div class="subtitle">Billetera digital de Banco Davivienda</div>
+        </div>
+        
+        <div class="info">
+            <h3>📱 Información sobre Daviplata</h3>
+            <p><strong>Daviplata</strong> es la billetera digital de Banco Davivienda que permite realizar pagos de forma rápida y segura usando solo tu número de celular y autenticación biométrica.</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <strong>Pago Instantáneo</strong>
+                <div>Menos de 30 segundos</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <strong>100% Seguro</strong>
+                <div>Autenticación biométrica</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <strong>Sin Comisiones</strong>
+                <div>Pago directo sin costos</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🕒</div>
+                <strong>24/7 Disponible</strong>
+                <div>Siempre activo</div>
+            </div>
+        </div>
+        
+        <div class="steps">
+            <h3 style="color: #333; margin-bottom: 20px;">📋 Pasos para probar:</h3>
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Configurar datos de cita de prueba</strong>
+                <button onclick="configurarDatosPrueba()">Configurar cita</button>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Ir a la pasarela de pagos</strong>
+                <button onclick="irAPasarela()">Ir a pasarela</button>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Seleccionar "Daviplata" como método de pago</strong>
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Completar formulario con datos de prueba:</strong>
+                <div class="highlight">
+                    <strong>📧 Email general:</strong> test@ejemplo.com<br>
+                    <strong>📱 Celular:</strong> 3001234567<br>
+                    <strong>🔑 PIN:</strong> 1234
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Procesar pago y observar:</strong>
+                <ul style="margin-top: 10px;">
+                    <li>✅ Validación de campos</li>
+                    <li>✅ Formateo automático del celular</li>
+                    <li>✅ Animación de autenticación biométrica</li>
+                    <li>✅ Modal de huella digital simulada</li>
+                    <li>✅ Procesamiento en 4 fases</li>
+                </ul>
+            </div>
+            <div class="step">
+                <span class="step-number">6</span>
+                <strong>Verificar página de confirmación con datos seguros de Daviplata</strong>
+            </div>
+        </div>
+
+        <div class="info">
+            <h3>🎯 Funcionalidades implementadas:</h3>
+            <ul style="margin-top: 15px; line-height: 1.8;">
+                <li>✅ <strong>Formulario específico</strong> con campos de celular y PIN</li>
+                <li>✅ <strong>Validación robusta</strong> de número celular y PIN</li>
+                <li>✅ <strong>Formateo automático</strong> del número (xxx xxx xxxx)</li>
+                <li>✅ <strong>Procesamiento específico</strong> con autenticación biométrica</li>
+                <li>✅ <strong>Modal biométrico</strong> con animación de huella</li>
+                <li>✅ <strong>Información de beneficios</strong> (instantáneo, seguro, gratuito)</li>
+                <li>✅ <strong>Visualización segura</strong> en página de confirmación</li>
+                <li>✅ <strong>Diseño corporativo</strong> con colores Daviplata (#ed1c24)</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+            <h4 style="color: #ed1c24; margin-bottom: 10px;">🚀 Sistema completo con 5 métodos de pago</h4>
+            <p style="color: #666; margin: 0;">Tarjeta • PSE • Nequi • PayU • Daviplata</p>
+        </div>
+    </div>
+    
+    <script>
+        function configurarDatosPrueba() {
+            const citaData = {
+                fecha: '2025-07-25',
+                hora: '10:30',
+                duracion: '1 hora',
+                servicio: 'Diseño UX/UI',
+                experto: 'Carolina Mendoza',
+                precio: '$28.000 COP',
+                descripcion: 'Asesoría especializada en diseño UX/UI'
+            };
+            
+            localStorage.setItem('citaSeleccionada', JSON.stringify(citaData));
+            alert('✅ Datos de cita configurados para Daviplata\n\n' +
+                  'Servicio: ' + citaData.servicio + '\n' +
+                  'Fecha: ' + citaData.fecha + '\n' +
+                  'Hora: ' + citaData.hora + '\n' +
+                  'Experto: ' + citaData.experto + '\n' +
+                  'Precio: ' + citaData.precio);
+            console.log('Datos de cita para Daviplata:', citaData);
+        }
+        
+        function irAPasarela() {
+            const citaData = localStorage.getItem('citaSeleccionada');
+            if (!citaData) {
+                alert('❌ Primero configura los datos de la cita');
+                return;
+            }
+            window.location.href = '/pasarela-pagos.html';
+        }
+    </script>
+</body>
+</html>

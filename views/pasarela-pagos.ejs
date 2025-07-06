@@ -563,6 +563,134 @@
                 </div>
               </div>
 
+              <!-- Formulario para Daviplata (inicialmente oculto) -->
+              <div
+                id="daviplataForm"
+                class="payment-detail-form"
+                style="display: none"
+              >
+                <h3>Pago con Daviplata</h3>
+                <p class="daviplata-description">
+                  <i class="fas fa-mobile-alt"></i>
+                  Paga de forma rápida y segura desde tu app Daviplata
+                </p>
+
+                <div class="input-group">
+                  <label for="daviplataPhone">Número de celular</label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input
+                      type="tel"
+                      id="daviplataPhone"
+                      name="daviplataPhone"
+                      placeholder="3001234567"
+                      required
+                    />
+                  </div>
+                  <p class="input-help">
+                    Ingresa tu número registrado en Daviplata
+                  </p>
+                </div>
+
+                <div class="input-group">
+                  <label for="daviplataPin">PIN de Daviplata (4 dígitos)</label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input
+                      type="password"
+                      id="daviplataPin"
+                      name="daviplataPin"
+                      placeholder="••••"
+                      maxlength="4"
+                      required
+                    />
+                  </div>
+                  <p class="input-help">Tu PIN de seguridad de Daviplata</p>
+                </div>
+
+                <div class="daviplata-info-box">
+                  <div class="daviplata-info-header">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>¿Cómo funciona el pago con Daviplata?</strong>
+                  </div>
+                  <div class="daviplata-steps">
+                    <div class="daviplata-step">
+                      <div class="step-number">1</div>
+                      <div class="step-text">Ingresa tu número y PIN</div>
+                    </div>
+                    <div class="daviplata-step">
+                      <div class="step-number">2</div>
+                      <div class="step-text">Confirma el pago en tu app</div>
+                    </div>
+                    <div class="daviplata-step">
+                      <div class="step-number">3</div>
+                      <div class="step-text">
+                        Autoriza con tu huella digital
+                      </div>
+                    </div>
+                    <div class="daviplata-step">
+                      <div class="step-number">4</div>
+                      <div class="step-text">¡Pago procesado exitosamente!</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="daviplata-benefits">
+                  <div class="benefit-item">
+                    <div class="benefit-icon">
+                      <i class="fas fa-zap"></i>
+                    </div>
+                    <div class="benefit-text">
+                      <strong>Pago instantáneo</strong>
+                      <span>Procesa en menos de 30 segundos</span>
+                    </div>
+                  </div>
+                  <div class="benefit-item">
+                    <div class="benefit-icon">
+                      <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="benefit-text">
+                      <strong>100% seguro</strong>
+                      <span>Protegido por Davivienda</span>
+                    </div>
+                  </div>
+                  <div class="benefit-item">
+                    <div class="benefit-icon">
+                      <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="benefit-text">
+                      <strong>Sin comisiones</strong>
+                      <span>Pago directo sin costos extra</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="daviplata-security">
+                  <div class="security-badge daviplata-badge">
+                    <i class="fas fa-university"></i>
+                    <span>Respaldado por Davivienda</span>
+                  </div>
+                  <div class="security-badge daviplata-badge">
+                    <i class="fas fa-fingerprint"></i>
+                    <span>Autenticación biométrica</span>
+                  </div>
+                  <div class="security-badge daviplata-badge">
+                    <i class="fas fa-clock"></i>
+                    <span>Disponible 24/7</span>
+                  </div>
+                </div>
+
+                <div class="daviplata-amount-display">
+                  <div class="amount-label">Monto a pagar:</div>
+                  <div class="amount-value" id="daviplataAmount">
+                    $25.000 COP
+                  </div>
+                  <div class="amount-note">
+                    Se debitará automáticamente de tu cuenta Daviplata
+                  </div>
+                </div>
+              </div>
+
               <!-- Botones de acción -->
               <div class="payment-actions">
                 <button type="button" id="returnBtn" class="btn btn-secondary">

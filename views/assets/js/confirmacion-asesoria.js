@@ -193,6 +193,14 @@ document.addEventListener('DOMContentLoaded', function() {
         metodoPagoTexto += ` - ${emailOculto} | Doc: ${documentoOculto}`;
       }
       
+      // Agregar información adicional para Daviplata
+      if (pago.metodo === 'daviplata' && pago.daviplata) {
+        const numeroCelular = pago.daviplata.numeroCelular;
+        // Ocultar los dígitos del medio por seguridad
+        const numeroOculto = numeroCelular.replace(/(\d{3})(\d{3})(\d{4})/, '$1 *** $3');
+        metodoPagoTexto += ` - ${numeroOculto}`;
+      }
+      
       metodoPagoElement.textContent = metodoPagoTexto;
       metodoPagoContainer.style.display = 'flex'; // Mostrar el elemento
     }

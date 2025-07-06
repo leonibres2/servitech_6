@@ -25,6 +25,7 @@ const UsuarioSchema = new Schema({
 
 // Importar modelos adicionales
 const Asesoria = require('./asesoria');
+const Disponibilidad = require('./disponibilidad');
 const { Conversacion, Mensaje } = require('./mensaje');
 const Notificacion = require('./notificacion');
 const Reseña = require('./reseña');
@@ -35,6 +36,7 @@ const TransaccionPSE = require('./transaccionPSE');
 module.exports = {
   Usuario: model('Usuario', UsuarioSchema),
   Asesoria,
+  Disponibilidad,
   Conversacion,
   Mensaje,
   Notificacion,

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧪 Prueba Sistema de Asesorías - ServiTech</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(45deg, #007bff, #6610f2);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        opacity: 0.9;
+        font-size: 1.1rem;
+      }
+
+      .content {
+        padding: 30px;
+      }
+
+      .test-section {
+        margin-bottom: 40px;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .test-header {
+        background: #f8f9fa;
+        padding: 20px;
+        border-bottom: 2px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .test-header h3 {
+        color: #495057;
+        font-size: 1.3rem;
+      }
+
+      .test-content {
+        padding: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #495057;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      .btn {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .result-box {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        border-left: 4px solid #28a745;
+        background: #d4edda;
+        color: #155724;
+        display: none;
+      }
+
+      .result-box.error {
+        border-left-color: #dc3545;
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .result-box.warning {
+        border-left-color: #ffc107;
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #007bff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .status-success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .status-error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .status-pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .availability-slot {
+        padding: 10px;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .availability-slot:hover {
+        border-color: #007bff;
+        background: #f8f9ff;
+      }
+
+      .availability-slot.selected {
+        border-color: #007bff;
+        background: #007bff;
+        color: white;
+      }
+
+      .availability-slot.unavailable {
+        background: #f8f9fa;
+        color: #6c757d;
+        cursor: not-allowed;
+      }
+
+      .json-preview {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 15px;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+        max-height: 300px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🧪 Sistema de Asesorías ServiTech</h1>
+        <p>Panel de pruebas completo para gestión de asesorías</p>
+      </div>
+
+      <div class="content">
+        <!-- 1. Consultar Disponibilidad -->
+        <div class="test-section">
+          <div class="test-header">
+            <h3>📅 1. Consultar Disponibilidad de Experto</h3>
+            <span class="status-badge status-pending" id="status-disponibilidad"
+              >Pendiente</span
+            >
+          </div>
+          <div class="test-content">
+            <div class="grid">
+              <div>
+                <div class="form-group">
+                  <label>ID del Experto:</label>
+                  <input
+                    type="text"
+                    id="expertoId1"
+                    value="6779d9ec1dc7ab23bb3beb24"
+                    placeholder="ID del experto"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Fecha:</label>
+                  <input type="date" id="fechaDisponibilidad" />
+                </div>
+                <div class="form-group">
+                  <label>Días a mostrar:</label>
+                  <select id="diasMostrar">
+                    <option value="3">3 días</option>
+                    <option value="7" selected>7 días</option>
+                    <option value="14">14 días</option>
+                  </select>
+                </div>
+                <button class="btn" onclick="consultarDisponibilidad()">
+                  Consultar Disponibilidad
+                </button>
+              </div>
+              <div>
+                <div class="result-box" id="result-disponibilidad"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Horarios Específicos -->
+        <div class="test-section">
+          <div class="test-header">
+            <h3>🕐 2. Obtener Horarios Específicos</h3>
+            <span class="status-badge status-pending" id="status-horarios"
+              >Pendiente</span
+            >
+          </div>
+          <div class="test-content">
+            <div class="grid">
+              <div>
+                <div class="form-group">
+                  <label>ID del Experto:</label>
+                  <input
+                    type="text"
+                    id="expertoId2"
+                    value="6779d9ec1dc7ab23bb3beb24"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Fecha específica:</label>
+                  <input type="date" id="fechaEspecifica" />
+                </div>
+                <div class="form-group">
+                  <label>Duración (minutos):</label>
+                  <select id="duracion">
+                    <option value="30">30 minutos</option>
+                    <option value="60" selected>60 minutos</option>
+                    <option value="90">90 minutos</option>
+                    <option value="120">120 minutos</option>
+                  </select>
+                </div>
+                <button class="btn" onclick="obtenerHorarios()">
+                  Obtener Horarios
+                </button>
+              </div>
+              <div>
+                <div class="result-box" id="result-horarios"></div>
+                <div id="horarios-grid" style="margin-top: 15px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Crear Asesoría -->
+        <div class="test-section">
+          <div class="test-header">
+            <h3>📝 3. Crear Nueva Asesoría</h3>
+            <span class="status-badge status-pending" id="status-crear"
+              >Pendiente</span
+            >
+          </div>
+          <div class="test-content">
+            <div class="grid">
+              <div>
+                <div class="form-group">
+                  <label>Cliente ID:</label>
+                  <input
+                    type="text"
+                    id="clienteId"
+                    value="6779d9ec1dc7ab23bb3beb23"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Experto ID:</label>
+                  <input
+                    type="text"
+                    id="expertoId3"
+                    value="6779d9ec1dc7ab23bb3beb24"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Categoría ID:</label>
+                  <input
+                    type="text"
+                    id="categoriaId"
+                    value="6779da1c1dc7ab23bb3beb2d"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Título:</label>
+                  <input
+                    type="text"
+                    id="titulo"
+                    value="Consulta de desarrollo web"
+                    placeholder="Título de la asesoría"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Descripción:</label>
+                  <textarea
+                    id="descripcion"
+                    placeholder="Descripción detallada..."
+                  >
+Necesito ayuda con React y Node.js para mi proyecto.</textarea
+                  >
+                </div>
+                <div class="form-group">
+                  <label>Fecha y Hora:</label>
+                  <input type="datetime-local" id="fechaHora" />
+                </div>
+              </div>
+              <div>
+                <div class="form-group">
+                  <label>Duración:</label>
+                  <select id="duracionAsesoria">
+                    <option value="30">30 minutos</option>
+                    <option value="60" selected>60 minutos</option>
+                    <option value="90">90 minutos</option>
+                    <option value="120">120 minutos</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Precio (COP):</label>
+                  <input
+                    type="number"
+                    id="precio"
+                    value="50000"
+                    min="10000"
+                    step="5000"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Método de Pago:</label>
+                  <select id="metodoPago">
+                    <option value="tarjeta" selected>Tarjeta</option>
+                    <option value="pse">PSE</option>
+                    <option value="nequi">Nequi</option>
+                    <option value="payu">PayU</option>
+                    <option value="daviplata">Daviplata</option>
+                  </select>
+                </div>
+                <button class="btn" onclick="crearAsesoria()">
+                  Crear Asesoría
+                </button>
+                <div class="result-box" id="result-crear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Listar Asesorías -->
+        <div class="test-section">
+          <div class="test-header">
+            <h3>📋 4. Listar Asesorías</h3>
+            <span class="status-badge status-pending" id="status-listar"
+              >Pendiente</span
+            >
+          </div>
+          <div class="test-content">
+            <div class="grid">
+              <div>
+                <div class="form-group">
+                  <label>Usuario ID:</label>
+                  <input
+                    type="text"
+                    id="usuarioLista"
+                    value="6779d9ec1dc7ab23bb3beb23"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Rol:</label>
+                  <select id="rolLista">
+                    <option value="cliente" selected>Cliente</option>
+                    <option value="experto">Experto</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Estado:</label>
+                  <select id="estadoLista">
+                    <option value="">Todos</option>
+                    <option value="pendiente-pago">Pendiente Pago</option>
+                    <option value="pagada">Pagada</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="en-curso">En Curso</option>
+                    <option value="completada">Completada</option>
+                  </select>
+                </div>
+                <button class="btn" onclick="listarAsesorias()">
+                  Listar Asesorías
+                </button>
+              </div>
+              <div>
+                <div class="result-box" id="result-listar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Configurar Disponibilidad -->
+        <div class="test-section">
+          <div class="test-header">
+            <h3>⚙️ 5. Configurar Disponibilidad</h3>
+            <span class="status-badge status-pending" id="status-config"
+              >Pendiente</span
+            >
+          </div>
+          <div class="test-content">
+            <div class="grid">
+              <div>
+                <div class="form-group">
+                  <label>Experto ID:</label>
+                  <input
+                    type="text"
+                    id="expertoConfig"
+                    value="6779d9ec1dc7ab23bb3beb24"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>Horario Laboral:</label>
+                  <select id="horaInicio">
+                    <option value="08:00">08:00</option>
+                    <option value="09:00" selected>09:00</option>
+                    <option value="10:00">10:00</option>
+                  </select>
+                  -
+                  <select id="horaFin">
+                    <option value="16:00">16:00</option>
+                    <option value="17:00" selected>17:00</option>
+                    <option value="18:00">18:00</option>
+                  </select>
+                </div>
+                <button class="btn" onclick="configurarDisponibilidad()">
+                  Configurar Disponibilidad
+                </button>
+              </div>
+              <div>
+                <div class="result-box" id="result-config"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Monitor en Tiempo Real -->
+        <div class="test-section">
+          <div class="test-header">
+            <h3>📊 6. Monitor del Sistema</h3>
+            <span class="status-badge status-success">Activo</span>
+          </div>
+          <div class="test-content">
+            <div id="system-monitor">
+              <p>🔄 Actualizando estadísticas...</p>
+            </div>
+            <button class="btn" onclick="actualizarEstadisticas()">
+              Actualizar Estadísticas
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Configuración
+      const API_BASE = "/api";
+      let asesoriaCreada = null;
+
+      // Inicializar fechas
+      document.addEventListener("DOMContentLoaded", function () {
+        const mañana = new Date();
+        mañana.setDate(mañana.getDate() + 1);
+
+        document.getElementById("fechaDisponibilidad").value = mañana
+          .toISOString()
+          .split("T")[0];
+        document.getElementById("fechaEspecifica").value = mañana
+          .toISOString()
+          .split("T")[0];
+
+        const fechaHoraAsesoria = new Date(mañana);
+        fechaHoraAsesoria.setHours(14, 0, 0, 0);
+        document.getElementById("fechaHora").value = fechaHoraAsesoria
+          .toISOString()
+          .slice(0, 16);
+
+        // Actualizar estadísticas cada 30 segundos
+        setInterval(actualizarEstadisticas, 30000);
+        actualizarEstadisticas();
+      });
+
+      // Función para mostrar resultados
+      function mostrarResultado(
+        elementId,
+        data,
+        isError = false,
+        isWarning = false
+      ) {
+        const element = document.getElementById(elementId);
+        element.style.display = "block";
+        element.className = `result-box ${
+          isError ? "error" : isWarning ? "warning" : ""
+        }`;
+
+        if (typeof data === "object") {
+          element.innerHTML = `<div class="json-preview">${JSON.stringify(
+            data,
+            null,
+            2
+          )}</div>`;
+        } else {
+          element.innerHTML = data;
+        }
+      }
+
+      // Función para actualizar estado
+      function actualizarEstado(statusId, estado) {
+        const element = document.getElementById(statusId);
+        element.className = `status-badge status-${estado}`;
+        element.textContent =
+          estado === "success"
+            ? "Exitoso"
+            : estado === "error"
+            ? "Error"
+            : "Pendiente";
+      }
+
+      // 1. Consultar Disponibilidad
+      async function consultarDisponibilidad() {
+        const expertoId = document.getElementById("expertoId1").value;
+        const fecha = document.getElementById("fechaDisponibilidad").value;
+        const dias = document.getElementById("diasMostrar").value;
+
+        try {
+          actualizarEstado("status-disponibilidad", "pending");
+
+          const response = await fetch(
+            `${API_BASE}/disponibilidad/${expertoId}?fecha=${fecha}&dias=${dias}`
+          );
+          const data = await response.json();
+
+          if (response.ok) {
+            mostrarResultado("result-disponibilidad", data);
+            actualizarEstado("status-disponibilidad", "success");
+          } else {
+            mostrarResultado(
+              "result-disponibilidad",
+              data.message || "Error desconocido",
+              true
+            );
+            actualizarEstado("status-disponibilidad", "error");
+          }
+        } catch (error) {
+          mostrarResultado(
+            "result-disponibilidad",
+            `Error: ${error.message}`,
+            true
+          );
+          actualizarEstado("status-disponibilidad", "error");
+        }
+      }
+
+      // 2. Obtener Horarios
+      async function obtenerHorarios() {
+        const expertoId = document.getElementById("expertoId2").value;
+        const fecha = document.getElementById("fechaEspecifica").value;
+        const duracion = document.getElementById("duracion").value;
+
+        try {
+          actualizarEstado("status-horarios", "pending");
+
+          const response = await fetch(
+            `${API_BASE}/disponibilidad/${expertoId}/horarios?fecha=${fecha}&duracion=${duracion}`
+          );
+          const data = await response.json();
+
+          if (response.ok) {
+            mostrarResultado(
+              "result-horarios",
+              `${data.data.horariosDisponibles.length} horarios disponibles encontrados`
+            );
+            mostrarHorarios(data.data.horariosDisponibles);
+            actualizarEstado("status-horarios", "success");
+          } else {
+            mostrarResultado(
+              "result-horarios",
+              data.message || "Error desconocido",
+              true
+            );
+            actualizarEstado("status-horarios", "error");
+          }
+        } catch (error) {
+          mostrarResultado("result-horarios", `Error: ${error.message}`, true);
+          actualizarEstado("status-horarios", "error");
+        }
+      }
+
+      // Mostrar horarios en formato visual
+      function mostrarHorarios(horarios) {
+        const container = document.getElementById("horarios-grid");
+        container.innerHTML = "";
+
+        if (horarios.length === 0) {
+          container.innerHTML =
+            '<p style="text-align: center; color: #6c757d;">No hay horarios disponibles</p>';
+          return;
+        }
+
+        container.style.display = "grid";
+        container.style.gridTemplateColumns =
+          "repeat(auto-fill, minmax(100px, 1fr))";
+        container.style.gap = "10px";
+
+        horarios.forEach((horario) => {
+          const slot = document.createElement("div");
+          slot.className = `availability-slot ${
+            horario.disponible ? "" : "unavailable"
+          }`;
+          slot.textContent = horario.hora;
+          slot.onclick = () => seleccionarHorario(horario, slot);
+          container.appendChild(slot);
+        });
+      }
+
+      function seleccionarHorario(horario, element) {
+        if (!horario.disponible) return;
+
+        // Remover selección previa
+        document
+          .querySelectorAll(".availability-slot.selected")
+          .forEach((el) => {
+            el.classList.remove("selected");
+          });
+
+        // Seleccionar nuevo
+        element.classList.add("selected");
+
+        // Actualizar campo de fecha y hora
+        const fechaSeleccionada = new Date(horario.fechaHora);
+        document.getElementById("fechaHora").value = fechaSeleccionada
+          .toISOString()
+          .slice(0, 16);
+      }
+
+      // 3. Crear Asesoría
+      async function crearAsesoria() {
+        const datosAsesoria = {
+          clienteId: document.getElementById("clienteId").value,
+          expertoId: document.getElementById("expertoId3").value,
+          categoriaId: document.getElementById("categoriaId").value,
+          titulo: document.getElementById("titulo").value,
+          descripcion: document.getElementById("descripcion").value,
+          fechaHora: new Date(
+            document.getElementById("fechaHora").value
+          ).toISOString(),
+          duracion: parseInt(document.getElementById("duracionAsesoria").value),
+          precio: parseInt(document.getElementById("precio").value),
+          metodoPago: document.getElementById("metodoPago").value,
+          requerimientos: {
+            compartirPantalla: true,
+            notasCliente: "Prueba desde interfaz web",
+          },
+        };
+
+        try {
+          actualizarEstado("status-crear", "pending");
+
+          const response = await fetch(`${API_BASE}/asesorias`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-usuario-id": datosAsesoria.clienteId,
+            },
+            body: JSON.stringify(datosAsesoria),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            asesoriaCreada = data.data;
+            mostrarResultado(
+              "result-crear",
+              `✅ Asesoría creada exitosamente!\nID: ${data.data._id}\nCódigo: ${data.data.codigoAsesoria}`
+            );
+            actualizarEstado("status-crear", "success");
+          } else {
+            mostrarResultado(
+              "result-crear",
+              data.message || "Error desconocido",
+              true
+            );
+            actualizarEstado("status-crear", "error");
+          }
+        } catch (error) {
+          mostrarResultado("result-crear", `Error: ${error.message}`, true);
+          actualizarEstado("status-crear", "error");
+        }
+      }
+
+      // 4. Listar Asesorías
+      async function listarAsesorias() {
+        const usuario = document.getElementById("usuarioLista").value;
+        const rol = document.getElementById("rolLista").value;
+        const estado = document.getElementById("estadoLista").value;
+
+        try {
+          actualizarEstado("status-listar", "pending");
+
+          let url = `${API_BASE}/asesorias?usuario=${usuario}&rol=${rol}&limite=10`;
+          if (estado) url += `&estado=${estado}`;
+
+          const response = await fetch(url);
+          const data = await response.json();
+
+          if (response.ok) {
+            const resumen =
+              `📋 Encontradas ${data.pagination.total} asesorías\n` +
+              `📄 Página ${data.pagination.pagina} de ${data.pagination.totalPaginas}\n` +
+              `📊 Mostrando ${data.data.length} resultados`;
+
+            mostrarResultado("result-listar", {
+              resumen,
+              asesorias: data.data.map((a) => ({
+                id: a._id,
+                codigo: a.codigoAsesoria,
+                titulo: a.titulo,
+                estado: a.estado,
+                fecha: new Date(a.fechaHora).toLocaleString(),
+                cliente: a.cliente?.nombre,
+                experto: a.experto?.nombre,
+              })),
+            });
+            actualizarEstado("status-listar", "success");
+          } else {
+            mostrarResultado(
+              "result-listar",
+              data.message || "Error desconocido",
+              true
+            );
+            actualizarEstado("status-listar", "error");
+          }
+        } catch (error) {
+          mostrarResultado("result-listar", `Error: ${error.message}`, true);
+          actualizarEstado("status-listar", "error");
+        }
+      }
+
+      // 5. Configurar Disponibilidad
+      async function configurarDisponibilidad() {
+        const expertoId = document.getElementById("expertoConfig").value;
+        const horaInicio = document.getElementById("horaInicio").value;
+        const horaFin = document.getElementById("horaFin").value;
+
+        const configuracion = {
+          horarios: {
+            lunes: { activo: true, inicio: horaInicio, fin: horaFin },
+            martes: { activo: true, inicio: horaInicio, fin: horaFin },
+            miercoles: { activo: true, inicio: horaInicio, fin: horaFin },
+            jueves: { activo: true, inicio: horaInicio, fin: horaFin },
+            viernes: { activo: true, inicio: horaInicio, fin: horaFin },
+            sabado: { activo: false, inicio: horaInicio, fin: horaFin },
+            domingo: { activo: false, inicio: horaInicio, fin: horaFin },
+          },
+          configuracionGeneral: {
+            duracionMinima: 30,
+            duracionMaxima: 180,
+            tiempoAnticipacion: 24,
+            descansoEntreCitas: 15,
+          },
+        };
+
+        try {
+          actualizarEstado("status-config", "pending");
+
+          const response = await fetch(
+            `${API_BASE}/disponibilidad/${expertoId}/configurar`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(configuracion),
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            mostrarResultado(
+              "result-config",
+              `✅ Disponibilidad configurada correctamente\nHorario: ${horaInicio} - ${horaFin}\nDías activos: Lunes a Viernes`
+            );
+            actualizarEstado("status-config", "success");
+          } else {
+            mostrarResultado(
+              "result-config",
+              data.message || "Error desconocido",
+              true
+            );
+            actualizarEstado("status-config", "error");
+          }
+        } catch (error) {
+          mostrarResultado("result-config", `Error: ${error.message}`, true);
+          actualizarEstado("status-config", "error");
+        }
+      }
+
+      // 6. Actualizar Estadísticas
+      async function actualizarEstadisticas() {
+        try {
+          const response = await fetch(
+            `${API_BASE}/asesorias/estadisticas?periodo=30`
+          );
+          const data = await response.json();
+
+          if (response.ok) {
+            const stats = data.data;
+            const monitor = document.getElementById("system-monitor");
+
+            monitor.innerHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center;">
+                                <h4>📅 Próximas Asesorías</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #28a745;">${
+                                  stats.proximasAsesorias?.length || 0
+                                }</p>
+                            </div>
+                            <div style="background: #e8f4fd; padding: 15px; border-radius: 8px; text-align: center;">
+                                <h4>⏰ Sistema Recordatorios</h4>
+                                <p style="font-size: 1.2rem; font-weight: bold; color: #007bff;">✅ Activo</p>
+                            </div>
+                            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; text-align: center;">
+                                <h4>📊 Total Asesorías</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #856404;">${
+                                  stats.estadisticas?.length || 0
+                                }</p>
+                            </div>
+                            <div style="background: #f8d7da; padding: 15px; border-radius: 8px; text-align: center;">
+                                <h4>🕐 Última Actualización</h4>
+                                <p style="font-size: 0.9rem; color: #721c24;">${new Date().toLocaleTimeString()}</p>
+                            </div>
+                        </div>
+                    `;
+          }
+        } catch (error) {
+          console.error("Error actualizando estadísticas:", error);
+        }
+      }
+
+      // Funciones auxiliares
+      function copiarAClipboard(texto) {
+        navigator.clipboard.writeText(texto).then(() => {
+          alert("Copiado al portapapeles");
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -22,7 +22,15 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 // Conecta a la base de datos MongoDB
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('Conectado a MongoDB:', MONGODB_URI))
+  .then(() => {
+    console.log('Conectado a MongoDB:', MONGODB_URI);
+    
+    // 🚀 Inicializar sistema de recordatorios
+    const sistemaRecordatorios = require('./services/recordatoriosService');
+    sistemaRecordatorios.inicializar()
+      .then(() => console.log('✅ Sistema de recordatorios iniciado'))
+      .catch(err => console.error('❌ Error iniciando recordatorios:', err));
+  })
   .catch(err => {
     // Si hay error al conectar, muestra el error y termina el proceso
     console.error('Error al conectar a MongoDB:', err);
@@ -51,10 +59,16 @@ const expertosRoutes = require('./routes/expertos');
 // 🏦 Importa las rutas de PSE
 const pseRoutes = require('./routes/pse');
 
+// 📅 Importa las rutas de asesorías y disponibilidad
+const asesoriasRoutes = require('./routes/asesorias');
+const disponibilidadRoutes = require('./routes/disponibilidad');
+
 // Asocia las rutas al prefijo /api
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/expertos', expertosRoutes);
 app.use('/api/pse', pseRoutes);
+app.use('/api/asesorias', asesoriasRoutes);
+app.use('/api/disponibilidad', disponibilidadRoutes);
 
 // Rutas para renderizar vistas EJS
 app.get('/', (req, res) => res.render('index'));

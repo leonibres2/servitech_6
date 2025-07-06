@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const paymentMethods = document.querySelectorAll('.payment-method');
   const creditCardForm = document.getElementById('creditCardForm');
   const pseForm = document.getElementById('pseForm');
+  const nequiForm = document.getElementById('nequiForm');
   const paymentMethodSection = document.querySelector('.payment-method-section');
   const returnBtn = document.getElementById('returnBtn');
   const continueBtn = document.getElementById('continueBtn');
@@ -32,11 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarFormulario('credit-card');
       } else if (selectedMethod === 'pse') {
         mostrarFormulario('pse');
+      } else if (selectedMethod === 'nequi') {
+        mostrarFormulario('nequi');
       } else {
         // Para otros métodos de pago, solo mostrar como seleccionado
         paymentMethodSection.style.display = 'block';
       }
-    });
   });
   
   /**
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
     paymentMethodSection.style.display = 'none';
     if (creditCardForm) creditCardForm.style.display = 'none';
     if (pseForm) pseForm.style.display = 'none';
+    if (nequiForm) nequiForm.style.display = 'none';
   }
   
   /**
@@ -63,6 +66,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (pseForm) {
           pseForm.style.display = 'block';
           configurarFormateoPSE();
+        }
+        break;
+      case 'nequi':
+        if (nequiForm) {
+          nequiForm.style.display = 'block';
+          configurarFormateoNequi();
         }
         break;
     }
@@ -108,6 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!validarDatosPSE()) {
         return; // La función validarDatosPSE ya muestra el error
       }
+    } else if (metodoSeleccionado.dataset.method === 'nequi') {
+      if (!validarDatosNequi()) {
+        return; // La función validarDatosNequi ya muestra el error
+      }
+    } else if (metodoSeleccionado.dataset.method === 'nequi') {
+      if (!validarDatosNequi()) {
+        return; // La función validarDatosNequi ya muestra el error
+      }
     }
     
     // Preparar datos completos para el procesamiento
@@ -137,6 +154,11 @@ document.addEventListener('DOMContentLoaded', function() {
         tipoDocumento: document.getElementById('documentType').value,
         numeroDocumento: document.getElementById('documentNumber').value
       };
+    } else if (metodoSeleccionado.dataset.method === 'nequi') {
+      datosCompletos.pago.nequi = {
+        numeroCelular: document.getElementById('nequiPhone').value,
+        pin: document.getElementById('nequiPin').value // En producción, NO guardar el PIN
+      };
     }
     
     // Guardar datos completos para la confirmación
@@ -158,6 +180,9 @@ document.addEventListener('DOMContentLoaded', function() {
           finalizarProcesamiento(datosCompletos);
         }, 3000);
       }, 3000);
+    } else if (metodoSeleccionado.dataset.method === 'nequi') {
+      // Mostrar flujo específico de Nequi
+      mostrarProcesamientoNequi(datosCompletos);
     } else {
       continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando pago...';
       
@@ -272,6 +297,43 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   /**
+   * Valida los datos del formulario Nequi
+   */
+  function validarDatosNequi() {
+    const numeroCelular = document.getElementById('nequiPhone').value.trim();
+    const pin = document.getElementById('nequiPin').value.trim();
+    
+    if (!numeroCelular) {
+      mostrarError('Por favor ingresa tu número de celular asociado a Nequi.');
+      document.getElementById('nequiPhone').focus();
+      return false;
+    }
+    
+    // Validar formato del número celular (10 dígitos)
+    const numeroLimpio = numeroCelular.replace(/\D/g, '');
+    if (numeroLimpio.length !== 10 || !numeroLimpio.startsWith('3')) {
+      mostrarError('Ingresa un número de celular válido (debe iniciar con 3 y tener 10 dígitos).');
+      document.getElementById('nequiPhone').focus();
+      return false;
+    }
+    
+    if (!pin) {
+      mostrarError('Por favor ingresa tu PIN de Nequi.');
+      document.getElementById('nequiPin').focus();
+      return false;
+    }
+    
+    // Validar PIN de 4 dígitos
+    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+      mostrarError('El PIN de Nequi debe tener exactamente 4 dígitos.');
+      document.getElementById('nequiPin').focus();
+      return false;
+    }
+    
+    return true;
+  }
+  
+  /**
    * Valida el formato del documento según su tipo
    */
   function validarFormatoDocumento(tipo, numero) {
@@ -333,6 +395,76 @@ document.addEventListener('DOMContentLoaded', function() {
         
         e.target.value = value;
       });
+    }
+  }
+  
+  /**
+   * Muestra el procesamiento específico de Nequi con animación
+   */
+  function mostrarProcesamientoNequi(datosCompletos) {
+    continueBtn.innerHTML = '<i class="fas fa-mobile-alt"></i> Enviando notificación a Nequi...';
+    
+    // Fase 1: Validación de datos (2 segundos)
+    setTimeout(() => {
+      continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validando datos con Nequi...';
+      
+      // Fase 2: Envío de notificación push (2 segundos)
+      setTimeout(() => {
+        continueBtn.innerHTML = '<i class="fas fa-bell fa-pulse"></i> Esperando autorización en tu celular...';
+        
+        // Fase 3: Simulación de autorización por parte del usuario (3 segundos)
+        setTimeout(() => {
+          continueBtn.innerHTML = '<i class="fas fa-check fa-pulse"></i> Autorizando transacción...';
+          
+          // Fase 4: Finalización (1 segundo)
+          setTimeout(() => {
+            finalizarProcesamiento(datosCompletos);
+          }, 1000);
+        }, 3000);
+      }, 2000);
+    }, 2000);
+  }
+
+  /**
+   * Configura formateo para campos de Nequi
+   */
+  function configurarFormateoNequi() {
+    const nequiPhoneInput = document.getElementById('nequiPhone');
+    const nequiPinInput = document.getElementById('nequiPin');
+    const nequiAmountDisplay = document.getElementById('nequiAmount');
+    
+    // Formateo del número de celular
+    if (nequiPhoneInput) {
+      nequiPhoneInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        // Limitar a 10 dígitos
+        if (value.length > 10) {
+          value = value.substring(0, 10);
+        }
+        
+        // Formatear como xxx xxx xxxx
+        if (value.length > 6) {
+          value = value.substring(0, 3) + ' ' + value.substring(3, 6) + ' ' + value.substring(6);
+        } else if (value.length > 3) {
+          value = value.substring(0, 3) + ' ' + value.substring(3);
+        }
+        
+        e.target.value = value;
+      });
+    }
+    
+    // Formateo del PIN (solo números, máximo 4 dígitos)
+    if (nequiPinInput) {
+      nequiPinInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 4);
+      });
+    }
+    
+    // Actualizar el monto mostrado según los datos de la cita
+    if (nequiAmountDisplay && citaData) {
+      const precio = calcularPrecio(citaData.servicio);
+      nequiAmountDisplay.textContent = precio;
     }
   }
   

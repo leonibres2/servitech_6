@@ -175,6 +175,14 @@ document.addEventListener('DOMContentLoaded', function() {
         metodoPagoTexto += ` - ${nombreBanco}`;
       }
       
+      // Agregar información adicional para Nequi
+      if (pago.metodo === 'nequi' && pago.nequi) {
+        const numeroCelular = pago.nequi.numeroCelular;
+        // Ocultar los dígitos del medio por seguridad
+        const numeroOculto = numeroCelular.replace(/(\d{3})(\d{3})(\d{4})/, '$1 *** $3');
+        metodoPagoTexto += ` - ${numeroOculto}`;
+      }
+      
       metodoPagoElement.textContent = metodoPagoTexto;
       metodoPagoContainer.style.display = 'flex'; // Mostrar el elemento
     }

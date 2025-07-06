@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Elementos del DOM
   const paymentMethods = document.querySelectorAll('.payment-method');
   const creditCardForm = document.getElementById('creditCardForm');
+  const pseForm = document.getElementById('pseForm');
   const paymentMethodSection = document.querySelector('.payment-method-section');
   const returnBtn = document.getElementById('returnBtn');
   const continueBtn = document.getElementById('continueBtn');
@@ -23,18 +24,57 @@ document.addEventListener('DOMContentLoaded', function() {
       // Marcar como seleccionado
       this.classList.add('selected');
       
+      // Ocultar todos los formularios
+      ocultarTodosLosFormularios();
+      
       // Mostrar formulario específico según método
       if (selectedMethod === 'credit-card') {
-        paymentMethodSection.style.display = 'none';
-        creditCardForm.style.display = 'block';
+        mostrarFormulario('credit-card');
+      } else if (selectedMethod === 'pse') {
+        mostrarFormulario('pse');
+      } else {
+        // Para otros métodos de pago, solo mostrar como seleccionado
+        paymentMethodSection.style.display = 'block';
       }
     });
   });
   
+  /**
+   * Oculta todos los formularios de pago
+   */
+  function ocultarTodosLosFormularios() {
+    paymentMethodSection.style.display = 'none';
+    if (creditCardForm) creditCardForm.style.display = 'none';
+    if (pseForm) pseForm.style.display = 'none';
+  }
+  
+  /**
+   * Muestra el formulario específico del método de pago
+   */
+  function mostrarFormulario(metodo) {
+    switch (metodo) {
+      case 'credit-card':
+        if (creditCardForm) {
+          creditCardForm.style.display = 'block';
+          configurarFormateoTarjeta();
+        }
+        break;
+      case 'pse':
+        if (pseForm) {
+          pseForm.style.display = 'block';
+          configurarFormateoPSE();
+        }
+        break;
+    }
+  }
+  
   // Evento para botón volver
   returnBtn.addEventListener('click', function() {
-    creditCardForm.style.display = 'none';
+    ocultarTodosLosFormularios();
     paymentMethodSection.style.display = 'block';
+    
+    // Remover selección de métodos de pago
+    paymentMethods.forEach(m => m.classList.remove('selected'));
   });
     // Evento para continuar
   continueBtn.addEventListener('click', function() {
@@ -64,6 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!validarDatosTarjeta()) {
         return; // La función validarDatosTarjeta ya muestra el error
       }
+    } else if (metodoSeleccionado.dataset.method === 'pse') {
+      if (!validarDatosPSE()) {
+        return; // La función validarDatosPSE ya muestra el error
+      }
     }
     
     // Preparar datos completos para el procesamiento
@@ -86,30 +130,60 @@ document.addEventListener('DOMContentLoaded', function() {
         cvv: document.getElementById('cvv').value,
         cuotas: document.getElementById('cuotas').value
       };
+    } else if (metodoSeleccionado.dataset.method === 'pse') {
+      datosCompletos.pago.pse = {
+        banco: document.getElementById('bankSelect').value,
+        tipoPersona: document.getElementById('personType').value,
+        tipoDocumento: document.getElementById('documentType').value,
+        numeroDocumento: document.getElementById('documentNumber').value
+      };
     }
     
     // Guardar datos completos para la confirmación
     localStorage.setItem('pagoCompleto', JSON.stringify(datosCompletos));
     
-    // Mostrar mensaje de procesamiento
+    // Mostrar mensaje de procesamiento específico según método
     const originalText = continueBtn.innerHTML;
     continueBtn.disabled = true;
-    continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando pago...';
     
-    // Simulación de procesamiento de pago (3 segundos)
-    setTimeout(function() {
-      // Generar ID de transacción simulado
-      const transactionId = 'ST-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    if (metodoSeleccionado.dataset.method === 'pse') {
+      continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirigiendo al banco...';
       
-      // Agregar ID de transacción a los datos
-      datosCompletos.pago.transactionId = transactionId;
-      localStorage.setItem('pagoCompleto', JSON.stringify(datosCompletos));
+      // Simular redirección a PSE (3 segundos)
+      setTimeout(() => {
+        continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Autorizando transacción...';
+        
+        // Simular autorización bancaria (3 segundos más)
+        setTimeout(() => {
+          finalizarProcesamiento(datosCompletos);
+        }, 3000);
+      }, 3000);
+    } else {
+      continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando pago...';
       
-      console.log('💳 Pago procesado exitosamente:', datosCompletos);
-      
-      // Redirigir a la página de confirmación
-      window.location.href = '/confirmacion-asesoria.html';
-    }, 3000);
+      // Simulación de procesamiento de pago (3 segundos)
+      setTimeout(() => {
+        finalizarProcesamiento(datosCompletos);
+      }, 3000);
+    }
+  });
+  
+  /**
+   * Finaliza el procesamiento del pago
+   */
+  function finalizarProcesamiento(datosCompletos) {
+    // Generar ID de transacción simulado
+    const transactionId = 'ST-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+    
+    // Agregar ID de transacción a los datos
+    datosCompletos.pago.transactionId = transactionId;
+    localStorage.setItem('pagoCompleto', JSON.stringify(datosCompletos));
+    
+    console.log('💳 Pago procesado exitosamente:', datosCompletos);
+    
+    // Redirigir a la página de confirmación
+    window.location.href = '/confirmacion-asesoria.html';
+  }
   });
   
   /**
@@ -154,6 +228,112 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     return true;
+  }
+  
+  /**
+   * Valida los datos del formulario PSE
+   */
+  function validarDatosPSE() {
+    const banco = document.getElementById('bankSelect').value;
+    const tipoPersona = document.getElementById('personType').value;
+    const tipoDocumento = document.getElementById('documentType').value;
+    const numeroDocumento = document.getElementById('documentNumber').value.trim();
+    
+    if (!banco) {
+      mostrarError('Por favor selecciona tu banco.');
+      document.getElementById('bankSelect').focus();
+      return false;
+    }
+    
+    if (!tipoPersona) {
+      mostrarError('Por favor selecciona el tipo de persona.');
+      document.getElementById('personType').focus();
+      return false;
+    }
+    
+    if (!tipoDocumento) {
+      mostrarError('Por favor selecciona el tipo de documento.');
+      document.getElementById('documentType').focus();
+      return false;
+    }
+    
+    if (!numeroDocumento) {
+      mostrarError('Por favor ingresa tu número de documento.');
+      document.getElementById('documentNumber').focus();
+      return false;
+    }
+    
+    // Validar formato del documento según el tipo
+    if (!validarFormatoDocumento(tipoDocumento, numeroDocumento)) {
+      return false;
+    }
+    
+    return true;
+  }
+  
+  /**
+   * Valida el formato del documento según su tipo
+   */
+  function validarFormatoDocumento(tipo, numero) {
+    const numeroLimpio = numero.replace(/\D/g, '');
+    
+    switch (tipo) {
+      case 'cc':
+        if (numeroLimpio.length < 7 || numeroLimpio.length > 10) {
+          mostrarError('La cédula debe tener entre 7 y 10 dígitos.');
+          return false;
+        }
+        break;
+      case 'ce':
+        if (numeroLimpio.length < 6 || numeroLimpio.length > 12) {
+          mostrarError('La cédula de extranjería debe tener entre 6 y 12 caracteres.');
+          return false;
+        }
+        break;
+      case 'ti':
+        if (numeroLimpio.length < 10 || numeroLimpio.length > 11) {
+          mostrarError('La tarjeta de identidad debe tener 10 u 11 dígitos.');
+          return false;
+        }
+        break;
+      case 'nit':
+        if (numeroLimpio.length < 9 || numeroLimpio.length > 10) {
+          mostrarError('El NIT debe tener entre 9 y 10 dígitos.');
+          return false;
+        }
+        break;
+      case 'pp':
+        if (numero.length < 6 || numero.length > 20) {
+          mostrarError('El pasaporte debe tener entre 6 y 20 caracteres.');
+          return false;
+        }
+        break;
+    }
+    
+    return true;
+  }
+  
+  /**
+   * Configura formateo para campos PSE
+   */
+  function configurarFormateoPSE() {
+    const documentNumberInput = document.getElementById('documentNumber');
+    const documentTypeSelect = document.getElementById('documentType');
+    
+    // Formateo del número de documento
+    if (documentNumberInput && documentTypeSelect) {
+      documentNumberInput.addEventListener('input', function(e) {
+        const tipoDocumento = documentTypeSelect.value;
+        let value = e.target.value;
+        
+        // Para documentos numéricos, solo permitir números
+        if (['cc', 'ce', 'ti', 'nit'].includes(tipoDocumento)) {
+          value = value.replace(/\D/g, '');
+        }
+        
+        e.target.value = value;
+      });
+    }
   }
   
   /**

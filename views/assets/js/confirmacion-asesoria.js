@@ -152,6 +152,29 @@ document.addEventListener('DOMContentLoaded', function() {
           metodoPagoTexto = 'Pago Online';
       }
       
+      // Agregar información adicional para PSE
+      if (pago.metodo === 'pse' && pago.pse) {
+        const bancos = {
+          'bancolombia': 'Bancolombia',
+          'davivienda': 'Banco Davivienda',
+          'bbva': 'BBVA Colombia',
+          'bogota': 'Banco de Bogotá',
+          'popular': 'Banco Popular',
+          'occidente': 'Banco de Occidente',
+          'av_villas': 'Banco AV Villas',
+          'colpatria': 'Scotiabank Colpatria',
+          'bancamia': 'Bancamía',
+          'itau': 'Banco Itaú',
+          'falabella': 'Banco Falabella',
+          'pichincha': 'Banco Pichincha',
+          'coopcentral': 'Coopcentral',
+          'otras': 'Otras entidades'
+        };
+        
+        const nombreBanco = bancos[pago.pse.banco] || pago.pse.banco;
+        metodoPagoTexto += ` - ${nombreBanco}`;
+      }
+      
       metodoPagoElement.textContent = metodoPagoTexto;
       metodoPagoContainer.style.display = 'flex'; // Mostrar el elemento
     }

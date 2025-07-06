@@ -386,6 +386,90 @@
   color: var(--accent-color);
 }
 
+/* Estilos para formulario PSE */
+.pse-description {
+  background: #e8f4fd;
+  color: #0066cc;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pse-description i {
+  color: #0066cc;
+}
+
+.pse-info-box {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.pse-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #495057;
+}
+
+.pse-info-header i {
+  color: #17a2b8;
+}
+
+.pse-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pse-info-list li {
+  padding: 6px 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+  position: relative;
+  padding-left: 20px;
+}
+
+.pse-info-list li:before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.pse-security {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  font-size: 0.85rem;
+  color: #495057;
+  flex: 1;
+  min-width: 200px;
+}
+
+.security-badge i {
+  color: #28a745;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {

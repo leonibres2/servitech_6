@@ -183,6 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
         metodoPagoTexto += ` - ${numeroOculto}`;
       }
       
+      // Agregar información adicional para PayU
+      if (pago.metodo === 'payu' && pago.payu) {
+        const email = pago.payu.email;
+        const documento = pago.payu.documento;
+        // Ocultar parte del email y documento por seguridad
+        const emailOculto = email.replace(/(.{2})(.*)(@.*)/, '$1***$3');
+        const documentoOculto = documento.replace(/(\d{2})(\d*)(\d{2})/, '$1***$3');
+        metodoPagoTexto += ` - ${emailOculto} | Doc: ${documentoOculto}`;
+      }
+      
       metodoPagoElement.textContent = metodoPagoTexto;
       metodoPagoContainer.style.display = 'flex'; // Mostrar el elemento
     }

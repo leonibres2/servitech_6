@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const creditCardForm = document.getElementById('creditCardForm');
   const pseForm = document.getElementById('pseForm');
   const nequiForm = document.getElementById('nequiForm');
+  const payuForm = document.getElementById('payuForm');
   const paymentMethodSection = document.querySelector('.payment-method-section');
   const returnBtn = document.getElementById('returnBtn');
   const continueBtn = document.getElementById('continueBtn');
@@ -35,6 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mostrarFormulario('pse');
       } else if (selectedMethod === 'nequi') {
         mostrarFormulario('nequi');
+      } else if (selectedMethod === 'payu') {
+        mostrarFormulario('payu');
       } else {
         // Para otros métodos de pago, solo mostrar como seleccionado
         paymentMethodSection.style.display = 'block';
@@ -49,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (creditCardForm) creditCardForm.style.display = 'none';
     if (pseForm) pseForm.style.display = 'none';
     if (nequiForm) nequiForm.style.display = 'none';
+    if (payuForm) payuForm.style.display = 'none';
   }
   
   /**
@@ -72,6 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (nequiForm) {
           nequiForm.style.display = 'block';
           configurarFormateoNequi();
+        }
+        break;
+      case 'payu':
+        if (payuForm) {
+          payuForm.style.display = 'block';
+          configurarFormateoPayU();
         }
         break;
     }
@@ -121,6 +131,10 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!validarDatosNequi()) {
         return; // La función validarDatosNequi ya muestra el error
       }
+    } else if (metodoSeleccionado.dataset.method === 'payu') {
+      if (!validarDatosPayU()) {
+        return; // La función validarDatosPayU ya muestra el error
+      }
     } else if (metodoSeleccionado.dataset.method === 'nequi') {
       if (!validarDatosNequi()) {
         return; // La función validarDatosNequi ya muestra el error
@@ -159,6 +173,11 @@ document.addEventListener('DOMContentLoaded', function() {
         numeroCelular: document.getElementById('nequiPhone').value,
         pin: document.getElementById('nequiPin').value // En producción, NO guardar el PIN
       };
+    } else if (metodoSeleccionado.dataset.method === 'payu') {
+      datosCompletos.pago.payu = {
+        email: document.getElementById('payuEmail').value,
+        documento: document.getElementById('payuDocument').value
+      };
     }
     
     // Guardar datos completos para la confirmación
@@ -183,6 +202,9 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (metodoSeleccionado.dataset.method === 'nequi') {
       // Mostrar flujo específico de Nequi
       mostrarProcesamientoNequi(datosCompletos);
+    } else if (metodoSeleccionado.dataset.method === 'payu') {
+      // Mostrar flujo específico de PayU
+      mostrarProcesamientoPayU(datosCompletos);
     } else {
       continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando pago...';
       
@@ -694,6 +716,160 @@ document.addEventListener('DOMContentLoaded', function() {
       attributes: true, 
       attributeFilter: ['style'] 
     });
+  }
+
+  /**
+   * Valida los datos del formulario PayU
+   */
+  function validarDatosPayU() {
+    const email = document.getElementById('payuEmail').value.trim();
+    const documento = document.getElementById('payuDocument').value.trim();
+    
+    if (!email) {
+      mostrarError('Por favor ingresa tu email para PayU.');
+      document.getElementById('payuEmail').focus();
+      return false;
+    }
+    
+    // Validar formato del email
+    if (!validarEmail(email)) {
+      mostrarError('Ingresa un email válido para PayU.');
+      document.getElementById('payuEmail').focus();
+      return false;
+    }
+    
+    if (!documento) {
+      mostrarError('Por favor ingresa tu número de documento.');
+      document.getElementById('payuDocument').focus();
+      return false;
+    }
+    
+    // Validar formato del documento (solo números, entre 7 y 12 dígitos)
+    const documentoLimpio = documento.replace(/\D/g, '');
+    if (documentoLimpio.length < 7 || documentoLimpio.length > 12) {
+      mostrarError('El documento debe tener entre 7 y 12 dígitos.');
+      document.getElementById('payuDocument').focus();
+      return false;
+    }
+    
+    return true;
+  }
+
+  /**
+   * Muestra el procesamiento específico de PayU con redirección simulada
+   */
+  function mostrarProcesamientoPayU(datosCompletos) {
+    continueBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> Preparando redirección a PayU...';
+    
+    // Fase 1: Validación inicial (1.5 segundos)
+    setTimeout(() => {
+      continueBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Validando datos con PayU...';
+      
+      // Fase 2: Generación de URL de pago (2 segundos)
+      setTimeout(() => {
+        continueBtn.innerHTML = '<i class="fas fa-link"></i> Generando URL de pago segura...';
+        
+        // Fase 3: Simulación de redirección (2 segundos)
+        setTimeout(() => {
+          continueBtn.innerHTML = '<i class="fas fa-external-link-alt fa-pulse"></i> Redirigiendo a PayU...';
+          
+          // Mostrar mensaje de redirección simulada
+          mostrarMensajeRedireccionPayU();
+          
+          // Fase 4: Finalización (3 segundos)
+          setTimeout(() => {
+            finalizarProcesamiento(datosCompletos);
+          }, 3000);
+        }, 2000);
+      }, 2000);
+    }, 1500);
+  }
+
+  /**
+   * Muestra mensaje de redirección simulada a PayU
+   */
+  function mostrarMensajeRedireccionPayU() {
+    // Crear overlay de redirección
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    `;
+    
+    overlay.innerHTML = `
+      <div class="payu-redirect-modal" style="
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 400px;
+        margin: 20px;
+      ">
+        <div class="payu-loading">
+          <div class="redirect-animation"></div>
+          <div class="redirect-text">
+            <h3 style="color: white; margin-bottom: 10px;">Redirigiendo a PayU</h3>
+            <p style="color: rgba(255,255,255,0.9); margin: 0;">
+              Serás redirigido a la plataforma segura de PayU para completar tu pago
+            </p>
+          </div>
+        </div>
+        <p style="font-size: 0.85rem; color: #666; margin-top: 15px; margin-bottom: 0;">
+          En un entorno real serías redirigido automáticamente
+        </p>
+      </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // Remover overlay después de 2.5 segundos
+    setTimeout(() => {
+      document.body.removeChild(overlay);
+    }, 2500);
+  }
+
+  /**
+   * Configura formateo para campos de PayU
+   */
+  function configurarFormateoPayU() {
+    const payuEmailInput = document.getElementById('payuEmail');
+    const payuDocumentInput = document.getElementById('payuDocument');
+    const payuAmountDisplay = document.getElementById('payuAmount');
+    
+    // Formateo del email (convertir a minúsculas)
+    if (payuEmailInput) {
+      payuEmailInput.addEventListener('input', function(e) {
+        e.target.value = e.target.value.toLowerCase();
+      });
+    }
+    
+    // Formateo del documento (solo números)
+    if (payuDocumentInput) {
+      payuDocumentInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        // Limitar a 12 dígitos
+        if (value.length > 12) {
+          value = value.substring(0, 12);
+        }
+        
+        e.target.value = value;
+      });
+    }
+    
+    // Actualizar el monto mostrado según los datos de la cita
+    if (payuAmountDisplay && citaData) {
+      const precio = calcularPrecio(citaData.servicio);
+      payuAmountDisplay.textContent = precio;
+    }
   }
 
 });

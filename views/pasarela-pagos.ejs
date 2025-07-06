@@ -447,6 +447,122 @@
                 </div>
               </div>
 
+              <!-- Formulario para PayU (inicialmente oculto) -->
+              <div
+                id="payuForm"
+                class="payment-detail-form"
+                style="display: none"
+              >
+                <h3>Pago con PayU</h3>
+                <p class="payu-description">
+                  <i class="fas fa-credit-card"></i>
+                  PayU es una plataforma segura de pagos online con múltiples
+                  opciones
+                </p>
+
+                <div class="input-group">
+                  <label for="payuEmail">Email de confirmación</label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input
+                      type="email"
+                      id="payuEmail"
+                      name="payuEmail"
+                      placeholder="correo@ejemplo.com"
+                      required
+                    />
+                  </div>
+                  <p class="input-help">
+                    Recibirás la confirmación del pago en este email
+                  </p>
+                </div>
+
+                <div class="input-group">
+                  <label for="payuDocument">Número de documento</label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-id-card input-icon"></i>
+                    <input
+                      type="text"
+                      id="payuDocument"
+                      name="payuDocument"
+                      placeholder="12345678"
+                      required
+                    />
+                  </div>
+                  <p class="input-help">
+                    Tu número de cédula o documento de identidad
+                  </p>
+                </div>
+
+                <div class="payu-info-box">
+                  <div class="payu-info-header">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Métodos disponibles con PayU</strong>
+                  </div>
+                  <div class="payu-methods">
+                    <div class="payu-method">
+                      <div class="method-icon">
+                        <i class="fas fa-credit-card"></i>
+                      </div>
+                      <div class="method-text">
+                        <strong>Tarjetas de crédito</strong>
+                        <span>Visa, Mastercard, American Express</span>
+                      </div>
+                    </div>
+                    <div class="payu-method">
+                      <div class="method-icon">
+                        <i class="fas fa-university"></i>
+                      </div>
+                      <div class="method-text">
+                        <strong>Transferencias bancarias</strong>
+                        <span>PSE y bancos principales</span>
+                      </div>
+                    </div>
+                    <div class="payu-method">
+                      <div class="method-icon">
+                        <i class="fas fa-store"></i>
+                      </div>
+                      <div class="method-text">
+                        <strong>Pagos en efectivo</strong>
+                        <span>Efecty, Baloto, puntos de pago</span>
+                      </div>
+                    </div>
+                    <div class="payu-method">
+                      <div class="method-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                      </div>
+                      <div class="method-text">
+                        <strong>Wallets digitales</strong>
+                        <span>Nequi, Daviplata y más</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="payu-security">
+                  <div class="security-badge payu-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Certificado SSL 256-bit</span>
+                  </div>
+                  <div class="security-badge payu-badge">
+                    <i class="fas fa-award"></i>
+                    <span>PCI DSS Compliant</span>
+                  </div>
+                  <div class="security-badge payu-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>Datos encriptados</span>
+                  </div>
+                </div>
+
+                <div class="payu-amount-display">
+                  <div class="amount-label">Total a pagar:</div>
+                  <div class="amount-value" id="payuAmount">$25.000 COP</div>
+                  <div class="amount-note">
+                    Serás redirigido a PayU para completar el pago
+                  </div>
+                </div>
+              </div>
+
               <!-- Botones de acción -->
               <div class="payment-actions">
                 <button type="button" id="returnBtn" class="btn btn-secondary">

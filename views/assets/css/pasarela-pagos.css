@@ -647,6 +647,197 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Estilos para formulario PayU */
+.payu-description {
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.payu-description i {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.payu-info-box {
+  background: #f8feff;
+  border: 2px solid #00b4d8;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.payu-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  color: #495057;
+  font-weight: 600;
+}
+
+.payu-info-header i {
+  color: #00b4d8;
+}
+
+.payu-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.payu-method {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  transition: all 0.3s ease;
+}
+
+.payu-method:hover {
+  border-color: #00b4d8;
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.1);
+}
+
+.payu-method .method-icon {
+  background: #00b4d8;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.payu-method .method-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.payu-method .method-text strong {
+  font-size: 0.85rem;
+  color: #495057;
+  font-weight: 600;
+}
+
+.payu-method .method-text span {
+  font-size: 0.75rem;
+  color: #6c757d;
+  line-height: 1.2;
+}
+
+.payu-security {
+  display: flex;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.payu-badge {
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  color: white !important;
+  border: none !important;
+}
+
+.payu-badge i {
+  color: white !important;
+}
+
+.payu-amount-display {
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.payu-amount-display .amount-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 5px;
+}
+
+.payu-amount-display .amount-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.payu-amount-display .amount-note {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+/* Inputs específicos de PayU */
+#payuEmail {
+  text-transform: lowercase;
+}
+
+#payuDocument {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+/* Responsivo para PayU */
+@media (max-width: 768px) {
+  .payu-methods {
+    grid-template-columns: 1fr;
+  }
+  
+  .payu-security {
+    flex-direction: column;
+  }
+  
+  .payu-method {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+/* Animación de loading para PayU */
+.payu-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  color: white;
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.payu-loading .redirect-animation {
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.payu-loading .redirect-text {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {

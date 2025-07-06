@@ -48,9 +48,13 @@ app.use("/api/usuarios", userRoutes);
 const categoriasRoutes = require('./routes/categorias');
 const expertosRoutes = require('./routes/expertos');
 
+// 🏦 Importa las rutas de PSE
+const pseRoutes = require('./routes/pse');
+
 // Asocia las rutas al prefijo /api
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/expertos', expertosRoutes);
+app.use('/api/pse', pseRoutes);
 
 // Rutas para renderizar vistas EJS
 app.get('/', (req, res) => res.render('index'));

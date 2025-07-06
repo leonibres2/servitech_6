@@ -23,7 +23,23 @@ const UsuarioSchema = new Schema({
   experto: { type: Schema.Types.Mixed, default: null } // Información adicional si es experto
   }, { collection: 'usuarios' }); // Fuerza el nombre de la colección
 
-// Exporta el modelo Usuario para usarlo
+// Importar modelos adicionales
+const Asesoria = require('./asesoria');
+const { Conversacion, Mensaje } = require('./mensaje');
+const Notificacion = require('./notificacion');
+const Reseña = require('./reseña');
+const { ConfiguracionSistema, ConfiguracionUsuario } = require('./configuracion');
+const TransaccionPSE = require('./transaccionPSE');
+
+// Exporta todos los modelos para usarlos
 module.exports = {
-  Usuario: model('Usuario', UsuarioSchema)
+  Usuario: model('Usuario', UsuarioSchema),
+  Asesoria,
+  Conversacion,
+  Mensaje,
+  Notificacion,
+  Reseña,
+  ConfiguracionSistema,
+  ConfiguracionUsuario,
+  TransaccionPSE
 };

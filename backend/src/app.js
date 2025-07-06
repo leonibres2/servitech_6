@@ -79,6 +79,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Error interno del servidor', error: err.message });
 });
 
+// Ruta de prueba
+app.get('/', (req, res) => {
+    res.json({ mensaje: 'API ServiTech funcionando' });
+});
+
+// Puerto
 const PORT = process.env.PORT || 3000;
 // Inicia el servidor y muestra un mensaje en consola
 app.listen(PORT, () => {

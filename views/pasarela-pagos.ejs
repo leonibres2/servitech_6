@@ -355,6 +355,98 @@
                 </div>
               </div>
 
+              <!-- Formulario para Nequi (inicialmente oculto) -->
+              <div
+                id="nequiForm"
+                class="payment-detail-form"
+                style="display: none"
+              >
+                <h3>Pago con Nequi</h3>
+                <p class="nequi-description">
+                  <i class="fas fa-mobile-alt"></i>
+                  Recibirás una notificación en tu app de Nequi para autorizar
+                  el pago
+                </p>
+
+                <div class="input-group">
+                  <label for="nequiPhone">Número de celular</label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input
+                      type="tel"
+                      id="nequiPhone"
+                      name="nequiPhone"
+                      placeholder="3001234567"
+                      required
+                    />
+                  </div>
+                  <p class="input-help">
+                    Ingresa tu número de celular registrado en Nequi
+                  </p>
+                </div>
+
+                <div class="input-group">
+                  <label for="nequiPin">PIN de Nequi (4 dígitos)</label>
+                  <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input
+                      type="password"
+                      id="nequiPin"
+                      name="nequiPin"
+                      placeholder="••••"
+                      maxlength="4"
+                      required
+                    />
+                  </div>
+                  <p class="input-help">Tu PIN de 4 dígitos de la app Nequi</p>
+                </div>
+
+                <div class="nequi-info-box">
+                  <div class="nequi-info-header">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>¿Cómo funciona el pago con Nequi?</strong>
+                  </div>
+                  <div class="nequi-steps">
+                    <div class="nequi-step">
+                      <div class="step-number">1</div>
+                      <div class="step-text">Ingresa tu número y PIN</div>
+                    </div>
+                    <div class="nequi-step">
+                      <div class="step-number">2</div>
+                      <div class="step-text">
+                        Recibirás notificación en tu app
+                      </div>
+                    </div>
+                    <div class="nequi-step">
+                      <div class="step-number">3</div>
+                      <div class="step-text">
+                        Autoriza el pago desde tu celular
+                      </div>
+                    </div>
+                    <div class="nequi-step">
+                      <div class="step-number">4</div>
+                      <div class="step-text">¡Pago confirmado al instante!</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="nequi-security">
+                  <div class="security-badge nequi-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Protegido por Bancolombia</span>
+                  </div>
+                  <div class="security-badge nequi-badge">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Pago instantáneo</span>
+                  </div>
+                </div>
+
+                <div class="nequi-amount-display">
+                  <div class="amount-label">Monto a pagar:</div>
+                  <div class="amount-value" id="nequiAmount">$25.000 COP</div>
+                </div>
+              </div>
+
               <!-- Botones de acción -->
               <div class="payment-actions">
                 <button type="button" id="returnBtn" class="btn btn-secondary">

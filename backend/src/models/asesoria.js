@@ -183,11 +183,11 @@ const asesoriaSchema = new Schema({
   collection: 'asesorias'
 });
 
-// 📌 Índices para optimizar consultas
+// 📌 Índices para optimizar consultas (sin duplicar unique indexes)
 asesoriaSchema.index({ cliente: 1, fechaHora: -1 });
 asesoriaSchema.index({ experto: 1, fechaHora: -1 });
 asesoriaSchema.index({ estado: 1, fechaHora: 1 });
-asesoriaSchema.index({ codigoAsesoria: 1 });
+// codigoAsesoria ya tiene índice unique automático
 asesoriaSchema.index({ fechaHora: 1 });
 asesoriaSchema.index({ categoria: 1 });
 

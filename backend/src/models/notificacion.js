@@ -198,7 +198,7 @@ notificacionSchema.index({ tipo: 1, fechaCreacion: -1 });
 notificacionSchema.index({ 'programada.fechaEnvio': 1, 'programada.enviada': 1 });
 notificacionSchema.index({ 'expira.fechaExpiracion': 1, 'expira.expirada': 1 });
 notificacionSchema.index({ grupoId: 1 });
-notificacionSchema.index({ codigoNotificacion: 1 });
+// codigoNotificacion ya tiene índice unique automático
 
 // 🔄 Middleware para verificar expiración
 notificacionSchema.pre('find', function() {

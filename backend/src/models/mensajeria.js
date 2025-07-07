@@ -250,7 +250,7 @@ const mensajeSchema = new Schema({
 conversacionSchema.index({ 'participantes.usuario': 1, fechaUltimaActividad: -1 });
 conversacionSchema.index({ asesoria: 1 });
 conversacionSchema.index({ estado: 1, fechaUltimaActividad: -1 });
-conversacionSchema.index({ codigoConversacion: 1 });
+// codigoConversacion ya tiene índice unique automático
 
 mensajeSchema.index({ conversacion: 1, fechaEnvio: -1 });
 mensajeSchema.index({ remitente: 1, fechaEnvio: -1 });

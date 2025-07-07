@@ -70,9 +70,9 @@ transaccionPSESchema.pre('save', function(next) {
   next();
 });
 
-// Índices para mejorar rendimiento
-transaccionPSESchema.index({ reference: 1 });
-transaccionPSESchema.index({ achTransactionId: 1 });
+// Índices para mejorar rendimiento (sin duplicar unique indexes)
+// reference ya tiene índice unique automático
+// achTransactionId ya tiene índice unique automático (sparse)
 transaccionPSESchema.index({ status: 1 });
 transaccionPSESchema.index({ createdAt: -1 });
 transaccionPSESchema.index({ userEmail: 1 });

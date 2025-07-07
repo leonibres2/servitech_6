@@ -12,16 +12,23 @@ class PSEController {
     constructor() {
         // Configuración ACH Colombia - Sandbox
         this.config = {
-            baseURL: process.env.ACH_BASE_URL || 'https://sandbox.achcolombia.com.co/api',
-            merchantId: process.env.ACH_MERCHANT_ID,
-            secretKey: process.env.ACH_SECRET_KEY,
-            publicKey: process.env.ACH_PUBLIC_KEY,
+            baseURL: process.env.PSE_BASE_URL || 'https://sandbox.api.pse.com.co',
+            merchantId: process.env.PSE_MERCHANT_ID,
+            secretKey: process.env.PSE_SECRET_KEY,
+            apiKey: process.env.PSE_API_KEY,
+            environment: process.env.PSE_ENVIRONMENT || 'sandbox',
             testMode: process.env.NODE_ENV !== 'production'
         };
 
         // Validar configuración
-        if (!this.config.merchantId || !this.config.secretKey) {
-            console.error('❌ Error: Credenciales de ACH Colombia no configuradas');
+        if (!this.config.merchantId || !this.config.secretKey || !this.config.apiKey) {
+            console.log('⚠️  Credenciales PSE no configuradas - Funcionando en modo simulación');
+            console.log('   Para habilitar PSE real, configure las variables PSE_* en .env');
+            this.simulationMode = true;
+        } else {
+            console.log('✅ Credenciales PSE configuradas correctamente');
+            console.log(`🏦 Modo: ${this.config.environment}`);
+            this.simulationMode = false;
         }
     }
 

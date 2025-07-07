@@ -237,7 +237,7 @@ reseñaSchema.index({ cliente: 1, fechaCreacion: -1 });
 reseñaSchema.index({ asesoria: 1 });
 reseñaSchema.index({ 'calificaciones.general': -1, estado: 1 });
 reseñaSchema.index({ estado: 1, fechaCreacion: -1 });
-reseñaSchema.index({ codigoReseña: 1 });
+// codigoReseña ya tiene índice unique automático
 
 // Índice compuesto para búsquedas de expertos
 reseñaSchema.index({ 

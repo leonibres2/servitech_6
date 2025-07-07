@@ -329,7 +329,7 @@ const configuracionUsuarioSchema = new Schema({
 });
 
 // 📌 Índices
-configuracionSistemaSchema.index({ clave: 1 });
+// clave ya tiene índice unique automático
 configuracionSistemaSchema.index({ categoria: 1 });
 configuracionSistemaSchema.index({ esPublica: 1 });
 

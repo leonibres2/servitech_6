@@ -75,6 +75,13 @@
 - Testing de variables de entorno
 - Validación de conexiones de base de datos
 
+### ✅ **Scripts de Desarrollo Completados**
+- `start-dev.sh` - Script para modo desarrollo con nodemon
+- `start-prod.sh` - Script para producción con PM2  
+- `verify.sh` - Verificación completa del sistema
+- `test-startup.sh` - Prueba rápida de inicio del servidor
+- `test_server_quick.sh` - Verificación rápida del servidor (existente)
+
 ### 🔒 **Seguridad y Configuración**
 
 #### ✅ **Variables de Entorno Completas**

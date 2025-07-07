@@ -1,6 +1,6 @@
 /**
- * 💬 MODELO DE MENSAJE/CHAT - SERVITECH
- * Gestiona las conversaciones entre usuarios y expertos
+ * 💬 MODELO DE MENSAJERÍA EN TIEMPO REAL - SERVITECH
+ * Sistema completo de mensajería con Socket.io
  * Fecha: 6 de julio de 2025
  */
 
@@ -28,16 +28,17 @@ const conversacionSchema = new Schema({
     },
     rol: {
       type: String,
-      enum: ['cliente', 'experto', 'admin'],
-      required: true
+      enum: ['cliente', 'experto', 'moderador', 'admin'],
+      default: 'cliente'
     },
-    fechaIngreso: {
-      type: Date,
-      default: Date.now
-    },
-    activo: {
-      type: Boolean,
-      default: true
+    fechaIngreso: { type: Date, default: Date.now },
+    activo: { type: Boolean, default: true },
+    ultimaConexion: Date,
+    enLinea: { type: Boolean, default: false },
+    permisos: {
+      puedeEnviar: { type: Boolean, default: true },
+      puedeEliminar: { type: Boolean, default: false },
+      puedeModerar: { type: Boolean, default: false }
     }
   }],
 
@@ -54,32 +55,52 @@ const conversacionSchema = new Schema({
   },
   tipo: {
     type: String,
-    enum: ['pre-asesoria', 'durante-asesoria', 'post-asesoria', 'soporte', 'general'],
-    default: 'general'
+    enum: ['individual', 'grupal', 'asesoria', 'soporte', 'general'],
+    default: 'individual'
   },
+  descripcion: String,
 
-  // 📊 Estado
+  // 📊 Estado y estadísticas
   estado: {
     type: String,
     enum: ['activa', 'pausada', 'cerrada', 'archivada'],
     default: 'activa'
   },
+  estadisticas: {
+    totalMensajes: { type: Number, default: 0 },
+    ultimoMensaje: {
+      contenido: String,
+      remitente: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario'
+      },
+      fecha: Date,
+      tipo: String
+    },
+    mensajesNoLeidos: [{
+      usuario: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario'
+      },
+      cantidad: { type: Number, default: 0 }
+    }]
+  },
 
-  // 📈 Estadísticas
-  totalMensajes: {
-    type: Number,
-    default: 0
-  },
-  ultimaActividad: {
-    type: Date,
-    default: Date.now
+  // ⚙️ Configuración
+  configuracion: {
+    notificacionesActivas: { type: Boolean, default: true },
+    modoSilencioso: { type: Boolean, default: false },
+    tiempoExpiracion: Date,
+    encriptada: { type: Boolean, default: false },
+    permitirArchivos: { type: Boolean, default: true },
+    tamañoMaximoArchivo: { type: Number, default: 10485760 } // 10MB
   },
 
-  // 📝 Metadatos
-  fechaCreacion: {
-    type: Date,
-    default: Date.now
-  },
+  // � Estado
+  activa: { type: Boolean, default: true },
+  archivada: { type: Boolean, default: false },
+  fechaCreacion: { type: Date, default: Date.now },
+  fechaUltimaActividad: { type: Date, default: Date.now },
   fechaCierre: Date
 }, {
   timestamps: true,
@@ -95,14 +116,14 @@ const mensajeSchema = new Schema({
     required: true
   },
 
-  // 👤 Emisor
-  emisor: {
+  // 👤 Remitente
+  remitente: {
     type: Schema.Types.ObjectId,
     ref: 'Usuario',
     required: true
   },
 
-  // 📝 Contenido
+  // 📝 Contenido del mensaje
   contenido: {
     texto: {
       type: String,
@@ -110,23 +131,120 @@ const mensajeSchema = new Schema({
     },
     tipo: {
       type: String,
-      enum: ['texto', 'imagen', 'archivo', 'video', 'audio', 'ubicacion', 'sistema'],
-      default: 'texto',
-      required: true
+      enum: ['texto', 'imagen', 'archivo', 'audio', 'video', 'ubicacion', 'contacto', 'sistema'],
+      default: 'texto'
     },
-    // Para archivos multimedia
     archivo: {
       url: String,
       nombre: String,
       tamaño: Number, // en bytes
-      tipoMime: String
+      mimeType: String
+    },
+    metadatos: {
+      duracion: Number, // para audio/video en segundos
+      dimensiones: {
+        ancho: Number,
+        alto: Number
+      },
+      ubicacion: {
+        latitud: Number,
+        longitud: Number,
+        direccion: String
+      },
+      vista_previa: String // URL de thumbnail
     }
   },
 
-  // 📤 Estado del mensaje
+  // ⏰ Información temporal
+  fechaEnvio: {
+    type: Date,
+    default: Date.now
+  },
+  fechaEntrega: Date,
+  fechaLectura: [{
+    usuario: {
+      type: Schema.Types.ObjectId,
+      ref: 'Usuario'
+    },
+    fecha: { type: Date, default: Date.now }
+  }],
+
+  // 📊 Estado del mensaje en tiempo real
   estado: {
     type: String,
-    enum: ['enviando', 'enviado', 'entregado', 'leido', 'fallido'],
+    enum: ['enviando', 'enviado', 'entregado', 'leido', 'error'],
+    default: 'enviando'
+  },
+
+  // 🔄 Edición y modificación
+  editado: {
+    editado: { type: Boolean, default: false },
+    fechaEdicion: Date,
+    historialEdiciones: [{
+      contenido: String,
+      fecha: { type: Date, default: Date.now }
+    }]
+  },
+
+  // � Respuesta a otro mensaje (threading)
+  respuestaA: {
+    type: Schema.Types.ObjectId,
+    ref: 'Mensaje'
+  },
+
+  // ⭐ Reacciones y interacciones
+  reacciones: [{
+    usuario: {
+      type: Schema.Types.ObjectId,
+      ref: 'Usuario'
+    },
+    tipo: {
+      type: String,
+      enum: ['like', 'love', 'laugh', 'angry', 'sad', 'wow', 'thumbs_up', 'thumbs_down'],
+      default: 'like'
+    },
+    fecha: { type: Date, default: Date.now }
+  }],
+
+  // 🗑️ Eliminación
+  eliminado: {
+    eliminado: { type: Boolean, default: false },
+    fechaEliminacion: Date,
+    eliminadoPor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Usuario'
+    },
+    razon: String
+  },
+
+  // 🔐 Seguridad y moderación
+  moderacion: {
+    reportado: { type: Boolean, default: false },
+    aprobado: { type: Boolean, default: true },
+    razonReporte: String,
+    moderadoPor: {
+      type: Schema.Types.ObjectId,
+      ref: 'Usuario'
+    }
+  },
+
+  // 📡 Información técnica para tiempo real
+  socketInfo: {
+    socketId: String,
+    ipAddress: String,
+    userAgent: String
+  },
+
+  // 🎯 Prioridad y urgencia
+  prioridad: {
+    type: String,
+    enum: ['baja', 'normal', 'alta', 'urgente'],
+    default: 'normal'
+  }
+}, {
+  timestamps: true,
+  collection: 'mensajes'
+});
     default: 'enviado'
   },
 

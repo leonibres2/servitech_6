@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Test Completo - Sistema Mensajería SERVITECH</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #4caf50, #2e7d32);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .main-content {
+        display: flex;
+        height: 80vh;
+      }
+
+      .sidebar {
+        width: 300px;
+        background: #f8f9fa;
+        border-right: 2px solid #dee2e6;
+        padding: 20px;
+        overflow-y: auto;
+      }
+
+      .chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: white;
+      }
+
+      .messages-container {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #f8f9fa;
+      }
+
+      .message-input {
+        padding: 20px;
+        border-top: 2px solid #dee2e6;
+        background: white;
+      }
+
+      .status-panel {
+        background: #e9ecef;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        color: white;
+        font-weight: bold;
+        margin: 5px;
+      }
+
+      .status.conectado {
+        background: #28a745;
+      }
+      .status.desconectado {
+        background: #dc3545;
+      }
+      .status.escribiendo {
+        background: #007bff;
+      }
+
+      .controls {
+        background: #fff;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        border: 2px solid #dee2e6;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      .input-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #495057;
+      }
+
+      .input-group input,
+      .input-group select,
+      .input-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ced4da;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+
+      .input-group input:focus,
+      .input-group select:focus,
+      .input-group textarea:focus {
+        outline: none;
+        border-color: #4caf50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px;
+        transition: all 0.3s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn.secondary {
+        background: linear-gradient(135deg, #6c757d, #5a6268);
+      }
+
+      .btn.danger {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+      }
+
+      .message {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .message.sent {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        margin-left: 50px;
+      }
+
+      .message.received {
+        background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+        margin-right: 50px;
+      }
+
+      .message-header {
+        font-weight: bold;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 12px;
+      }
+
+      .message-content {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .log-container {
+        background: #212529;
+        color: #28a745;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        height: 200px;
+        overflow-y: auto;
+        font-family: "Courier New", monospace;
+        font-size: 12px;
+      }
+
+      .typing-indicator {
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+        border: 1px solid #ffc107;
+        color: #856404;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: none;
+      }
+
+      .emoji-btn {
+        background: none;
+        border: 2px solid #dee2e6;
+        padding: 8px;
+        margin: 2px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s;
+      }
+
+      .emoji-btn:hover {
+        background: #f8f9fa;
+        border-color: #4caf50;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          flex-direction: column;
+          height: auto;
+        }
+
+        .sidebar {
+          width: 100%;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🚀 Test Sistema Mensajería SERVITECH</h1>
+        <p>Prueba completa de Socket.IO - Mensajería en Tiempo Real</p>
+      </div>
+
+      <div class="main-content">
+        <div class="sidebar">
+          <!-- Panel de Estado -->
+          <div class="status-panel">
+            <h3>📊 Estado del Sistema</h3>
+            <div id="connectionStatus" class="status desconectado">
+              Desconectado
+            </div>
+            <div id="userStatus" class="status desconectado">Sin usuario</div>
+            <div id="typingStatus" class="typing-indicator">
+              Usuario escribiendo...
+            </div>
+          </div>
+
+          <!-- Controles de Conexión -->
+          <div class="controls">
+            <h3>🔐 Autenticación</h3>
+            <div class="input-group">
+              <label>Usuario ID:</label>
+              <input
+                type="text"
+                id="usuarioId"
+                value="test_user_001"
+                placeholder="ID del usuario"
+              />
+            </div>
+            <div class="input-group">
+              <label>Token (opcional):</label>
+              <input
+                type="text"
+                id="token"
+                value="test_token_123"
+                placeholder="JWT Token"
+              />
+            </div>
+            <button class="btn" onclick="conectar()">🔌 Conectar</button>
+            <button class="btn danger" onclick="desconectar()">
+              🔌 Desconectar
+            </button>
+          </div>
+
+          <!-- Controles de Conversación -->
+          <div class="controls">
+            <h3>💬 Conversación</h3>
+            <div class="input-group">
+              <label>ID Conversación:</label>
+              <input
+                type="text"
+                id="conversacionId"
+                value="conv_test_001"
+                placeholder="ID de la conversación"
+              />
+            </div>
+            <button class="btn" onclick="unirseConversacion()">
+              👥 Unirse
+            </button>
+            <button class="btn secondary" onclick="salirConversacion()">
+              👋 Salir
+            </button>
+          </div>
+
+          <!-- Estadísticas en Tiempo Real -->
+          <div class="controls">
+            <h3>📈 Estadísticas</h3>
+            <div id="stats">
+              <p>
+                <strong>Usuarios conectados:</strong>
+                <span id="usuariosConectados">0</span>
+              </p>
+              <p>
+                <strong>Conversaciones activas:</strong>
+                <span id="conversacionesActivas">0</span>
+              </p>
+              <p>
+                <strong>Última actividad:</strong>
+                <span id="ultimaActividad">-</span>
+              </p>
+            </div>
+            <button class="btn secondary" onclick="obtenerEstadisticas()">
+              🔄 Actualizar
+            </button>
+          </div>
+        </div>
+
+        <div class="chat-area">
+          <!-- Área de Mensajes -->
+          <div class="messages-container" id="messagesContainer">
+            <div class="message">
+              <div class="message-header">🤖 Sistema - Bienvenida</div>
+              <div class="message-content">
+                ¡Bienvenido al sistema de mensajería de SERVITECH! 🚀<br />
+                Conecta tu usuario y únete a una conversación para comenzar.
+              </div>
+            </div>
+          </div>
+
+          <!-- Input de Mensajes -->
+          <div class="message-input">
+            <div class="input-group">
+              <label>💬 Enviar Mensaje:</label>
+              <div style="display: flex; gap: 10px; align-items: flex-end">
+                <textarea
+                  id="messageText"
+                  placeholder="Escribe tu mensaje aquí..."
+                  rows="2"
+                  style="flex: 1"
+                  onkeypress="handleKeyPress(event)"
+                  oninput="indicarEscribiendo()"
+                ></textarea>
+                <div>
+                  <select id="messageType" style="width: 100px">
+                    <option value="texto">📝 Texto</option>
+                    <option value="imagen">🖼️ Imagen</option>
+                    <option value="archivo">📎 Archivo</option>
+                    <option value="audio">🎵 Audio</option>
+                  </select>
+                  <br />
+                  <select
+                    id="messagePriority"
+                    style="width: 100px; margin-top: 5px"
+                  >
+                    <option value="normal">⚪ Normal</option>
+                    <option value="alta">🔴 Alta</option>
+                    <option value="urgente">🚨 Urgente</option>
+                  </select>
+                </div>
+                <button class="btn" onclick="enviarMensaje()">📤 Enviar</button>
+              </div>
+            </div>
+
+            <!-- Reacciones Rápidas -->
+            <div style="margin-top: 10px">
+              <strong>Reacciones:</strong>
+              <button class="emoji-btn" onclick="agregarReaccion('like')">
+                👍
+              </button>
+              <button class="emoji-btn" onclick="agregarReaccion('love')">
+                ❤️
+              </button>
+              <button class="emoji-btn" onclick="agregarReaccion('laugh')">
+                😂
+              </button>
+              <button class="emoji-btn" onclick="agregarReaccion('surprise')">
+                😮
+              </button>
+              <button class="emoji-btn" onclick="agregarReaccion('sad')">
+                😢
+              </button>
+              <button class="btn secondary" onclick="marcarTodosLeidos()">
+                ✅ Marcar Todo Leído
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Log de Eventos -->
+      <div class="log-container" id="eventLog">
+        <div>📡 Log de eventos Socket.IO - Sistema inicializado</div>
+      </div>
+    </div>
+
+    <script>
+      let socket = null;
+      let usuarioActual = null;
+      let conversacionActual = null;
+      let ultimoMensajeId = null;
+      let typingTimeout = null;
+
+      // 🔌 Conectar al servidor Socket.IO
+      function conectar() {
+        const usuarioId = document.getElementById("usuarioId").value;
+        const token = document.getElementById("token").value;
+
+        if (!usuarioId) {
+          alert("Por favor ingresa un ID de usuario");
+          return;
+        }
+
+        socket = io("http://localhost:3000");
+        usuarioActual = usuarioId;
+
+        // Eventos de conexión
+        socket.on("connect", () => {
+          logEvent("🟢 Conectado al servidor Socket.IO");
+          updateStatus("connectionStatus", "Conectado", "conectado");
+
+          // Autenticar automáticamente
+          socket.emit("autenticar", { usuarioId, token });
+        });
+
+        socket.on("disconnect", () => {
+          logEvent("🔴 Desconectado del servidor");
+          updateStatus("connectionStatus", "Desconectado", "desconectado");
+          updateStatus("userStatus", "Sin usuario", "desconectado");
+        });
+
+        // Eventos de autenticación
+        socket.on("autenticado", (data) => {
+          logEvent(`✅ Usuario autenticado: ${data.usuarioId}`);
+          updateStatus("userStatus", `Usuario: ${data.usuarioId}`, "conectado");
+        });
+
+        // Eventos de conversación
+        socket.on("unido_conversacion", (data) => {
+          logEvent(`👥 Unido a conversación: ${data.conversacionId}`);
+          logEvent(
+            `Participantes conectados: ${data.participantes_conectados.length}`
+          );
+          conversacionActual = data.conversacionId;
+        });
+
+        // Eventos de mensajes
+        socket.on("nuevo_mensaje", (data) => {
+          mostrarMensaje(data.mensaje, "received");
+          logEvent(
+            `📨 Nuevo mensaje recibido de ${
+              data.mensaje.remitente?.nombre || "Desconocido"
+            }`
+          );
+          ultimoMensajeId = data.mensaje._id;
+        });
+
+        socket.on("mensaje_enviado", (data) => {
+          logEvent(`✅ Mensaje enviado correctamente: ${data.mensajeId}`);
+        });
+
+        socket.on("mensaje_leido", (data) => {
+          logEvent(`👁️ Mensaje leído por usuario: ${data.leidoPor}`);
+        });
+
+        // Eventos de estado
+        socket.on("usuario_conectado", (data) => {
+          logEvent(`🟢 Usuario conectado: ${data.usuarioId}`);
+        });
+
+        socket.on("usuario_desconectado", (data) => {
+          logEvent(`🔴 Usuario desconectado: ${data.usuarioId}`);
+        });
+
+        socket.on("usuario_escribiendo", (data) => {
+          if (data.escribiendo) {
+            mostrarIndicadorEscribiendo(
+              `${data.usuarioId} está escribiendo...`
+            );
+          } else {
+            ocultarIndicadorEscribiendo();
+          }
+        });
+
+        // Eventos de reacciones
+        socket.on("reaccion_agregada", (data) => {
+          logEvent(`⭐ Reacción agregada al mensaje: ${data.mensajeId}`);
+        });
+
+        // Eventos de error
+        socket.on("error", (data) => {
+          logEvent(`❌ Error: ${data.message}`, "error");
+          alert(`Error: ${data.message}`);
+        });
+
+        // Ping/Pong para mantener conexión
+        setInterval(() => {
+          if (socket && socket.connected) {
+            socket.emit("ping");
+          }
+        }, 30000);
+
+        socket.on("pong", (data) => {
+          document.getElementById("ultimaActividad").textContent =
+            new Date().toLocaleTimeString();
+        });
+      }
+
+      // 🔌 Desconectar
+      function desconectar() {
+        if (socket) {
+          socket.disconnect();
+          socket = null;
+          usuarioActual = null;
+          conversacionActual = null;
+          logEvent("🔴 Desconexión manual");
+        }
+      }
+
+      // 👥 Unirse a conversación
+      function unirseConversacion() {
+        const conversacionId = document.getElementById("conversacionId").value;
+
+        if (!socket || !socket.connected) {
+          alert("Primero debes conectarte al servidor");
+          return;
+        }
+
+        if (!conversacionId) {
+          alert("Por favor ingresa un ID de conversación");
+          return;
+        }
+
+        socket.emit("unirse_conversacion", { conversacionId });
+        logEvent(`👥 Intentando unirse a conversación: ${conversacionId}`);
+      }
+
+      // 👋 Salir de conversación
+      function salirConversacion() {
+        if (!conversacionActual) {
+          alert("No estás en ninguna conversación");
+          return;
+        }
+
+        socket.emit("salir_conversacion", {
+          conversacionId: conversacionActual,
+        });
+        logEvent(`👋 Saliendo de conversación: ${conversacionActual}`);
+        conversacionActual = null;
+      }
+
+      // 📤 Enviar mensaje
+      function enviarMensaje() {
+        const texto = document.getElementById("messageText").value;
+        const tipo = document.getElementById("messageType").value;
+        const prioridad = document.getElementById("messagePriority").value;
+
+        if (!socket || !socket.connected) {
+          alert("No estás conectado al servidor");
+          return;
+        }
+
+        if (!conversacionActual) {
+          alert("Debes unirte a una conversación primero");
+          return;
+        }
+
+        if (!texto.trim()) {
+          alert("Por favor escribe un mensaje");
+          return;
+        }
+
+        const mensajeData = {
+          conversacionId: conversacionActual,
+          contenido: {
+            texto: texto,
+            tipo: tipo,
+          },
+          tipo: tipo,
+          prioridad: prioridad,
+        };
+
+        socket.emit("enviar_mensaje", mensajeData);
+
+        // Mostrar mensaje como enviado
+        mostrarMensaje(
+          {
+            contenido: { texto },
+            remitente: { nombre: usuarioActual },
+            fechaEnvio: new Date(),
+            tipo: tipo,
+            prioridad: prioridad,
+          },
+          "sent"
+        );
+
+        // Limpiar input
+        document.getElementById("messageText").value = "";
+        logEvent(`📤 Enviando mensaje: "${texto.substring(0, 50)}..."`);
+      }
+
+      // ✏️ Indicar que está escribiendo
+      function indicarEscribiendo() {
+        if (!socket || !conversacionActual) return;
+
+        // Enviar evento de escribiendo
+        socket.emit("escribiendo", {
+          conversacionId: conversacionActual,
+          escribiendo: true,
+        });
+
+        // Cancelar timeout anterior
+        if (typingTimeout) {
+          clearTimeout(typingTimeout);
+        }
+
+        // Detener indicador después de 3 segundos
+        typingTimeout = setTimeout(() => {
+          socket.emit("escribiendo", {
+            conversacionId: conversacionActual,
+            escribiendo: false,
+          });
+        }, 3000);
+      }
+
+      // ⭐ Agregar reacción
+      function agregarReaccion(tipo) {
+        if (!ultimoMensajeId) {
+          alert("No hay mensajes para reaccionar");
+          return;
+        }
+
+        socket.emit("agregar_reaccion", {
+          mensajeId: ultimoMensajeId,
+          tipo: tipo,
+        });
+
+        logEvent(`⭐ Agregando reacción: ${tipo}`);
+      }
+
+      // ✅ Marcar todos como leídos
+      function marcarTodosLeidos() {
+        if (!conversacionActual) {
+          alert("No estás en ninguna conversación");
+          return;
+        }
+
+        socket.emit("marcar_leido", {
+          conversacionId: conversacionActual,
+        });
+
+        logEvent(`✅ Marcando todos los mensajes como leídos`);
+      }
+
+      // 📊 Obtener estadísticas
+      function obtenerEstadisticas() {
+        // Simular estadísticas (en implementación real, sería un endpoint)
+        document.getElementById("usuariosConectados").textContent =
+          Math.floor(Math.random() * 10) + 1;
+        document.getElementById("conversacionesActivas").textContent =
+          Math.floor(Math.random() * 5) + 1;
+        document.getElementById("ultimaActividad").textContent =
+          new Date().toLocaleTimeString();
+
+        logEvent("📊 Estadísticas actualizadas");
+      }
+
+      // 🎨 Mostrar mensaje en la interfaz
+      function mostrarMensaje(mensaje, tipo = "received") {
+        const container = document.getElementById("messagesContainer");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${tipo}`;
+
+        const timestamp = new Date(
+          mensaje.fechaEnvio || Date.now()
+        ).toLocaleTimeString();
+        const remitente =
+          mensaje.remitente?.nombre || mensaje.remitente || "Desconocido";
+        const prioridad = mensaje.prioridad || "normal";
+        const prioridadIcon =
+          prioridad === "urgente" ? "🚨" : prioridad === "alta" ? "🔴" : "⚪";
+
+        messageDiv.innerHTML = `
+                <div class="message-header">
+                    ${
+                      tipo === "sent" ? "📤" : "📥"
+                    } ${remitente} - ${timestamp} ${prioridadIcon}
+                </div>
+                <div class="message-content">${
+                  mensaje.contenido.texto || mensaje.contenido
+                }</div>
+            `;
+
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      // 📝 Mostrar indicador de escritura
+      function mostrarIndicadorEscribiendo(texto) {
+        const indicator = document.getElementById("typingStatus");
+        indicator.textContent = texto;
+        indicator.style.display = "block";
+      }
+
+      function ocultarIndicadorEscribiendo() {
+        const indicator = document.getElementById("typingStatus");
+        indicator.style.display = "none";
+      }
+
+      // 🎨 Actualizar estado visual
+      function updateStatus(elementId, text, className) {
+        const element = document.getElementById(elementId);
+        element.textContent = text;
+        element.className = `status ${className}`;
+      }
+
+      // 📝 Registrar eventos en el log
+      function logEvent(message, type = "info") {
+        const log = document.getElementById("eventLog");
+        const timestamp = new Date().toLocaleTimeString();
+        const icon = type === "error" ? "❌" : type === "warning" ? "⚠️" : "📡";
+
+        const logEntry = document.createElement("div");
+        logEntry.innerHTML = `[${timestamp}] ${icon} ${message}`;
+        logEntry.style.color =
+          type === "error"
+            ? "#ff6b6b"
+            : type === "warning"
+            ? "#feca57"
+            : "#28a745";
+
+        log.appendChild(logEntry);
+        log.scrollTop = log.scrollHeight;
+      }
+
+      // ⌨️ Manejar Enter en textarea
+      function handleKeyPress(event) {
+        if (event.key === "Enter" && !event.shiftKey) {
+          event.preventDefault();
+          enviarMensaje();
+        }
+      }
+
+      // 🚀 Inicialización
+      document.addEventListener("DOMContentLoaded", () => {
+        logEvent("🚀 Sistema de pruebas cargado - Listo para usar");
+        obtenerEstadisticas();
+
+        // Actualizar estadísticas cada 30 segundos
+        setInterval(obtenerEstadisticas, 30000);
+      });
+    </script>
+  </body>
+</html>

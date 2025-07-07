@@ -30,6 +30,12 @@ mongoose.connect(MONGODB_URI)
     sistemaRecordatorios.inicializar()
       .then(() => console.log('✅ Sistema de recordatorios iniciado'))
       .catch(err => console.error('❌ Error iniciando recordatorios:', err));
+
+    // 🔔 Inicializar sistema de notificaciones
+    const notificacionesService = require('./services/notificacionesService');
+    notificacionesService.inicializar()
+      .then(() => console.log('✅ Sistema de notificaciones iniciado'))
+      .catch(err => console.error('❌ Error iniciando notificaciones:', err));
   })
   .catch(err => {
     // Si hay error al conectar, muestra el error y termina el proceso
@@ -63,12 +69,16 @@ const pseRoutes = require('./routes/pse');
 const asesoriasRoutes = require('./routes/asesorias');
 const disponibilidadRoutes = require('./routes/disponibilidad');
 
+// 💬 Importa las rutas de mensajería
+const mensajeriaRoutes = require('./routes/mensajeria');
+
 // Asocia las rutas al prefijo /api
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/expertos', expertosRoutes);
 app.use('/api/pse', pseRoutes);
 app.use('/api/asesorias', asesoriasRoutes);
 app.use('/api/disponibilidad', disponibilidadRoutes);
+app.use('/api/mensajeria', mensajeriaRoutes);
 
 // Rutas para renderizar vistas EJS
 app.get('/', (req, res) => res.render('index'));
@@ -104,10 +114,21 @@ app.get('/', (req, res) => {
 
 // Puerto
 const PORT = process.env.PORT || 3000;
+
+// 🚀 Crear servidor HTTP para Socket.IO
+const http = require('http');
+const server = http.createServer(app);
+
+// 💬 Inicializar servicio de mensajería en tiempo real
+const socketMensajeriaService = require('./services/socketMensajeriaService');
+socketMensajeriaService.inicializar(server);
+
 // Inicia el servidor y muestra un mensaje en consola
-app.listen(PORT, () => {
-  console.log(`Servidor backend escuchando en puerto ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`🚀 Servidor backend escuchando en puerto ${PORT}`);
+  console.log(`💬 Socket.IO para mensajería activo`);
+  console.log(`📡 WebSockets disponibles en ws://localhost:${PORT}`);
 });
 
-// Exporta la app para pruebas
-module.exports = app;
+// Exporta la app y el servidor para pruebas
+module.exports = { app, server };

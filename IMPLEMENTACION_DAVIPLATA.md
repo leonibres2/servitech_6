@@ -234,4 +234,4 @@ Monto: $25.000 COP
 
 ---
 
-*Implementación realizada por GitHub Copilot - 6 de julio de 2025*
+*Implementación realizada - 6 de julio de 2025*

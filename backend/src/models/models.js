@@ -26,7 +26,7 @@ const UsuarioSchema = new Schema({
 // Importar modelos adicionales
 const Asesoria = require('./asesoria');
 const Disponibilidad = require('./disponibilidad');
-const { Conversacion, Mensaje } = require('./mensaje');
+const { Conversacion, Mensaje } = require('./mensajeria');
 const Notificacion = require('./notificacion');
 const Reseña = require('./reseña');
 const { ConfiguracionSistema, ConfiguracionUsuario } = require('./configuracion');

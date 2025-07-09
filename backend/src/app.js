@@ -89,13 +89,19 @@ app.get('/expertos.html', (req, res) => res.render('expertos'));
 app.get('/registro.html', (req, res) => res.render('registro'));
 app.get('/login.html', (req, res) => res.render('login'));
 app.get('/recuperar-password.html', (req, res) => res.render('recuperar-password'));
-app.get('/calendario.html', (req, res) => res.render('calendario'));
+app.get('/calendario.html', (req, res) => res.render('calendario', { 
+  pageTitle: 'Calendario - Agendar Cita',
+  expertoSeleccionado: null // No hay experto seleccionado en acceso directo
+}));
 app.get('/perfil.html', (req, res) => res.render('perfil'));
 app.get('/terminos.html', (req, res) => res.render('terminos'));
 app.get('/privacidad.html', (req, res) => res.render('privacidad'));
 app.get('/contacto.html', (req, res) => res.render('contacto'));
 app.get('/confirmacion-asesoria.html', (req, res) => res.render('confirmacion-asesoria'));
-app.get('/pasarela-pagos.html', (req, res) => res.render('pasarela-pagos')); 
+app.get('/pasarela-pagos.html', (req, res) => res.render('pasarela-pagos', {
+  pageTitle: 'Pasarela de Pago - Servitech',
+  expertoSeleccionado: null // No hay experto seleccionado en acceso directo
+})); 
 app.get('/mis-asesorias.html', (req, res) => res.render('mis-asesorias'));
 // Agrega aquí más rutas según tus vistas .ejs
 

@@ -566,9 +566,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const citaSeleccionada = localStorage.getItem('citaSeleccionada');
     
     if (!citaSeleccionada) {
-      mostrarError('No se encontraron datos de la cita. Serás redirigido al calendario.');
+      mostrarError('No se encontraron los datos de tu cita. Serás redirigido al calendario.');
       setTimeout(() => {
-        window.location.href = '/calendario.html';
+        // Intentar obtener el ID del experto desde la URL actual
+        const urlParts = window.location.pathname.split('/');
+        const expertoId = urlParts[2]; // /expertos/{id}/pasarela-pagos
+        
+        if (expertoId && expertoId !== 'pasarela-pagos') {
+          window.location.href = `/expertos/${expertoId}/calendario`;
+        } else {
+          window.location.href = '/expertos.html';
+        }
       }, 3000);
       return;
     }

@@ -19,9 +19,15 @@
   <body>
     <div class="container">
       <div class="payment-container">
-        <a href="calendario.html" class="back-link"
+        <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado && expertoSeleccionado.id) { %>
+        <a href="/expertos/<%= expertoSeleccionado.id %>/calendario" class="back-link"
           ><i class="fas fa-arrow-left"></i> Volver al calendario</a
         >
+        <% } else { %>
+        <a href="/expertos.html" class="back-link"
+          ><i class="fas fa-arrow-left"></i> Volver a expertos</a
+        >
+        <% } %>
 
         <div class="payment-card">
           <div class="payment-header">
@@ -32,7 +38,11 @@
             />
             <h1>Pasarela de Pago</h1>
             <div class="service-info">
+              <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+              <p>Asesoría en <%= expertoSeleccionado.especialidad || 'Consultoría Técnica' %> con <%= expertoSeleccionado.nombre %><%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %></p>
+              <% } else { %>
               <p>Pago de 1h de asesoría técnica</p>
+              <% } %>
               <div class="price">$20.000 COP</div>
             </div>
           </div>

@@ -203,13 +203,36 @@
         
         // Función para confirmar la cita
         function confirmarCita() {
-            // Guardar datos en sessionStorage para la pasarela
-            sessionStorage.setItem('datosExperto', JSON.stringify(window.expertoSeleccionado));
-            sessionStorage.setItem('fechaCita', '17 de Mayo 2025'); // Por ahora estático, luego se hará dinámico
-            sessionStorage.setItem('horaCita', '11:00'); // Por ahora estático, luego se hará dinámico
+            // Obtener la fecha y hora seleccionadas (por ahora estático, luego se hará dinámico)
+            const fechaSeleccionada = '17 de Mayo 2025';
+            const horaSeleccionada = '11:00';
             
-            // Ir a la pasarela de pagos
-            window.location.href = '/pasarela-pagos.html';
+            // Crear objeto con todos los datos de la cita
+            const citaData = {
+                experto: {
+                    id: window.expertoSeleccionado.id,
+                    nombre: window.expertoSeleccionado.nombre,
+                    apellido: window.expertoSeleccionado.apellido,
+                    especialidad: window.expertoSeleccionado.especialidad,
+                    email: window.expertoSeleccionado.email
+                },
+                fecha: fechaSeleccionada,
+                hora: horaSeleccionada,
+                servicio: window.expertoSeleccionado.especialidad || 'Consultoría Técnica',
+                duracion: '60 minutos',
+                precio: '$20.000 COP'
+            };
+            
+            // Guardar datos en localStorage para la pasarela (como espera el código existente)
+            localStorage.setItem('citaSeleccionada', JSON.stringify(citaData));
+            
+            // También mantener en sessionStorage para compatibilidad
+            sessionStorage.setItem('datosExperto', JSON.stringify(window.expertoSeleccionado));
+            sessionStorage.setItem('fechaCita', fechaSeleccionada);
+            sessionStorage.setItem('horaCita', horaSeleccionada);
+            
+            // Ir a la pasarela de pagos (ruta dinámica)
+            window.location.href = `/expertos/${window.expertoSeleccionado.id}/pasarela-pagos`;
         }
     </script>
     <% } else { %>

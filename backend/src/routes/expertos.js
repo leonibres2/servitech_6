@@ -15,6 +15,70 @@ router.get('/', async (req, res) => {
   }
 });
 
+// 🆕 NUEVA RUTA: Renderizar calendario para un experto específico (DEBE IR ANTES que /:id)
+router.get('/:id/calendario', async (req, res) => {
+  try {
+    const experto = await Experto.findById(req.params.id)
+      .populate('userId')
+      .populate('categorias');
+    
+    if (!experto) {
+      return res.status(404).send(`
+        <div style="text-align: center; padding: 50px;">
+          <h1>❌ Experto no encontrado</h1>
+          <p>El experto que buscas no existe o no está disponible.</p>
+          <a href="/expertos.html">← Volver a la lista de expertos</a>
+        </div>
+      `);
+    }
+
+    // Renderizar la vista del calendario con los datos del experto
+    res.render('calendario', { 
+      experto: experto,
+      usuario: experto.userId || experto, // Fallback para modelo antiguo
+      pageTitle: `Agendar cita con ${experto.userId ? experto.userId.nombre : (experto.nombre || 'Experto')}`,
+      expertoSeleccionado: {
+        id: experto._id,
+        nombre: experto.userId ? experto.userId.nombre : experto.nombre,
+        apellido: experto.userId ? (experto.userId.apellido || '') : (experto.apellido || ''),
+        email: experto.userId ? experto.userId.email : experto.email,
+        telefono: experto.userId ? (experto.userId.telefono || '') : (experto.telefono || ''),
+        especialidad: experto.especialidad,
+        descripcion: experto.descripcion || (experto.userId ? `Especialista en ${experto.especialidad}` : `Especialista en ${experto.especialidad} con ${experto.experiencia || 'varios'} años de experiencia`),
+        foto: experto.userId ? (experto.userId.foto || '/assets/img/default-avatar.png') : (experto.foto || '/assets/img/default-avatar.png'),
+        categorias: experto.categorias
+      }
+    });
+  } catch (err) {
+    console.error('Error al obtener experto para calendario:', err);
+    res.status(500).send(`
+      <div style="text-align: center; padding: 50px;">
+        <h1>⚠️ Error interno del servidor</h1>
+        <p>Ocurrió un error al cargar la información del experto.</p>
+        <a href="/expertos.html">← Volver a la lista de expertos</a>
+      </div>
+    `);
+  }
+});
+
+// 🆕 Obtener un experto específico por ID (DEBE IR DESPUÉS de /:id/calendario)
+router.get('/:id', async (req, res) => {
+  try {
+    const experto = await Experto.findById(req.params.id)
+      .populate('userId')
+      .populate('categorias');
+    
+    if (!experto) {
+      return res.status(404).json({ message: 'Experto no encontrado' });
+    }
+    
+    res.json(experto);
+  } catch (err) {
+    console.error('Error al obtener experto:', err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Crear un nuevo experto
 router.post('/', async (req, res) => {
   try {

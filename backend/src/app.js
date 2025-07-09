@@ -80,6 +80,9 @@ app.use('/api/asesorias', asesoriasRoutes);
 app.use('/api/disponibilidad', disponibilidadRoutes);
 app.use('/api/mensajeria', mensajeriaRoutes);
 
+// 🆕 Rutas de expertos para vistas (sin prefijo /api)
+app.use('/expertos', expertosRoutes);
+
 // Rutas para renderizar vistas EJS
 app.get('/', (req, res) => res.render('index'));
 app.get('/expertos.html', (req, res) => res.render('expertos'));

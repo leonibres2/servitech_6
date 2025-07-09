@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calendario</title>
+  <title><%= pageTitle || 'Calendario - Agendar Cita' %></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/base.css">
   <link rel="stylesheet" href="/assets/css/componentes.css">
@@ -19,7 +19,11 @@
   <main class="container mt-3">
     <section>
       <br>
-      <h1 class="text-center mb-4">Agenda tu asesoría con tu experto <br>aquí</h1>
+      <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+        <h1 class="text-center mb-4">Agenda tu asesoría con <strong><%= expertoSeleccionado.nombre || 'tu experto' %><%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %></strong><br>aquí</h1>
+      <% } else { %>
+        <h1 class="text-center mb-4">Agenda tu asesoría con tu experto<br>aquí</h1>
+      <% } %>
     </section>
     <br>
     <!-- Calendario -->
@@ -113,13 +117,31 @@
                     <!-- Presentación breve del experto seleccionado -->
                     <div class="expert-info">
                         <div class="expert-card">
-                            <div class="expert-avatar">MR</div>
-                            <div class="expert-details">
-                                <h3>María Rodríguez</h3>
-                                <p>Especialista en Desarrollo Web</p>
-                                <p>10 años de experiencia</p>
-                                <div class="rating">★★★★★</div>
-                            </div>
+                            <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+                                <div class="expert-avatar">
+                                    <% if (expertoSeleccionado.foto && expertoSeleccionado.foto !== '/assets/img/default-avatar.png') { %>
+                                        <img src="<%= expertoSeleccionado.foto %>" alt="Foto de <%= expertoSeleccionado.nombre || 'Experto' %>" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+                                    <% } else { %>
+                                        <%= ((expertoSeleccionado.nombre || 'E').charAt(0) + (expertoSeleccionado.apellido && expertoSeleccionado.apellido.length > 0 ? expertoSeleccionado.apellido.charAt(0) : 'X')).toUpperCase() %>
+                                    <% } %>
+                                </div>
+                                <div class="expert-details">
+                                    <h3><%= expertoSeleccionado.nombre || 'Experto' %><%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %></h3>
+                                    <p>Especialista en <%= expertoSeleccionado.especialidad || 'Consultoría Técnica' %></p>
+                                    <% if (expertoSeleccionado.descripcion) { %>
+                                        <p><%= expertoSeleccionado.descripcion %></p>
+                                    <% } %>
+                                    <div class="rating">★★★★★</div>
+                                </div>
+                            <% } else { %>
+                                <div class="expert-avatar">MR</div>
+                                <div class="expert-details">
+                                    <h3>María Rodríguez</h3>
+                                    <p>Especialista en Desarrollo Web</p>
+                                    <p>10 años de experiencia</p>
+                                    <div class="rating">★★★★★</div>
+                                </div>
+                            <% } %>
                         </div>
                         <div class="appointment-summary">
                             <h3>Resumen de tu cita</h3>
@@ -133,11 +155,23 @@
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">Experto:</div>
-                                <div class="summary-value">María Rodríguez</div>
+                                <div class="summary-value">
+                                    <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+                                        <%= expertoSeleccionado.nombre || 'Experto' %><%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %>
+                                    <% } else { %>
+                                        María Rodríguez
+                                    <% } %>
+                                </div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">Servicio:</div>
-                                <div class="summary-value">Desarrollo Web</div>
+                                <div class="summary-value">
+                                    <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+                                        <%= expertoSeleccionado.especialidad || 'Consultoría Técnica' %>
+                                    <% } else { %>
+                                        Desarrollo Web
+                                    <% } %>
+                                </div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">Duración:</div>
@@ -147,7 +181,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn btn-primary" onclick="window.location.href='pasarela-pagos.html'">Confirmar cita</button>
+                <button type="button" class="btn btn-primary" onclick="confirmarCita()">Confirmar cita</button>
         <br><br>  
 </main>
    <!-- Footer -->
@@ -155,5 +189,35 @@
     
     <script src="/assets/js/common.js"></script>
     <script src="/assets/js/calendario.js"></script>
+    
+    <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+    <script>
+        // Datos del experto seleccionado
+        window.expertoSeleccionado = {
+            id: '<%= expertoSeleccionado.id %>',
+            nombre: '<%= expertoSeleccionado.nombre || "Experto" %>',
+            apellido: '<%= expertoSeleccionado.apellido || "" %>',
+            especialidad: '<%= expertoSeleccionado.especialidad || "Consultoría Técnica" %>',
+            email: '<%= expertoSeleccionado.email || "" %>'
+        };
+        
+        // Función para confirmar la cita
+        function confirmarCita() {
+            // Guardar datos en sessionStorage para la pasarela
+            sessionStorage.setItem('datosExperto', JSON.stringify(window.expertoSeleccionado));
+            sessionStorage.setItem('fechaCita', '17 de Mayo 2025'); // Por ahora estático, luego se hará dinámico
+            sessionStorage.setItem('horaCita', '11:00'); // Por ahora estático, luego se hará dinámico
+            
+            // Ir a la pasarela de pagos
+            window.location.href = '/pasarela-pagos.html';
+        }
+    </script>
+    <% } else { %>
+    <script>
+        function confirmarCita() {
+            alert('Error: No se encontraron datos del experto');
+        }
+    </script>
+    <% } %>
 </body>
 </html>

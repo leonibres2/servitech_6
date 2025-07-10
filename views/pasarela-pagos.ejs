@@ -1,746 +1,641 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pasarela de Pago | Servitech</title>
-    <link rel="stylesheet" href="/assets/css/base.css" />
-    <link rel="stylesheet" href="/assets/css/pasarela-pagos.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
 
-  <body>
-    <div class="container">
-      <div class="payment-container">
-        <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado
-        && expertoSeleccionado.id) { %>
-        <a
-          href="/expertos/<%= expertoSeleccionado.id %>/calendario"
-          class="back-link"
-          ><i class="fas fa-arrow-left"></i> Volver al calendario</a
-        >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pasarela de Pago | Servitech</title>
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/pasarela-pagos.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="payment-container">
+      <% if (typeof expertoSeleccionado !=='undefined' && expertoSeleccionado && expertoSeleccionado.id) { %>
+        <a href="/expertos/<%= expertoSeleccionado.id %>/calendario" class="back-link"><i class="fas fa-arrow-left"></i>
+          Volver al calendario</a>
         <% } else { %>
-        <a href="/expertos.html" class="back-link"
-          ><i class="fas fa-arrow-left"></i> Volver a expertos</a
-        >
-        <% } %>
+          <a href="/expertos.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver a expertos</a>
+          <% } %>
 
-        <div class="payment-card">
-          <div class="payment-header">
-            <img
-              src="assets/img/logo.png"
-              alt="Servitech Logo"
-              class="logo-img"
-            />
-            <h1>Pasarela de Pago</h1>
-            <div class="service-info">
-              <% if (typeof expertoSeleccionado !== 'undefined' &&
-              expertoSeleccionado) { %>
-              <p>
-                Asesoría en <%= expertoSeleccionado.especialidad || 'Consultoría
-                Técnica' %> con <%= expertoSeleccionado.nombre %><%=
-                expertoSeleccionado.apellido ? ' ' +
-                expertoSeleccionado.apellido : '' %>
-              </p>
-              <% } else { %>
-              <p>Pago de 1h de asesoría técnica</p>
-              <% } %>
-              <div class="price">$20.000 COP</div>
-            </div>
-          </div>
-
-          <div class="payment-steps">
-            <div class="step active">
-              <div class="step-number">1</div>
-              <span class="step-text">Método de pago</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step">
-              <div class="step-number">2</div>
-              <span class="step-text">Datos del pago</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step">
-              <div class="step-number">3</div>
-              <span class="step-text">Confirmación</span>
-            </div>
-          </div>
-
-          <div class="payment-body">
-            <form id="paymentMethodForm">
-              <div class="input-group">
-                <label for="country">País</label>
-                <div class="input-wrapper">
-                  <i class="fas fa-globe-americas input-icon"></i>
-                  <select id="country" name="country">
-                    <option value="colombia" selected>Colombia</option>
-                  </select>
+            <div class="payment-card">
+              <div class="payment-header">
+                <img src="/assets/img/logo.png" alt="Servitech Logo" class="logo-img" />
+                <h1>Pasarela de Pago</h1>
+                <div class="service-info">
+                  <% if (typeof expertoSeleccionado !=='undefined' && expertoSeleccionado) { %>
+                    <p>
+                      Asesoría en <%= expertoSeleccionado.especialidad || 'Consultoría Técnica' %> con <%=
+                          expertoSeleccionado.nombre %>
+                          <%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %>
+                    </p>
+                    <% } else { %>
+                      <p>Pago de 1h de asesoría técnica</p>
+                      <% } %>
+                        <div class="price">$20.000 COP</div>
                 </div>
               </div>
 
-              <div class="input-group">
-                <label for="email">Correo electrónico</label>
-                <div class="input-wrapper">
-                  <i class="fas fa-envelope input-icon"></i>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="nombre@ejemplo.com"
-                    required
-                  />
+              <div class="payment-steps">
+                <div class="step active">
+                  <div class="step-number">1</div>
+                  <span class="step-text">Método de pago</span>
                 </div>
-                <p class="error-message" id="emailError">
-                  Ingresa un correo electrónico válido
-                </p>
-              </div>
-
-              <div class="payment-method-section">
-                <h3>Elige tu método de pago:</h3>
-
-                <div class="payment-methods">
-                  <div class="payment-method" data-method="credit-card">
-                    <div class="payment-method-icon">
-                      <i class="fas fa-credit-card"></i>
-                    </div>
-                    <div class="payment-method-info">
-                      <div class="payment-method-title">
-                        Tarjeta de Crédito/Débito
-                      </div>
-                      <div class="payment-method-brands">
-                        <i class="fab fa-cc-visa"></i>
-                        <i class="fab fa-cc-mastercard"></i>
-                        <i class="fab fa-cc-amex"></i>
-                      </div>
-                    </div>
-                    <i class="fas fa-chevron-right payment-method-arrow"></i>
-                  </div>
-
-                  <div class="payment-method" data-method="pse">
-                    <div class="payment-method-icon">
-                      <i class="fas fa-university"></i>
-                    </div>
-                    <div class="payment-method-info">
-                      <div class="payment-method-title">
-                        PSE - Transferencia Bancaria
-                      </div>
-                      <div class="payment-method-description">
-                        Débito directo desde tu cuenta
-                      </div>
-                    </div>
-                    <i class="fas fa-chevron-right payment-method-arrow"></i>
-                  </div>
-
-                  <div class="payment-method" data-method="nequi">
-                    <div class="payment-method-icon nequi-icon">
-                      <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <div class="payment-method-info">
-                      <div class="payment-method-title">Nequi</div>
-                      <div class="payment-method-description">
-                        Paga desde tu cuenta Nequi
-                      </div>
-                    </div>
-                    <i class="fas fa-chevron-right payment-method-arrow"></i>
-                  </div>
-
-                  <div class="payment-method" data-method="daviplata">
-                    <div class="payment-method-icon daviplata-icon">
-                      <i class="fas fa-wallet"></i>
-                    </div>
-                    <div class="payment-method-info">
-                      <div class="payment-method-title">Daviplata</div>
-                      <div class="payment-method-description">
-                        Paga desde tu cuenta Daviplata
-                      </div>
-                    </div>
-                    <i class="fas fa-chevron-right payment-method-arrow"></i>
-                  </div>
-
-                  <div class="payment-method" data-method="payu">
-                    <div class="payment-method-icon payu-icon">
-                      <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="payment-method-info">
-                      <div class="payment-method-title">PayU</div>
-                      <div class="payment-method-description">
-                        Plataforma de pagos segura
-                      </div>
-                    </div>
-                    <i class="fas fa-chevron-right payment-method-arrow"></i>
-                  </div>
-
-                  <div class="payment-method" data-method="efecty">
-                    <div class="payment-method-icon efecty-icon">
-                      <i class="fas fa-store"></i>
-                    </div>
-                    <div class="payment-method-info">
-                      <div class="payment-method-title">Efecty</div>
-                      <div class="payment-method-description">
-                        Pago en efectivo en puntos Efecty
-                      </div>
-                    </div>
-                    <i class="fas fa-chevron-right payment-method-arrow"></i>
-                  </div>
+                <div class="step-line"></div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <span class="step-text">Datos del pago</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <span class="step-text">Confirmación</span>
                 </div>
               </div>
 
-              <!-- Formulario para Tarjeta de Crédito/Débito (inicialmente oculto) -->
-              <div
-                id="creditCardForm"
-                class="payment-detail-form"
-                style="display: none"
-              >
-                <h3>Detalles de la tarjeta</h3>
-
-                <div class="input-group">
-                  <label for="cardName">Nombre en la tarjeta</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-user input-icon"></i>
-                    <input
-                      type="text"
-                      id="cardName"
-                      name="cardName"
-                      placeholder="Nombre como aparece en la tarjeta"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <label for="cardNumber">Número de tarjeta</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-credit-card input-icon"></i>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      name="cardNumber"
-                      placeholder="XXXX XXXX XXXX XXXX"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div class="input-row">
+              <div class="payment-body">
+                <form id="paymentMethodForm">
                   <div class="input-group">
-                    <label for="expiryDate">Fecha de vencimiento</label>
+                    <label for="country">País</label>
                     <div class="input-wrapper">
-                      <i class="fas fa-calendar-alt input-icon"></i>
-                      <input
-                        type="text"
-                        id="expiryDate"
-                        name="expiryDate"
-                        placeholder="MM/AA"
-                        required
-                      />
+                      <i class="fas fa-globe-americas input-icon"></i>
+                      <select id="country" name="country">
+                        <option value="colombia" selected>Colombia</option>
+                      </select>
                     </div>
                   </div>
+
                   <div class="input-group">
-                    <label for="cvv">Código de seguridad</label>
+                    <label for="email">Correo electrónico</label>
                     <div class="input-wrapper">
-                      <i class="fas fa-lock input-icon"></i>
-                      <input
-                        type="text"
-                        id="cvv"
-                        name="cvv"
-                        placeholder="CVV"
-                        required
-                      />
+                      <i class="fas fa-envelope input-icon"></i>
+                      <input type="email" id="email" name="email" placeholder="nombre@ejemplo.com" required />
                     </div>
+                    <p class="error-message" id="emailError">
+                      Ingresa un correo electrónico válido
+                    </p>
                   </div>
-                </div>
 
-                <div class="input-group">
-                  <label for="cuotas">Número de cuotas</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-layer-group input-icon"></i>
-                    <select id="cuotas" name="cuotas">
-                      <option value="1">1 cuota</option>
-                      <option value="3">3 cuotas</option>
-                      <option value="6">6 cuotas</option>
-                      <option value="12">12 cuotas</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+                  <div class="payment-method-section">
+                    <h3>Elige tu método de pago:</h3>
 
-              <!-- Formulario para PSE - Transferencia Bancaria (inicialmente oculto) -->
-              <div
-                id="pseForm"
-                class="payment-detail-form"
-                style="display: none"
-              >
-                <h3>Transferencia Bancaria PSE</h3>
-                <p class="pse-description">
-                  <i class="fas fa-shield-alt"></i>
-                  Serás redirigido al portal seguro de tu banco para autorizar
-                  el pago
-                </p>
-
-                <div class="input-group">
-                  <label for="bankSelect">Selecciona tu banco</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-university input-icon"></i>
-                    <select id="bankSelect" name="bankSelect" required>
-                      <option value="">Selecciona tu banco</option>
-                      <option value="bancolombia">Bancolombia</option>
-                      <option value="davivienda">Banco Davivienda</option>
-                      <option value="bbva">BBVA Colombia</option>
-                      <option value="bogota">Banco de Bogotá</option>
-                      <option value="popular">Banco Popular</option>
-                      <option value="occidente">Banco de Occidente</option>
-                      <option value="av_villas">Banco AV Villas</option>
-                      <option value="colpatria">Scotiabank Colpatria</option>
-                      <option value="bancamia">Bancamía</option>
-                      <option value="itau">Banco Itaú</option>
-                      <option value="falabella">Banco Falabella</option>
-                      <option value="pichincha">Banco Pichincha</option>
-                      <option value="coopcentral">Coopcentral</option>
-                      <option value="otras">Otras entidades</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <label for="personType">Tipo de persona</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-user-tag input-icon"></i>
-                    <select id="personType" name="personType" required>
-                      <option value="">Selecciona tipo</option>
-                      <option value="natural">Persona Natural</option>
-                      <option value="juridica">Persona Jurídica</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <label for="documentType">Tipo de documento</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-id-card input-icon"></i>
-                    <select id="documentType" name="documentType" required>
-                      <option value="">Selecciona documento</option>
-                      <option value="cc">Cédula de Ciudadanía</option>
-                      <option value="ce">Cédula de Extranjería</option>
-                      <option value="ti">Tarjeta de Identidad</option>
-                      <option value="nit">NIT</option>
-                      <option value="pp">Pasaporte</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <label for="documentNumber">Número de documento</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-hashtag input-icon"></i>
-                    <input
-                      type="text"
-                      id="documentNumber"
-                      name="documentNumber"
-                      placeholder="Ingresa tu número de documento"
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div class="pse-info-box">
-                  <div class="pse-info-header">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>Información importante:</strong>
-                  </div>
-                  <ul class="pse-info-list">
-                    <li>Serás redirigido al portal de tu banco</li>
-                    <li>Debes tener tu clave de internet banking</li>
-                    <li>El débito será inmediato desde tu cuenta</li>
-                    <li>Recibirás confirmación por email</li>
-                  </ul>
-                </div>
-
-                <div class="pse-security">
-                  <div class="security-badge">
-                    <i class="fas fa-lock"></i>
-                    <span>Transacción protegida por PSE</span>
-                  </div>
-                  <div class="security-badge">
-                    <i class="fas fa-certificate"></i>
-                    <span>Certificado por ACH Colombia</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Formulario para Nequi (inicialmente oculto) -->
-              <div
-                id="nequiForm"
-                class="payment-detail-form"
-                style="display: none"
-              >
-                <h3>Pago con Nequi</h3>
-                <p class="nequi-description">
-                  <i class="fas fa-mobile-alt"></i>
-                  Recibirás una notificación en tu app de Nequi para autorizar
-                  el pago
-                </p>
-
-                <div class="input-group">
-                  <label for="nequiPhone">Número de celular</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-phone input-icon"></i>
-                    <input
-                      type="tel"
-                      id="nequiPhone"
-                      name="nequiPhone"
-                      placeholder="3001234567"
-                      required
-                    />
-                  </div>
-                  <p class="input-help">
-                    Ingresa tu número de celular registrado en Nequi
-                  </p>
-                </div>
-
-                <div class="input-group">
-                  <label for="nequiPin">PIN de Nequi (4 dígitos)</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input
-                      type="password"
-                      id="nequiPin"
-                      name="nequiPin"
-                      placeholder="••••"
-                      maxlength="4"
-                      required
-                    />
-                  </div>
-                  <p class="input-help">Tu PIN de 4 dígitos de la app Nequi</p>
-                </div>
-
-                <div class="nequi-info-box">
-                  <div class="nequi-info-header">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>¿Cómo funciona el pago con Nequi?</strong>
-                  </div>
-                  <div class="nequi-steps">
-                    <div class="nequi-step">
-                      <div class="step-number">1</div>
-                      <div class="step-text">Ingresa tu número y PIN</div>
-                    </div>
-                    <div class="nequi-step">
-                      <div class="step-number">2</div>
-                      <div class="step-text">
-                        Recibirás notificación en tu app
+                    <div class="payment-methods">
+                      <div class="payment-method" data-method="credit-card">
+                        <div class="payment-method-icon">
+                          <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="payment-method-info">
+                          <div class="payment-method-title">
+                            Tarjeta de Crédito/Débito
+                          </div>
+                          <div class="payment-method-brands">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-amex"></i>
+                          </div>
+                        </div>
+                        <i class="fas fa-chevron-right payment-method-arrow"></i>
                       </div>
-                    </div>
-                    <div class="nequi-step">
-                      <div class="step-number">3</div>
-                      <div class="step-text">
-                        Autoriza el pago desde tu celular
-                      </div>
-                    </div>
-                    <div class="nequi-step">
-                      <div class="step-number">4</div>
-                      <div class="step-text">¡Pago confirmado al instante!</div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="nequi-security">
-                  <div class="security-badge nequi-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Protegido por Bancolombia</span>
-                  </div>
-                  <div class="security-badge nequi-badge">
-                    <i class="fas fa-mobile-alt"></i>
-                    <span>Pago instantáneo</span>
-                  </div>
-                </div>
+                      <div class="payment-method" data-method="pse">
+                        <div class="payment-method-icon">
+                          <i class="fas fa-university"></i>
+                        </div>
+                        <div class="payment-method-info">
+                          <div class="payment-method-title">
+                            PSE - Transferencia Bancaria
+                          </div>
+                          <div class="payment-method-description">
+                            Débito directo desde tu cuenta
+                          </div>
+                        </div>
+                        <i class="fas fa-chevron-right payment-method-arrow"></i>
+                      </div>
 
-                <div class="nequi-amount-display">
-                  <div class="amount-label">Monto a pagar:</div>
-                  <div class="amount-value" id="nequiAmount">$25.000 COP</div>
-                </div>
-              </div>
+                      <div class="payment-method" data-method="nequi">
+                        <div class="payment-method-icon nequi-icon">
+                          <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="payment-method-info">
+                          <div class="payment-method-title">Nequi</div>
+                          <div class="payment-method-description">
+                            Paga desde tu cuenta Nequi
+                          </div>
+                        </div>
+                        <i class="fas fa-chevron-right payment-method-arrow"></i>
+                      </div>
 
-              <!-- Formulario para PayU (inicialmente oculto) -->
-              <div
-                id="payuForm"
-                class="payment-detail-form"
-                style="display: none"
-              >
-                <h3>Pago con PayU</h3>
-                <p class="payu-description">
-                  <i class="fas fa-credit-card"></i>
-                  PayU es una plataforma segura de pagos online con múltiples
-                  opciones
-                </p>
+                      <div class="payment-method" data-method="daviplata">
+                        <div class="payment-method-icon daviplata-icon">
+                          <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="payment-method-info">
+                          <div class="payment-method-title">Daviplata</div>
+                          <div class="payment-method-description">
+                            Paga desde tu cuenta Daviplata
+                          </div>
+                        </div>
+                        <i class="fas fa-chevron-right payment-method-arrow"></i>
+                      </div>
 
-                <div class="input-group">
-                  <label for="payuEmail">Email de confirmación</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-envelope input-icon"></i>
-                    <input
-                      type="email"
-                      id="payuEmail"
-                      name="payuEmail"
-                      placeholder="correo@ejemplo.com"
-                      required
-                    />
-                  </div>
-                  <p class="input-help">
-                    Recibirás la confirmación del pago en este email
-                  </p>
-                </div>
+                      <div class="payment-method" data-method="payu">
+                        <div class="payment-method-icon payu-icon">
+                          <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="payment-method-info">
+                          <div class="payment-method-title">PayU</div>
+                          <div class="payment-method-description">
+                            Plataforma de pagos segura
+                          </div>
+                        </div>
+                        <i class="fas fa-chevron-right payment-method-arrow"></i>
+                      </div>
 
-                <div class="input-group">
-                  <label for="payuDocument">Número de documento</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-id-card input-icon"></i>
-                    <input
-                      type="text"
-                      id="payuDocument"
-                      name="payuDocument"
-                      placeholder="12345678"
-                      required
-                    />
-                  </div>
-                  <p class="input-help">
-                    Tu número de cédula o documento de identidad
-                  </p>
-                </div>
-
-                <div class="payu-info-box">
-                  <div class="payu-info-header">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>Métodos disponibles con PayU</strong>
-                  </div>
-                  <div class="payu-methods">
-                    <div class="payu-method">
-                      <div class="method-icon">
-                        <i class="fas fa-credit-card"></i>
-                      </div>
-                      <div class="method-text">
-                        <strong>Tarjetas de crédito</strong>
-                        <span>Visa, Mastercard, American Express</span>
-                      </div>
-                    </div>
-                    <div class="payu-method">
-                      <div class="method-icon">
-                        <i class="fas fa-university"></i>
-                      </div>
-                      <div class="method-text">
-                        <strong>Transferencias bancarias</strong>
-                        <span>PSE y bancos principales</span>
-                      </div>
-                    </div>
-                    <div class="payu-method">
-                      <div class="method-icon">
-                        <i class="fas fa-store"></i>
-                      </div>
-                      <div class="method-text">
-                        <strong>Pagos en efectivo</strong>
-                        <span>Efecty, Baloto, puntos de pago</span>
-                      </div>
-                    </div>
-                    <div class="payu-method">
-                      <div class="method-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                      </div>
-                      <div class="method-text">
-                        <strong>Wallets digitales</strong>
-                        <span>Nequi, Daviplata y más</span>
+                      <div class="payment-method" data-method="efecty">
+                        <div class="payment-method-icon efecty-icon">
+                          <i class="fas fa-store"></i>
+                        </div>
+                        <div class="payment-method-info">
+                          <div class="payment-method-title">Efecty</div>
+                          <div class="payment-method-description">
+                            Pago en efectivo en puntos Efecty
+                          </div>
+                        </div>
+                        <i class="fas fa-chevron-right payment-method-arrow"></i>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="payu-security">
-                  <div class="security-badge payu-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Certificado SSL 256-bit</span>
-                  </div>
-                  <div class="security-badge payu-badge">
-                    <i class="fas fa-award"></i>
-                    <span>PCI DSS Compliant</span>
-                  </div>
-                  <div class="security-badge payu-badge">
-                    <i class="fas fa-lock"></i>
-                    <span>Datos encriptados</span>
-                  </div>
-                </div>
+                  <!-- Formulario para Tarjeta de Crédito/Débito (inicialmente oculto) -->
+                  <div id="creditCardForm" class="payment-detail-form" style="display: none">
+                    <h3>Detalles de la tarjeta</h3>
 
-                <div class="payu-amount-display">
-                  <div class="amount-label">Total a pagar:</div>
-                  <div class="amount-value" id="payuAmount">$25.000 COP</div>
-                  <div class="amount-note">
-                    Serás redirigido a PayU para completar el pago
-                  </div>
-                </div>
-              </div>
-
-              <!-- Formulario para Daviplata (inicialmente oculto) -->
-              <div
-                id="daviplataForm"
-                class="payment-detail-form"
-                style="display: none"
-              >
-                <h3>Pago con Daviplata</h3>
-                <p class="daviplata-description">
-                  <i class="fas fa-mobile-alt"></i>
-                  Paga de forma rápida y segura desde tu app Daviplata
-                </p>
-
-                <div class="input-group">
-                  <label for="daviplataPhone">Número de celular</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-phone input-icon"></i>
-                    <input
-                      type="tel"
-                      id="daviplataPhone"
-                      name="daviplataPhone"
-                      placeholder="3001234567"
-                      required
-                    />
-                  </div>
-                  <p class="input-help">
-                    Ingresa tu número registrado en Daviplata
-                  </p>
-                </div>
-
-                <div class="input-group">
-                  <label for="daviplataPin">PIN de Daviplata (4 dígitos)</label>
-                  <div class="input-wrapper">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input
-                      type="password"
-                      id="daviplataPin"
-                      name="daviplataPin"
-                      placeholder="••••"
-                      maxlength="4"
-                      required
-                    />
-                  </div>
-                  <p class="input-help">Tu PIN de seguridad de Daviplata</p>
-                </div>
-
-                <div class="daviplata-info-box">
-                  <div class="daviplata-info-header">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>¿Cómo funciona el pago con Daviplata?</strong>
-                  </div>
-                  <div class="daviplata-steps">
-                    <div class="daviplata-step">
-                      <div class="step-number">1</div>
-                      <div class="step-text">Ingresa tu número y PIN</div>
-                    </div>
-                    <div class="daviplata-step">
-                      <div class="step-number">2</div>
-                      <div class="step-text">Confirma el pago en tu app</div>
-                    </div>
-                    <div class="daviplata-step">
-                      <div class="step-number">3</div>
-                      <div class="step-text">
-                        Autoriza con tu huella digital
+                    <div class="input-group">
+                      <label for="cardName">Nombre en la tarjeta</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="cardName" name="cardName" placeholder="Nombre como aparece en la tarjeta"
+                          required />
                       </div>
                     </div>
-                    <div class="daviplata-step">
-                      <div class="step-number">4</div>
-                      <div class="step-text">¡Pago procesado exitosamente!</div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="daviplata-benefits">
-                  <div class="benefit-item">
-                    <div class="benefit-icon">
-                      <i class="fas fa-zap"></i>
+                    <div class="input-group">
+                      <label for="cardNumber">Número de tarjeta</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-credit-card input-icon"></i>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX"
+                          required />
+                      </div>
                     </div>
-                    <div class="benefit-text">
-                      <strong>Pago instantáneo</strong>
-                      <span>Procesa en menos de 30 segundos</span>
+
+                    <div class="input-row">
+                      <div class="input-group">
+                        <label for="expiryDate">Fecha de vencimiento</label>
+                        <div class="input-wrapper">
+                          <i class="fas fa-calendar-alt input-icon"></i>
+                          <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA" required />
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label for="cvv">Código de seguridad</label>
+                        <div class="input-wrapper">
+                          <i class="fas fa-lock input-icon"></i>
+                          <input type="text" id="cvv" name="cvv" placeholder="CVV" required />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="cuotas">Número de cuotas</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-layer-group input-icon"></i>
+                        <select id="cuotas" name="cuotas">
+                          <option value="1">1 cuota</option>
+                          <option value="3">3 cuotas</option>
+                          <option value="6">6 cuotas</option>
+                          <option value="12">12 cuotas</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
-                  <div class="benefit-item">
-                    <div class="benefit-icon">
+
+                  <!-- Formulario para PSE - Transferencia Bancaria (inicialmente oculto) -->
+                  <div id="pseForm" class="payment-detail-form" style="display: none">
+                    <h3>Transferencia Bancaria PSE</h3>
+                    <p class="pse-description">
                       <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="benefit-text">
-                      <strong>100% seguro</strong>
-                      <span>Protegido por Davivienda</span>
-                    </div>
-                  </div>
-                  <div class="benefit-item">
-                    <div class="benefit-icon">
-                      <i class="fas fa-gift"></i>
-                    </div>
-                    <div class="benefit-text">
-                      <strong>Sin comisiones</strong>
-                      <span>Pago directo sin costos extra</span>
-                    </div>
-                  </div>
-                </div>
+                      Serás redirigido al portal seguro de tu banco para autorizar
+                      el pago
+                    </p>
 
-                <div class="daviplata-security">
-                  <div class="security-badge daviplata-badge">
-                    <i class="fas fa-university"></i>
-                    <span>Respaldado por Davivienda</span>
-                  </div>
-                  <div class="security-badge daviplata-badge">
-                    <i class="fas fa-fingerprint"></i>
-                    <span>Autenticación biométrica</span>
-                  </div>
-                  <div class="security-badge daviplata-badge">
-                    <i class="fas fa-clock"></i>
-                    <span>Disponible 24/7</span>
-                  </div>
-                </div>
+                    <div class="input-group">
+                      <label for="bankSelect">Selecciona tu banco</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-university input-icon"></i>
+                        <select id="bankSelect" name="bankSelect" required>
+                          <option value="">Selecciona tu banco</option>
+                          <option value="bancolombia">Bancolombia</option>
+                          <option value="davivienda">Banco Davivienda</option>
+                          <option value="bbva">BBVA Colombia</option>
+                          <option value="bogota">Banco de Bogotá</option>
+                          <option value="popular">Banco Popular</option>
+                          <option value="occidente">Banco de Occidente</option>
+                          <option value="av_villas">Banco AV Villas</option>
+                          <option value="colpatria">Scotiabank Colpatria</option>
+                          <option value="bancamia">Bancamía</option>
+                          <option value="itau">Banco Itaú</option>
+                          <option value="falabella">Banco Falabella</option>
+                          <option value="pichincha">Banco Pichincha</option>
+                          <option value="coopcentral">Coopcentral</option>
+                          <option value="otras">Otras entidades</option>
+                        </select>
+                      </div>
+                    </div>
 
-                <div class="daviplata-amount-display">
-                  <div class="amount-label">Monto a pagar:</div>
-                  <div class="amount-value" id="daviplataAmount">
-                    $25.000 COP
+                    <div class="input-group">
+                      <label for="personType">Tipo de persona</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-user-tag input-icon"></i>
+                        <select id="personType" name="personType" required>
+                          <option value="">Selecciona tipo</option>
+                          <option value="natural">Persona Natural</option>
+                          <option value="juridica">Persona Jurídica</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="documentType">Tipo de documento</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <select id="documentType" name="documentType" required>
+                          <option value="">Selecciona documento</option>
+                          <option value="cc">Cédula de Ciudadanía</option>
+                          <option value="ce">Cédula de Extranjería</option>
+                          <option value="ti">Tarjeta de Identidad</option>
+                          <option value="nit">NIT</option>
+                          <option value="pp">Pasaporte</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="documentNumber">Número de documento</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-hashtag input-icon"></i>
+                        <input type="text" id="documentNumber" name="documentNumber"
+                          placeholder="Ingresa tu número de documento" required />
+                      </div>
+                    </div>
+
+                    <div class="pse-info-box">
+                      <div class="pse-info-header">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Información importante:</strong>
+                      </div>
+                      <ul class="pse-info-list">
+                        <li>Serás redirigido al portal de tu banco</li>
+                        <li>Debes tener tu clave de internet banking</li>
+                        <li>El débito será inmediato desde tu cuenta</li>
+                        <li>Recibirás confirmación por email</li>
+                      </ul>
+                    </div>
+
+                    <div class="pse-security">
+                      <div class="security-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Transacción protegida por PSE</span>
+                      </div>
+                      <div class="security-badge">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certificado por ACH Colombia</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="amount-note">
-                    Se debitará automáticamente de tu cuenta Daviplata
+
+                  <!-- Formulario para Nequi (inicialmente oculto) -->
+                  <div id="nequiForm" class="payment-detail-form" style="display: none">
+                    <h3>Pago con Nequi</h3>
+                    <p class="nequi-description">
+                      <i class="fas fa-mobile-alt"></i>
+                      Recibirás una notificación en tu app de Nequi para autorizar
+                      el pago
+                    </p>
+
+                    <div class="input-group">
+                      <label for="nequiPhone">Número de celular</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" id="nequiPhone" name="nequiPhone" placeholder="3001234567" required />
+                      </div>
+                      <p class="input-help">
+                        Ingresa tu número de celular registrado en Nequi
+                      </p>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="nequiPin">PIN de Nequi (4 dígitos)</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="nequiPin" name="nequiPin" placeholder="••••" maxlength="4"
+                          required />
+                      </div>
+                      <p class="input-help">Tu PIN de 4 dígitos de la app Nequi</p>
+                    </div>
+
+                    <div class="nequi-info-box">
+                      <div class="nequi-info-header">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>¿Cómo funciona el pago con Nequi?</strong>
+                      </div>
+                      <div class="nequi-steps">
+                        <div class="nequi-step">
+                          <div class="step-number">1</div>
+                          <div class="step-text">Ingresa tu número y PIN</div>
+                        </div>
+                        <div class="nequi-step">
+                          <div class="step-number">2</div>
+                          <div class="step-text">
+                            Recibirás notificación en tu app
+                          </div>
+                        </div>
+                        <div class="nequi-step">
+                          <div class="step-number">3</div>
+                          <div class="step-text">
+                            Autoriza el pago desde tu celular
+                          </div>
+                        </div>
+                        <div class="nequi-step">
+                          <div class="step-number">4</div>
+                          <div class="step-text">¡Pago confirmado al instante!</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="nequi-security">
+                      <div class="security-badge nequi-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Protegido por Bancolombia</span>
+                      </div>
+                      <div class="security-badge nequi-badge">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>Pago instantáneo</span>
+                      </div>
+                    </div>
+
+                    <div class="nequi-amount-display">
+                      <div class="amount-label">Monto a pagar:</div>
+                      <div class="amount-value" id="nequiAmount">$25.000 COP</div>
+                    </div>
                   </div>
-                </div>
+
+                  <!-- Formulario para PayU (inicialmente oculto) -->
+                  <div id="payuForm" class="payment-detail-form" style="display: none">
+                    <h3>Pago con PayU</h3>
+                    <p class="payu-description">
+                      <i class="fas fa-credit-card"></i>
+                      PayU es una plataforma segura de pagos online con múltiples
+                      opciones
+                    </p>
+
+                    <div class="input-group">
+                      <label for="payuEmail">Email de confirmación</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="payuEmail" name="payuEmail" placeholder="correo@ejemplo.com" required />
+                      </div>
+                      <p class="input-help">
+                        Recibirás la confirmación del pago en este email
+                      </p>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="payuDocument">Número de documento</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="payuDocument" name="payuDocument" placeholder="12345678" required />
+                      </div>
+                      <p class="input-help">
+                        Tu número de cédula o documento de identidad
+                      </p>
+                    </div>
+
+                    <div class="payu-info-box">
+                      <div class="payu-info-header">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Métodos disponibles con PayU</strong>
+                      </div>
+                      <div class="payu-methods">
+                        <div class="payu-method">
+                          <div class="method-icon">
+                            <i class="fas fa-credit-card"></i>
+                          </div>
+                          <div class="method-text">
+                            <strong>Tarjetas de crédito</strong>
+                            <span>Visa, Mastercard, American Express</span>
+                          </div>
+                        </div>
+                        <div class="payu-method">
+                          <div class="method-icon">
+                            <i class="fas fa-university"></i>
+                          </div>
+                          <div class="method-text">
+                            <strong>Transferencias bancarias</strong>
+                            <span>PSE y bancos principales</span>
+                          </div>
+                        </div>
+                        <div class="payu-method">
+                          <div class="method-icon">
+                            <i class="fas fa-store"></i>
+                          </div>
+                          <div class="method-text">
+                            <strong>Pagos en efectivo</strong>
+                            <span>Efecty, Baloto, puntos de pago</span>
+                          </div>
+                        </div>
+                        <div class="payu-method">
+                          <div class="method-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                          </div>
+                          <div class="method-text">
+                            <strong>Wallets digitales</strong>
+                            <span>Nequi, Daviplata y más</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="payu-security">
+                      <div class="security-badge payu-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Certificado SSL 256-bit</span>
+                      </div>
+                      <div class="security-badge payu-badge">
+                        <i class="fas fa-award"></i>
+                        <span>PCI DSS Compliant</span>
+                      </div>
+                      <div class="security-badge payu-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Datos encriptados</span>
+                      </div>
+                    </div>
+
+                    <div class="payu-amount-display">
+                      <div class="amount-label">Total a pagar:</div>
+                      <div class="amount-value" id="payuAmount">$25.000 COP</div>
+                      <div class="amount-note">
+                        Serás redirigido a PayU para completar el pago
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Formulario para Daviplata (inicialmente oculto) -->
+                  <div id="daviplataForm" class="payment-detail-form" style="display: none">
+                    <h3>Pago con Daviplata</h3>
+                    <p class="daviplata-description">
+                      <i class="fas fa-mobile-alt"></i>
+                      Paga de forma rápida y segura desde tu app Daviplata
+                    </p>
+
+                    <div class="input-group">
+                      <label for="daviplataPhone">Número de celular</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" id="daviplataPhone" name="daviplataPhone" placeholder="3001234567" required />
+                      </div>
+                      <p class="input-help">
+                        Ingresa tu número registrado en Daviplata
+                      </p>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="daviplataPin">PIN de Daviplata (4 dígitos)</label>
+                      <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="daviplataPin" name="daviplataPin" placeholder="••••" maxlength="4"
+                          required />
+                      </div>
+                      <p class="input-help">Tu PIN de seguridad de Daviplata</p>
+                    </div>
+
+                    <div class="daviplata-info-box">
+                      <div class="daviplata-info-header">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>¿Cómo funciona el pago con Daviplata?</strong>
+                      </div>
+                      <div class="daviplata-steps">
+                        <div class="daviplata-step">
+                          <div class="step-number">1</div>
+                          <div class="step-text">Ingresa tu número y PIN</div>
+                        </div>
+                        <div class="daviplata-step">
+                          <div class="step-number">2</div>
+                          <div class="step-text">Confirma el pago en tu app</div>
+                        </div>
+                        <div class="daviplata-step">
+                          <div class="step-number">3</div>
+                          <div class="step-text">
+                            Autoriza con tu huella digital
+                          </div>
+                        </div>
+                        <div class="daviplata-step">
+                          <div class="step-number">4</div>
+                          <div class="step-text">¡Pago procesado exitosamente!</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="daviplata-benefits">
+                      <div class="benefit-item">
+                        <div class="benefit-icon">
+                          <i class="fas fa-zap"></i>
+                        </div>
+                        <div class="benefit-text">
+                          <strong>Pago instantáneo</strong>
+                          <span>Procesa en menos de 30 segundos</span>
+                        </div>
+                      </div>
+                      <div class="benefit-item">
+                        <div class="benefit-icon">
+                          <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="benefit-text">
+                          <strong>100% seguro</strong>
+                          <span>Protegido por Davivienda</span>
+                        </div>
+                      </div>
+                      <div class="benefit-item">
+                        <div class="benefit-icon">
+                          <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="benefit-text">
+                          <strong>Sin comisiones</strong>
+                          <span>Pago directo sin costos extra</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="daviplata-security">
+                      <div class="security-badge daviplata-badge">
+                        <i class="fas fa-university"></i>
+                        <span>Respaldado por Davivienda</span>
+                      </div>
+                      <div class="security-badge daviplata-badge">
+                        <i class="fas fa-fingerprint"></i>
+                        <span>Autenticación biométrica</span>
+                      </div>
+                      <div class="security-badge daviplata-badge">
+                        <i class="fas fa-clock"></i>
+                        <span>Disponible 24/7</span>
+                      </div>
+                    </div>
+
+                    <div class="daviplata-amount-display">
+                      <div class="amount-label">Monto a pagar:</div>
+                      <div class="amount-value" id="daviplataAmount">
+                        $25.000 COP
+                      </div>
+                      <div class="amount-note">
+                        Se debitará automáticamente de tu cuenta Daviplata
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Botones de acción -->
+                  <div class="payment-actions">
+                    <button type="button" id="returnBtn" class="btn btn-secondary">
+                      Volver
+                    </button>
+                    <button type="button" id="continueBtn" class="btn btn-primary">
+                      Continuar
+                    </button>
+                  </div>
+
+                  <!-- Sección de seguridad y garantías -->
+                  <div class="payment-security">
+                    <div class="security-item">
+                      <i class="fas fa-lock"></i>
+                      <span>Pago seguro</span>
+                    </div>
+                    <div class="security-item">
+                      <i class="fas fa-shield-alt"></i>
+                      <span>Datos encriptados</span>
+                    </div>
+                    <div class="security-item">
+                      <i class="fas fa-check-circle"></i>
+                      <span>Garantía Servitech</span>
+                    </div>
+                  </div>
+                </form>
               </div>
-
-              <!-- Botones de acción -->
-              <div class="payment-actions">
-                <button type="button" id="returnBtn" class="btn btn-secondary">
-                  Volver
-                </button>
-                <button type="button" id="continueBtn" class="btn btn-primary">
-                  Continuar
-                </button>
-              </div>
-
-              <!-- Sección de seguridad y garantías -->
-              <div class="payment-security">
-                <div class="security-item">
-                  <i class="fas fa-lock"></i>
-                  <span>Pago seguro</span>
-                </div>
-                <div class="security-item">
-                  <i class="fas fa-shield-alt"></i>
-                  <span>Datos encriptados</span>
-                </div>
-                <div class="security-item">
-                  <i class="fas fa-check-circle"></i>
-                  <span>Garantía Servitech</span>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+            </div>
     </div>
-    <script src="assets/js/common.js"></script>
-    <script src="assets/js/pasarela-pagos.js"></script>
-  </body>
+  </div>
+  <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/pasarela-pagos.js"></script>
+</body>
+
 </html>

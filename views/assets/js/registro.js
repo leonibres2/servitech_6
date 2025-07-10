@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (isValid) {
         // Enviar datos al backend
-        fetch("http://localhost:3000/api/usuarios", {
+        fetch("http://localhost:3001/api/usuarios", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

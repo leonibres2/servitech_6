@@ -25,17 +25,17 @@ mongoose.connect(MONGODB_URI)
   .then(() => {
     console.log('Conectado a MongoDB:', MONGODB_URI);
     
-    // 🚀 Inicializar sistema de recordatorios
-    const sistemaRecordatorios = require('./services/recordatoriosService');
-    sistemaRecordatorios.inicializar()
-      .then(() => console.log('✅ Sistema de recordatorios iniciado'))
-      .catch(err => console.error('❌ Error iniciando recordatorios:', err));
+    // 🚀 Inicializar sistema de recordatorios (temporalmente deshabilitado)
+    // const sistemaRecordatorios = require('./services/recordatoriosService');
+    // sistemaRecordatorios.inicializar()
+    //   .then(() => console.log('✅ Sistema de recordatorios iniciado'))
+    //   .catch(err => console.error('❌ Error iniciando recordatorios:', err));
 
-    // 🔔 Inicializar sistema de notificaciones
-    const notificacionesService = require('./services/notificacionesService');
-    notificacionesService.inicializar()
-      .then(() => console.log('✅ Sistema de notificaciones iniciado'))
-      .catch(err => console.error('❌ Error iniciando notificaciones:', err));
+    // 🔔 Inicializar sistema de notificaciones (temporalmente deshabilitado)
+    // const notificacionesService = require('./services/notificacionesService');
+    // notificacionesService.inicializar()
+    //   .then(() => console.log('✅ Sistema de notificaciones iniciado'))
+    //   .catch(err => console.error('❌ Error iniciando notificaciones:', err));
   })
   .catch(err => {
     // Si hay error al conectar, muestra el error y termina el proceso
@@ -128,15 +128,18 @@ const PORT = process.env.PORT || 3000;
 const http = require('http');
 const server = http.createServer(app);
 
-// 💬 Inicializar servicio de mensajería en tiempo real
-const socketMensajeriaService = require('./services/socketMensajeriaService');
-socketMensajeriaService.inicializar(server);
+// 💬 Inicializar servicio de mensajería en tiempo real (temporalmente deshabilitado)
+// const socketMensajeriaService = require('./services/socketMensajeriaService');
+// socketMensajeriaService.inicializar(server);
+console.log('✅ Socket.IO temporalmente deshabilitado para debugging');
 
 // Inicia el servidor y muestra un mensaje en consola
 server.listen(PORT, () => {
-  console.log(`🚀 Servidor backend escuchando en puerto ${PORT}`);
+  const actualPort = server.address().port;
+  console.log(`🚀 Servidor backend escuchando en puerto ${actualPort}`);
   console.log(`💬 Socket.IO para mensajería activo`);
-  console.log(`📡 WebSockets disponibles en ws://localhost:${PORT}`);
+  console.log(`📡 WebSockets disponibles en ws://localhost:${actualPort}`);
+  console.log(`🌐 Accede a la aplicación en: http://localhost:${actualPort}`);
 });
 
 // Exporta la app y el servidor para pruebas

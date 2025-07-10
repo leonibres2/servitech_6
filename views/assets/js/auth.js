@@ -17,7 +17,7 @@
  * @throws {Error} - Si las credenciales son inválidas o hay error de red.
  */
 async function login(email, password) {
-  const res = await fetch("http://localhost:3000/api/usuarios/login", {
+  const res = await fetch("http://localhost:3001/api/usuarios/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -40,7 +40,7 @@ async function login(email, password) {
  */
 async function getUsuarios() {
   const token = localStorage.getItem("token");
-  const res = await fetch("http://localhost:3000/api/usuarios", {
+  const res = await fetch("http://localhost:3001/api/usuarios", {
     headers: {
       Authorization: "Bearer " + token,
     },

@@ -19,8 +19,11 @@
   <body>
     <div class="container">
       <div class="payment-container">
-        <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado && expertoSeleccionado.id) { %>
-        <a href="/expertos/<%= expertoSeleccionado.id %>/calendario" class="back-link"
+        <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado
+        && expertoSeleccionado.id) { %>
+        <a
+          href="/expertos/<%= expertoSeleccionado.id %>/calendario"
+          class="back-link"
           ><i class="fas fa-arrow-left"></i> Volver al calendario</a
         >
         <% } else { %>
@@ -38,8 +41,14 @@
             />
             <h1>Pasarela de Pago</h1>
             <div class="service-info">
-              <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
-              <p>Asesoría en <%= expertoSeleccionado.especialidad || 'Consultoría Técnica' %> con <%= expertoSeleccionado.nombre %><%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %></p>
+              <% if (typeof expertoSeleccionado !== 'undefined' &&
+              expertoSeleccionado) { %>
+              <p>
+                Asesoría en <%= expertoSeleccionado.especialidad || 'Consultoría
+                Técnica' %> con <%= expertoSeleccionado.nombre %><%=
+                expertoSeleccionado.apellido ? ' ' +
+                expertoSeleccionado.apellido : '' %>
+              </p>
               <% } else { %>
               <p>Pago de 1h de asesoría técnica</p>
               <% } %>

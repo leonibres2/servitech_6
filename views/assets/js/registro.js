@@ -324,7 +324,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const data = await res.json();
             if (res.ok) {
               // Registro exitoso
-              const registroExitoso = document.getElementById("registroExitoso");
+              const registroExitoso =
+                document.getElementById("registroExitoso");
               if (registroExitoso) {
                 registroExitoso.style.display = "block";
                 form.querySelectorAll("input, button").forEach((el) => {

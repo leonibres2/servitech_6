@@ -6,13 +6,35 @@ const express = require("express");
 
 // Importa cors para permitir solicitudes de diferentes orígenes
 const cors = require("cors");
+// Importa express-session para manejo de sesiones
+const session = require("express-session");
 // Importa path para manejar rutas de archivos
 const path = require("path");
 
 // Inicializa la aplicación Express
 const app = express();
-// Habilita CORS para todas las rutas
-app.use(cors());
+
+// Habilita CORS con credenciales para frontend en otro puerto
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    credentials: true,
+  })
+);
+
+// Configura express-session antes de las rutas
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "servitech_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // true solo si usas https
+      httpOnly: true,
+      sameSite: "lax",
+    },
+  })
+);
 
 // Permite recibir y procesar JSON en las solicitudes
 app.use(express.json());
@@ -74,17 +96,24 @@ const pseRoutes = require("./routes/pse");
 // 📅 Importa las rutas de asesorías y disponibilidad
 const asesoriasRoutes = require("./routes/asesorias");
 const disponibilidadRoutes = require("./routes/disponibilidad");
+// 🐞 Endpoint temporal para debug de asesorías
+const asesoriasDebugRoutes = require("./routes/asesorias-debug");
 
 // 💬 Importa las rutas de mensajería
 const mensajeriaRoutes = require("./routes/mensajeria");
+
+// 🐞 Endpoint temporal para debug de usuarios
+const usuariosDebugRoutes = require("./routes/usuarios-debug");
 
 // Asocia las rutas al prefijo /api
 app.use("/api/categorias", categoriasRoutes);
 app.use("/api/expertos", expertosRoutes);
 app.use("/api/pse", pseRoutes);
 app.use("/api/asesorias", asesoriasRoutes);
+app.use("/api/asesorias/debug", asesoriasDebugRoutes); // Evita conflicto de rutas
 app.use("/api/disponibilidad", disponibilidadRoutes);
 app.use("/api/mensajeria", mensajeriaRoutes);
+app.use("/api/usuarios/debug", usuariosDebugRoutes);
 
 // 🆕 Rutas de expertos para vistas (sin prefijo /api)
 app.use("/expertos", expertosRoutes);
@@ -116,7 +145,14 @@ app.get("/pasarela-pagos.html", (req, res) =>
     expertoSeleccionado: null, // No hay experto seleccionado en acceso directo
   })
 );
-app.get("/mis-asesorias.html", (req, res) => res.render("mis-asesorias"));
+// Ruta protegida: Mis Asesorías (debe recibir usuario autenticado)
+app.get("/mis-asesorias.html", (req, res) => {
+  // Si tienes sesión, usa req.session.usuarioId y req.session.rolUsuario
+  // Aquí se simula un usuario autenticado para pruebas
+  const usuarioId = req.session?.usuarioId || "64f1e2c1234567890abcdef1"; // <-- reemplaza por tu lógica real
+  const rolUsuario = req.session?.rolUsuario || "cliente";
+  res.render("mis-asesorias", { usuarioId, rolUsuario });
+});
 app.get("/mensajes.html", (req, res) => {
   res.render("mensajes");
 });
@@ -147,9 +183,8 @@ const PORT = process.env.PORT || 3000;
 const http = require("http");
 const server = http.createServer(app);
 
-
 // 💬 Inicializar servicio de mensajería en tiempo real (ACTIVO)
-const socketMensajeriaService = require('./services/socketMensajeriaService');
+const socketMensajeriaService = require("./services/socketMensajeriaService");
 socketMensajeriaService.inicializar(server);
 
 // Inicia el servidor y muestra un mensaje en consola

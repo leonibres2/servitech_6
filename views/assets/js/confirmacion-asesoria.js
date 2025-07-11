@@ -26,6 +26,45 @@ document.addEventListener("DOMContentLoaded", function () {
       actualizarInformacionCita(datosCompletos);
       actualizarInformacionExperto(datosCompletos);
       actualizarInformacionPago(datosCompletos);
+
+      // --- GUARDAR CITA EN BACKEND DESPUÉS DEL PAGO ---
+      if (datosCompletos && datosCompletos.cita && datosCompletos.pago) {
+        // Construir el objeto para el backend
+        const datosCita = {
+          clienteId: window.usuarioId || datosCompletos.cita.clienteId,
+          expertoId: datosCompletos.cita.expertoId,
+          categoriaId: datosCompletos.cita.categoriaId,
+          tipoServicio: datosCompletos.cita.tipoServicio || "asesoria-detallada",
+          titulo: datosCompletos.cita.titulo || `Asesoría con ${datosCompletos.cita.experto?.nombre || "experto"}`,
+          descripcion: datosCompletos.cita.descripcion || "Asesoría agendada y pagada",
+          fechaHora: datosCompletos.cita.fechaHora || new Date(),
+          duracion: datosCompletos.cita.duracion || 60,
+          precio: datosCompletos.cita.precio || 20000,
+          metodoPago: datosCompletos.pago.metodo || "tarjeta",
+          requerimientos: datosCompletos.cita.requerimientos || {},
+          pagada: true,
+          transactionId: datosCompletos.pago.transactionId
+        };
+        // Enviar al backend solo si no existe ya la cita (puedes mejorar esta lógica)
+        fetch("/api/asesorias", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(datosCita)
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            console.log("✅ Cita guardada en la base de datos después del pago");
+          } else {
+            console.warn("⚠️ No se pudo guardar la cita después del pago:", data.message);
+          }
+        })
+        .catch(err => {
+          console.error("Error al guardar la cita después del pago:", err);
+        });
+      }
+
       // Limpiar datos del localStorage después de mostrarlos
       const citaFinalizada = {
         transactionId: datosCompletos.pago.transactionId,
@@ -79,7 +118,11 @@ document.addEventListener("DOMContentLoaded", function () {
    * Actualiza la información del experto
    */
   function actualizarInformacionExperto(datos) {
-    const experto = datos.cita.experto;
+    let experto = datos.cita.experto;
+    // Si experto es un objeto, usar el nombre
+    if (typeof experto === "object" && experto !== null) {
+      experto = experto.nombre || "Experto";
+    }
     const servicio = datos.cita.servicio;
 
     // Actualizar nombre del experto
@@ -97,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Actualizar avatar
     const avatarImg = document.querySelector(".expert-avatar img");
     if (avatarImg) {
-      const nombreParaAvatar = experto.replace(" ", "+");
+      const nombreParaAvatar = (typeof experto === "string" ? experto : String(experto)).replace(" ", "+");
       avatarImg.src = `https://ui-avatars.com/api/?name=${nombreParaAvatar}&background=3a8eff&color=fff&size=80`;
       avatarImg.alt = `Foto de ${experto}`;
     }

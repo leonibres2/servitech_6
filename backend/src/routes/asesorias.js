@@ -18,18 +18,16 @@ const {
   verificarDisponibilidadExperto
 } = require('../controllers/asesoriaController');
 
-// Middleware de validación (temporal, luego se implementará JWT)
+// Middleware de validación: requiere sesión activa
 const validarUsuario = (req, res, next) => {
-  // Por ahora solo verificamos que se envíe un usuarioId
-  const usuarioId = req.body.usuarioId || req.query.usuarioId || req.headers['x-usuario-id'];
-  
+  // Usar la sesión para identificar al usuario autenticado
+  const usuarioId = req.session?.usuarioId;
   if (!usuarioId) {
     return res.status(401).json({
       success: false,
-      message: 'Usuario no autenticado'
+      message: 'Usuario no autenticado (sesión requerida)'
     });
   }
-  
   req.usuarioId = usuarioId;
   next();
 };
@@ -70,7 +68,8 @@ router.get('/:id', obtenerAsesoria);
 /**
  * POST /api/asesorias
  * Crear nueva asesoría
- * Body: clienteId, expertoId, categoriaId, tipoServicio, titulo, descripcion, fechaHora, duracion, precio, metodoPago, requerimientos
+ * Body: expertoId, categoriaId, tipoServicio, titulo, descripcion, fechaHora, duracion, precio, metodoPago, requerimientos
+ * El clienteId se toma de la sesión activa
  */
 router.post('/', validarUsuario, crearAsesoria);
 

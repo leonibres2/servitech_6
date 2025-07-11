@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Mis Asesorías | Servitech</title>
@@ -11,18 +12,21 @@
       /* ...existing code... */
       background: radial-gradient(ellipse at 50% 40%, #23272f 0%, #0f0f0f 100%);
     }
+
     .container {
       max-width: var(--content-max-width);
       margin: 2.5rem auto;
       padding: 0 5%;
       background: transparent;
     }
+
     .asesorias-list {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
       margin-bottom: 2rem;
     }
+
     .asesoria-card {
       background: var(--card-bg);
       border-radius: var(--border-radius);
@@ -37,27 +41,33 @@
       border: 1.5px solid var(--border-light);
       transition: box-shadow 0.3s, border-color 0.3s;
     }
+
     .asesoria-card:hover {
       box-shadow: 0 8px 32px #00000033, 0 2px 8px var(--primary-color);
       border-color: var(--primary-color);
     }
+
     .asesoria-info {
       display: flex;
       align-items: center;
       gap: 2.2rem;
       flex-wrap: wrap;
     }
-    .asesoria-fecha, .asesoria-hora {
+
+    .asesoria-fecha,
+    .asesoria-hora {
       display: block;
       font-size: 1.1em;
       font-weight: 500;
       color: var(--accent-color);
     }
+
     .asesoria-experto {
       display: flex;
       align-items: center;
       gap: 0.8rem;
     }
+
     .experto-avatar {
       width: 44px;
       height: 44px;
@@ -65,14 +75,17 @@
       object-fit: cover;
       border: 2px solid var(--accent-color);
     }
+
     .experto-nombre {
       font-weight: 600;
       color: var(--text-color);
     }
+
     .experto-rol {
       font-size: 0.95em;
       color: var(--accent-color);
     }
+
     .asesoria-estado {
       padding: 0.4em 1em;
       border-radius: 6px;
@@ -82,31 +95,38 @@
       color: var(--accent-color);
       border: 1px solid var(--accent-color);
     }
+
     .asesoria-estado.completada {
       background: var(--card-bg);
       color: var(--primary-color);
       border-color: var(--primary-color);
     }
+
     .asesoria-acciones {
       display: flex;
       gap: 0.7rem;
       align-items: center;
     }
+
     .btn-sm {
       padding: 0.4em 1.2em;
       font-size: 0.95em;
       border-radius: 5px;
     }
+
     .modal {
       display: none;
       position: fixed;
       z-index: 1000;
-      left: 0; top: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.6);
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
       align-items: center;
       justify-content: center;
     }
+
     .modal-content {
       background: var(--card-bg);
       color: var(--text-color);
@@ -122,6 +142,7 @@
       gap: 1rem;
       border: 1.5px solid var(--border-light);
     }
+
     .close-modal {
       position: absolute;
       top: 1rem;
@@ -130,6 +151,7 @@
       color: var(--accent-color);
       cursor: pointer;
     }
+
     .mensajes-historial {
       max-height: 180px;
       overflow-y: auto;
@@ -140,17 +162,21 @@
       flex-direction: column;
       gap: 0.7rem;
     }
+
     .mensaje {
       display: flex;
       align-items: flex-start;
       gap: 0.7rem;
     }
+
     .mensaje-usuario .mensaje-avatar img {
       border: 2px solid var(--accent-color);
     }
+
     .mensaje-experto .mensaje-avatar img {
       border: 2px solid var(--primary-color);
     }
+
     .mensaje-texto {
       background: var(--input-bg);
       color: var(--text-color);
@@ -160,180 +186,111 @@
       word-break: break-word;
       font-size: 1em;
     }
+
     .mensaje-form {
       display: flex;
       gap: 0.5rem;
       align-items: flex-end;
     }
+
     .mensaje-form .form-group {
       flex: 1;
       margin-bottom: 0;
     }
+
     @media (max-width: 700px) {
       .asesoria-card {
         flex-direction: column;
         padding: 1rem;
       }
+
       .asesoria-info {
         gap: 1rem;
       }
+
       .modal-content {
         padding: 1.2rem 0.8rem;
       }
     }
   </style>
 </head>
+
 <body>
   <%- include('componentes/header') %>
-  <main class="container">
-    <h1 class="mb-4" style="margin-bottom:2.5rem;">Mis Asesorías</h1>
-    <div class="asesorias-list">
-      <!-- Ejemplo de tarjetas de asesoría, reemplaza por datos dinámicos -->
-      <div class="asesoria-card">
-        <div class="asesoria-info">
-          <div>
-            <span class="asesoria-fecha">20/05/2025</span>
-            <span class="asesoria-hora">10:00 - 11:00</span>
-          </div>
-          <div class="asesoria-experto">
-            <img src="https://ui-avatars.com/api/?name=María+Rodríguez&background=3a8eff&color=fff" alt="María Rodríguez" class="experto-avatar">
-            <div>
-              <span class="experto-nombre" style="display:block; margin-bottom:0.2em;">María Rodríguez</span>
-              <span class="experto-rol" style="display:block; margin-top:0.2em;">Desarrollo Web</span>
+    <main class="container">
+      <h1 class="mb-4" style="margin-bottom:2.5rem;">Mis Asesorías</h1>
+      <div class="asesorias-list">
+        <!-- Las tarjetas de asesoría se llenan dinámicamente por JS -->
+      </div>
+
+      <!-- Módulo de mensajes al experto (modal mejorado) -->
+      <div id="mensajeModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-modal" onclick="cerrarMensajes()">&times;</span>
+          <h3>Enviar mensaje a <span id="expertoNombre"></span></h3>
+          <div id="mensajesHistorial" class="mensajes-historial">
+            <!-- Aquí se mostraría el historial de mensajes -->
+            <div class="mensaje mensaje-experto">
+              <div class="mensaje-avatar"><img
+                  src="https://ui-avatars.com/api/?name=Experto&background=3a8eff&color=fff" alt="Experto"></div>
+              <div class="mensaje-texto">Hola, ¿en qué puedo ayudarte?</div>
+            </div>
+            <div class="mensaje mensaje-usuario">
+              <div class="mensaje-avatar"><img
+                  src="https://ui-avatars.com/api/?name=Usuario&background=ffd700&color=222" alt="Usuario"></div>
+              <div class="mensaje-texto">Tengo una duda sobre la asesoría.</div>
             </div>
           </div>
-          <div class="asesoria-estado agendada">Agendada</div>
-        </div>
-        <div class="asesoria-acciones">
-          <button class="btn btn-primary btn-sm" onclick="abrirMensajes('María Rodríguez')">
-            <i class="fas fa-comment-dots"></i> Mensaje
-          </button>
-          <button class="btn btn-outline btn-sm" onclick="abrirDetalles({
-            fecha: '20/05/2025',
-            hora: '10:00 - 11:00',
-            experto: 'María Rodríguez',
-            rol: 'Desarrollo Web',
-            estado: 'Agendada'
-          })">
-            <i class="fas fa-calendar-alt"></i> Ver detalles
-          </button>
-        </div>
-      </div>
-      <div class="asesoria-card">
-        <div class="asesoria-info">
-          <div>
-            <span class="asesoria-fecha">22/05/2025</span>
-            <span class="asesoria-hora">15:00 - 16:00</span>
-          </div>
-          <div class="asesoria-experto">
-            <img src="https://ui-avatars.com/api/?name=Carlos+Pérez&background=3a8eff&color=fff" alt="Carlos Pérez" class="experto-avatar">
-            <div>
-              <span class="experto-nombre" style="display:block; margin-bottom:0.2em;">Carlos Pérez</span>
-              <span class="experto-rol" style="display:block; margin-top:0.2em;">Soporte Técnico</span>
+          <form id="formMensaje" class="mensaje-form">
+            <div class="form-group">
+              <textarea class="form-control" id="mensajeTexto" rows="3" placeholder="Escribe tu mensaje..."></textarea>
             </div>
-          </div>
-          <div class="asesoria-estado completada">Completada</div>
-        </div>
-        <div class="asesoria-acciones">
-          <button class="btn btn-primary btn-sm" onclick="abrirMensajes('Carlos Pérez')">
-            <i class="fas fa-comment-dots"></i> Mensaje
-          </button>
-          <button class="btn btn-outline btn-sm" onclick="abrirDetalles({
-            fecha: '22/05/2025',
-            hora: '15:00 - 16:00',
-            experto: 'Carlos Pérez',
-            rol: 'Soporte Técnico',
-            estado: 'Completada'
-          })">
-            <i class="fas fa-calendar-alt"></i> Ver detalles
-          </button>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+          </form>
         </div>
       </div>
-      <!-- ...más tarjetas... -->
-    </div>
 
-    <!-- Módulo de mensajes al experto (modal mejorado) -->
-    <div id="mensajeModal" class="modal" style="display:none;">
-      <div class="modal-content">
-        <span class="close-modal" onclick="cerrarMensajes()">&times;</span>
-        <h3>Enviar mensaje a <span id="expertoNombre"></span></h3>
-        <div id="mensajesHistorial" class="mensajes-historial">
-          <!-- Aquí se mostraría el historial de mensajes -->
-          <div class="mensaje mensaje-experto">
-            <div class="mensaje-avatar"><img src="https://ui-avatars.com/api/?name=Experto&background=3a8eff&color=fff" alt="Experto"></div>
-            <div class="mensaje-texto">Hola, ¿en qué puedo ayudarte?</div>
+      <!-- Modal de detalles de la cita -->
+      <div id="detalleModal" class="modal" style="display:none;">
+        <div class="modal-content">
+          <span class="close-modal" onclick="cerrarDetalles()">&times;</span>
+          <h3>Detalle de la Asesoría</h3>
+          <div id="detalleContenido">
+            <!-- Aquí se llenan los datos dinámicamente -->
           </div>
-          <div class="mensaje mensaje-usuario">
-            <div class="mensaje-avatar"><img src="https://ui-avatars.com/api/?name=Usuario&background=ffd700&color=222" alt="Usuario"></div>
-            <div class="mensaje-texto">Tengo una duda sobre la asesoría.</div>
-          </div>
-        </div>
-        <form id="formMensaje" class="mensaje-form">
-          <div class="form-group">
-            <textarea class="form-control" id="mensajeTexto" rows="3" placeholder="Escribe tu mensaje..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Modal de detalles de la cita -->
-    <div id="detalleModal" class="modal" style="display:none;">
-      <div class="modal-content">
-        <span class="close-modal" onclick="cerrarDetalles()">&times;</span>
-        <h3>Detalle de la Asesoría</h3>
-        <div id="detalleContenido">
-          <!-- Aquí se llenan los datos dinámicamente -->
         </div>
       </div>
-    </div>
-  </main>
-  <%- include('componentes/footer') %>
-  <script src="/assets/js/common.js"></script>
-  <script>
-    function abrirMensajes(nombre) {
-      document.getElementById('expertoNombre').innerText = nombre;
-      document.getElementById('mensajeModal').style.display = 'flex';
-      // Aquí puedes cargar el historial de mensajes si tienes backend
-    }
-    function cerrarMensajes() {
-      document.getElementById('mensajeModal').style.display = 'none';
-    }
-    document.getElementById('formMensaje')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // Aquí puedes enviar el mensaje al backend con fetch/AJAX
-      const texto = document.getElementById('mensajeTexto').value;
-      if (texto.trim() !== "") {
-        const historial = document.getElementById('mensajesHistorial');
-        const div = document.createElement('div');
-        div.className = "mensaje mensaje-usuario";
-        div.innerHTML = '<div class="mensaje-avatar"><img src="https://ui-avatars.com/api/?name=Usuario&background=ffd700&color=222" alt="Usuario"></div><div class="mensaje-texto">' + texto + '</div>';
-        historial.appendChild(div);
-        document.getElementById('mensajeTexto').value = '';
-        historial.scrollTop = historial.scrollHeight;
-      }
-    });
-    function abrirDetalles(data) {
-      const html = `
-        <div style="margin-bottom:1rem;">
-          <strong>Fecha:</strong> ${data.fecha}<br>
-          <strong>Hora:</strong> ${data.hora}<br>
-          <strong>Estado:</strong> ${data.estado}
-        </div>
-        <div style="display:flex;align-items:center;gap:1rem;">
-          <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(data.experto)}&background=3a8eff&color=fff" alt="${data.experto}" style="width:48px;height:48px;border-radius:50%;border:2px solid var(--accent-color);">
-          <div>
-            <strong>${data.experto}</strong><br>
-            <span style="color:var(--accent-color);">${data.rol}</span>
-          </div>
-        </div>
-      `;
-      document.getElementById('detalleContenido').innerHTML = html;
-      document.getElementById('detalleModal').style.display = 'flex';
-    }
-    function cerrarDetalles() {
-      document.getElementById('detalleModal').style.display = 'none';
-    }
-  </script>
+    </main>
+    <%- include('componentes/footer') %>
+      <script src="/assets/js/common.js"></script>
+      <script>
+        // Variables globales para el usuario autenticado (inyectadas por backend, tipo string seguro)
+        window.usuarioId = "<%= usuarioId %>";
+        window.rolUsuario = "<%= rolUsuario %>";
+      </script>
+      <script src="/assets/js/mis-asesorias.js"></script>
+      <script>
+        function cerrarMensajes() {
+          document.getElementById('mensajeModal').style.display = 'none';
+        }
+        document.getElementById('formMensaje')?.addEventListener('submit', function (e) {
+          e.preventDefault();
+          // Aquí puedes enviar el mensaje al backend con fetch/AJAX
+          const texto = document.getElementById('mensajeTexto').value;
+          if (texto.trim() !== "") {
+            const historial = document.getElementById('mensajesHistorial');
+            const div = document.createElement('div');
+            div.className = "mensaje mensaje-usuario";
+            div.innerHTML = '<div class="mensaje-avatar"><img src="https://ui-avatars.com/api/?name=Usuario&background=ffd700&color=222" alt="Usuario"></div><div class="mensaje-texto">' + texto + '</div>';
+            historial.appendChild(div);
+            document.getElementById('mensajeTexto').value = '';
+            historial.scrollTop = historial.scrollHeight;
+          }
+        });
+        function cerrarDetalles() {
+          document.getElementById('detalleModal').style.display = 'none';
+        }
+      </script>
 </body>
+
 </html>

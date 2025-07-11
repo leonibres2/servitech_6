@@ -10,9 +10,9 @@ const {
   Notificacion,
   Conversacion,
   ConfiguracionSistema,
-  TransaccionPSE
-} = require('../models/models');
-const Categoria = require('../models/categorias');
+  TransaccionPSE,
+} = require("../models/models");
+const Categoria = require("../models/categorias");
 
 /**
  * 📋 Obtener todas las asesorías con filtros
@@ -21,30 +21,30 @@ const obtenerAsesorias = async (req, res) => {
   try {
     const {
       usuario,
-      rol = 'cliente',
+      rol = "cliente",
       estado,
       categoria,
       fechaDesde,
       fechaHasta,
       pagina = 1,
-      limite = 10
+      limite = 10,
     } = req.query;
 
     // Construir filtro base
     let filtro = {};
-    
+
     if (usuario) {
       filtro[rol] = usuario;
     }
-    
+
     if (estado) {
       filtro.estado = estado;
     }
-    
+
     if (categoria) {
       filtro.categoria = categoria;
     }
-    
+
     // Filtro por fechas
     if (fechaDesde || fechaHasta) {
       filtro.fechaHora = {};
@@ -59,10 +59,10 @@ const obtenerAsesorias = async (req, res) => {
     // Ejecutar consulta con paginación
     const skip = (pagina - 1) * limite;
     const asesorias = await Asesoria.find(filtro)
-      .populate('cliente', 'nombre apellido email avatar_url')
-      .populate('experto', 'nombre apellido email avatar_url especialidades')
-      .populate('categoria', 'nombre descripcion')
-      .populate('transaccionPago')
+      .populate("cliente", "nombre apellido email avatar_url")
+      .populate("experto", "nombre apellido email avatar_url especialidades")
+      .populate("categoria", "nombre descripcion")
+      .populate("transaccionPago")
       .sort({ fechaHora: -1 })
       .limit(parseInt(limite))
       .skip(skip);
@@ -77,16 +77,15 @@ const obtenerAsesorias = async (req, res) => {
         total,
         pagina: parseInt(pagina),
         limite: parseInt(limite),
-        totalPaginas: Math.ceil(total / limite)
-      }
+        totalPaginas: Math.ceil(total / limite),
+      },
     });
-
   } catch (error) {
-    console.error('Error obteniendo asesorías:', error);
+    console.error("Error obteniendo asesorías:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -99,29 +98,31 @@ const obtenerAsesoria = async (req, res) => {
     const { id } = req.params;
 
     const asesoria = await Asesoria.findById(id)
-      .populate('cliente', 'nombre apellido email avatar_url telefono')
-      .populate('experto', 'nombre apellido email avatar_url especialidades experto')
-      .populate('categoria', 'nombre descripcion')
-      .populate('transaccionPago');
+      .populate("cliente", "nombre apellido email avatar_url telefono")
+      .populate(
+        "experto",
+        "nombre apellido email avatar_url especialidades experto"
+      )
+      .populate("categoria", "nombre descripcion")
+      .populate("transaccionPago");
 
     if (!asesoria) {
       return res.status(404).json({
         success: false,
-        message: 'Asesoría no encontrada'
+        message: "Asesoría no encontrada",
       });
     }
 
     res.json({
       success: true,
-      data: asesoria
+      data: asesoria,
     });
-
   } catch (error) {
-    console.error('Error obteniendo asesoría:', error);
+    console.error("Error obteniendo asesoría:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -131,8 +132,11 @@ const obtenerAsesoria = async (req, res) => {
  */
 const crearAsesoria = async (req, res) => {
   try {
+    console.log("🟢 [crearAsesoria] Body recibido:", req.body);
+
+    // El clienteId siempre viene de la sesión
+    const clienteId = req.session?.usuarioId;
     const {
-      clienteId,
       expertoId,
       categoriaId,
       tipoServicio,
@@ -142,14 +146,14 @@ const crearAsesoria = async (req, res) => {
       duracion,
       precio,
       metodoPago,
-      requerimientos
+      requerimientos,
     } = req.body;
 
     // Validaciones básicas
     if (!clienteId || !expertoId || !categoriaId || !fechaHora || !precio) {
       return res.status(400).json({
         success: false,
-        message: 'Faltan campos obligatorios'
+        message: "Faltan campos obligatorios (o usuario no autenticado)",
       });
     }
 
@@ -161,25 +165,29 @@ const crearAsesoria = async (req, res) => {
     if (!cliente || !experto || !categoria) {
       return res.status(404).json({
         success: false,
-        message: 'Cliente, experto o categoría no encontrados'
+        message: "Cliente, experto o categoría no encontrados",
       });
     }
 
     if (!experto.es_experto) {
       return res.status(400).json({
         success: false,
-        message: 'El usuario seleccionado no es un experto'
+        message: "El usuario seleccionado no es un experto",
       });
     }
 
     // Verificar disponibilidad del experto
     const fechaCita = new Date(fechaHora);
-    const disponible = await verificarDisponibilidad(expertoId, fechaCita, duracion || 60);
-    
+    const disponible = await verificarDisponibilidad(
+      expertoId,
+      fechaCita,
+      duracion || 60
+    );
+
     if (!disponible) {
       return res.status(409).json({
         success: false,
-        message: 'El experto no está disponible en esa fecha y hora'
+        message: "El experto no está disponible en esa fecha y hora",
       });
     }
 
@@ -188,24 +196,24 @@ const crearAsesoria = async (req, res) => {
       cliente: clienteId,
       experto: expertoId,
       categoria: categoriaId,
-      tipoServicio: tipoServicio || 'asesoria-detallada',
+      tipoServicio: tipoServicio || "asesoria-detallada",
       titulo,
       descripcion,
       fechaHora: fechaCita,
       duracion: duracion || 60,
       precio,
-      metodoPago: metodoPago || 'tarjeta',
+      metodoPago: metodoPago || "tarjeta",
       requerimientos: requerimientos || {},
-      estado: 'pendiente-pago'
+      estado: "pendiente-pago",
     });
 
     await nuevaAsesoria.save();
 
     // Poblar datos para respuesta
     await nuevaAsesoria.populate([
-      { path: 'cliente', select: 'nombre apellido email' },
-      { path: 'experto', select: 'nombre apellido email' },
-      { path: 'categoria', select: 'nombre' }
+      { path: "cliente", select: "nombre apellido email" },
+      { path: "experto", select: "nombre apellido email" },
+      { path: "categoria", select: "nombre" },
     ]);
 
     // Crear conversación automática
@@ -217,37 +225,37 @@ const crearAsesoria = async (req, res) => {
 
     // Crear notificaciones
     await Notificacion.crearNotificacionAsesoria(
-      'nueva-asesoria',
+      "nueva-asesoria",
       clienteId,
       nuevaAsesoria._id,
       {
-        descripcionCorta: `Asesoría agendada para ${fechaCita.toLocaleDateString()}`
+        descripcionCorta: `Asesoría agendada para ${fechaCita.toLocaleDateString()}`,
       }
     );
 
     await Notificacion.crearNotificacionAsesoria(
-      'nueva-asesoria',
+      "nueva-asesoria",
       expertoId,
       nuevaAsesoria._id,
       {
-        titulo: 'Nueva solicitud de asesoría',
-        mensaje: 'Tienes una nueva solicitud de asesoría pendiente de confirmación.',
-        descripcionCorta: 'Nueva solicitud recibida'
+        titulo: "Nueva solicitud de asesoría",
+        mensaje:
+          "Tienes una nueva solicitud de asesoría pendiente de confirmación.",
+        descripcionCorta: "Nueva solicitud recibida",
       }
     );
 
     res.status(201).json({
       success: true,
-      message: 'Asesoría creada exitosamente',
-      data: nuevaAsesoria
+      message: "Asesoría creada exitosamente",
+      data: nuevaAsesoria,
     });
-
   } catch (error) {
-    console.error('Error creando asesoría:', error);
+    console.error("Error creando asesoría:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -261,11 +269,11 @@ const confirmarAsesoria = async (req, res) => {
     const { expertoId } = req.body;
 
     const asesoria = await Asesoria.findById(id);
-    
+
     if (!asesoria) {
       return res.status(404).json({
         success: false,
-        message: 'Asesoría no encontrada'
+        message: "Asesoría no encontrada",
       });
     }
 
@@ -273,20 +281,20 @@ const confirmarAsesoria = async (req, res) => {
     if (asesoria.experto.toString() !== expertoId) {
       return res.status(403).json({
         success: false,
-        message: 'No tienes permisos para confirmar esta asesoría'
+        message: "No tienes permisos para confirmar esta asesoría",
       });
     }
 
     // Solo se puede confirmar si está pagada
-    if (asesoria.estado !== 'pagada') {
+    if (asesoria.estado !== "pagada") {
       return res.status(400).json({
         success: false,
-        message: 'La asesoría debe estar pagada para poder confirmarla'
+        message: "La asesoría debe estar pagada para poder confirmarla",
       });
     }
 
     // Actualizar estado
-    asesoria.estado = 'confirmada';
+    asesoria.estado = "confirmada";
     asesoria._cambiadoPor = expertoId;
     await asesoria.save();
 
@@ -295,13 +303,13 @@ const confirmarAsesoria = async (req, res) => {
 
     // Notificar al cliente
     await Notificacion.crearNotificacionAsesoria(
-      'asesoria-confirmada',
+      "asesoria-confirmada",
       asesoria.cliente,
       asesoria._id,
       {
-        titulo: 'Asesoría confirmada',
-        mensaje: 'Tu asesoría ha sido confirmada por el experto.',
-        descripcionCorta: 'Asesoría confirmada'
+        titulo: "Asesoría confirmada",
+        mensaje: "Tu asesoría ha sido confirmada por el experto.",
+        descripcionCorta: "Asesoría confirmada",
       }
     );
 
@@ -310,16 +318,15 @@ const confirmarAsesoria = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Asesoría confirmada exitosamente',
-      data: asesoria
+      message: "Asesoría confirmada exitosamente",
+      data: asesoria,
     });
-
   } catch (error) {
-    console.error('Error confirmando asesoría:', error);
+    console.error("Error confirmando asesoría:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -330,25 +337,25 @@ const confirmarAsesoria = async (req, res) => {
 const cancelarAsesoria = async (req, res) => {
   try {
     const { id } = req.params;
-    const { usuarioId, motivo = '' } = req.body;
+    const { usuarioId, motivo = "" } = req.body;
 
     const asesoria = await Asesoria.findById(id);
-    
+
     if (!asesoria) {
       return res.status(404).json({
         success: false,
-        message: 'Asesoría no encontrada'
+        message: "Asesoría no encontrada",
       });
     }
 
     // Verificar permisos
     const esCliente = asesoria.cliente.toString() === usuarioId;
     const esExperto = asesoria.experto.toString() === usuarioId;
-    
+
     if (!esCliente && !esExperto) {
       return res.status(403).json({
         success: false,
-        message: 'No tienes permisos para cancelar esta asesoría'
+        message: "No tienes permisos para cancelar esta asesoría",
       });
     }
 
@@ -356,23 +363,24 @@ const cancelarAsesoria = async (req, res) => {
     if (!asesoria.puedeSerCancelada()) {
       return res.status(400).json({
         success: false,
-        message: 'No se puede cancelar la asesoría. Tiempo límite excedido (2 horas antes)'
+        message:
+          "No se puede cancelar la asesoría. Tiempo límite excedido (2 horas antes)",
       });
     }
 
     // Determinar nuevo estado
-    const nuevoEstado = esCliente ? 'cancelada-cliente' : 'cancelada-experto';
-    
+    const nuevoEstado = esCliente ? "cancelada-cliente" : "cancelada-experto";
+
     asesoria.estado = nuevoEstado;
     asesoria._cambiadoPor = usuarioId;
-    
+
     // Agregar observaciones al historial
     if (motivo) {
       asesoria.historialEstados.push({
         estado: nuevoEstado,
         fecha: new Date(),
         observaciones: motivo,
-        cambiadoPor: usuarioId
+        cambiadoPor: usuarioId,
       });
     }
 
@@ -380,41 +388,42 @@ const cancelarAsesoria = async (req, res) => {
 
     // Notificar a la otra parte
     const destinatarioId = esCliente ? asesoria.experto : asesoria.cliente;
-    const tituloNotificacion = esCliente ? 
-      'Asesoría cancelada por el cliente' : 
-      'Asesoría cancelada por el experto';
+    const tituloNotificacion = esCliente
+      ? "Asesoría cancelada por el cliente"
+      : "Asesoría cancelada por el experto";
 
     await Notificacion.crearNotificacionAsesoria(
-      'asesoria-cancelada',
+      "asesoria-cancelada",
       destinatarioId,
       asesoria._id,
       {
         titulo: tituloNotificacion,
-        mensaje: `La asesoría ha sido cancelada. ${motivo ? 'Motivo: ' + motivo : ''}`,
-        descripcionCorta: 'Asesoría cancelada'
+        mensaje: `La asesoría ha sido cancelada. ${
+          motivo ? "Motivo: " + motivo : ""
+        }`,
+        descripcionCorta: "Asesoría cancelada",
       }
     );
 
     // Si estaba pagada, iniciar proceso de reembolso
-    if (['pagada', 'confirmada'].includes(asesoria.estado)) {
+    if (["pagada", "confirmada"].includes(asesoria.estado)) {
       // Aquí se integraría con el sistema de pagos para reembolso
       // Por ahora solo cambiamos el estado
-      asesoria.estado = 'reembolsada';
+      asesoria.estado = "reembolsada";
       await asesoria.save();
     }
 
     res.json({
       success: true,
-      message: 'Asesoría cancelada exitosamente',
-      data: asesoria
+      message: "Asesoría cancelada exitosamente",
+      data: asesoria,
     });
-
   } catch (error) {
-    console.error('Error cancelando asesoría:', error);
+    console.error("Error cancelando asesoría:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -428,81 +437,86 @@ const iniciarAsesoria = async (req, res) => {
     const { usuarioId } = req.body;
 
     const asesoria = await Asesoria.findById(id);
-    
+
     if (!asesoria) {
       return res.status(404).json({
         success: false,
-        message: 'Asesoría no encontrada'
+        message: "Asesoría no encontrada",
       });
     }
 
     // Verificar permisos
-    const esParticipante = [asesoria.cliente.toString(), asesoria.experto.toString()]
-      .includes(usuarioId);
-    
+    const esParticipante = [
+      asesoria.cliente.toString(),
+      asesoria.experto.toString(),
+    ].includes(usuarioId);
+
     if (!esParticipante) {
       return res.status(403).json({
         success: false,
-        message: 'No tienes permisos para iniciar esta asesoría'
+        message: "No tienes permisos para iniciar esta asesoría",
       });
     }
 
     // Verificar estado
-    if (asesoria.estado !== 'confirmada') {
+    if (asesoria.estado !== "confirmada") {
       return res.status(400).json({
         success: false,
-        message: 'La asesoría debe estar confirmada para poder iniciarla'
+        message: "La asesoría debe estar confirmada para poder iniciarla",
       });
     }
 
     // Verificar tiempo (puede iniciarse hasta 15 minutos antes)
     const ahora = new Date();
-    const tiempoAntes = new Date(asesoria.fechaHora.getTime() - (15 * 60 * 1000));
-    
+    const tiempoAntes = new Date(asesoria.fechaHora.getTime() - 15 * 60 * 1000);
+
     if (ahora < tiempoAntes) {
       return res.status(400).json({
         success: false,
-        message: 'La asesoría solo puede iniciarse 15 minutos antes de la hora programada'
+        message:
+          "La asesoría solo puede iniciarse 15 minutos antes de la hora programada",
       });
     }
 
     // Actualizar estado
-    asesoria.estado = 'en-curso';
+    asesoria.estado = "en-curso";
     asesoria.videollamada.iniciadaEn = ahora;
     asesoria._cambiadoPor = usuarioId;
     await asesoria.save();
 
     // Notificar al otro participante
-    const otroParticipante = usuarioId === asesoria.cliente.toString() ? 
-      asesoria.experto : asesoria.cliente;
+    const otroParticipante =
+      usuarioId === asesoria.cliente.toString()
+        ? asesoria.experto
+        : asesoria.cliente;
 
     await Notificacion.crearNotificacionAsesoria(
-      'asesoria-iniciada',
+      "asesoria-iniciada",
       otroParticipante,
       asesoria._id,
       {
-        descripcionCorta: 'La asesoría ha comenzado'
+        descripcionCorta: "La asesoría ha comenzado",
       }
     );
 
     res.json({
       success: true,
-      message: 'Asesoría iniciada exitosamente',
+      message: "Asesoría iniciada exitosamente",
       data: {
         id: asesoria._id,
         estado: asesoria.estado,
-        enlaceVideollamada: usuarioId === asesoria.cliente.toString() ? 
-          asesoria.videollamada.enlaceCliente : 
-          asesoria.videollamada.enlaceExperto
-      }
+        enlaceVideollamada:
+          usuarioId === asesoria.cliente.toString()
+            ? asesoria.videollamada.enlaceCliente
+            : asesoria.videollamada.enlaceExperto,
+      },
     });
-
   } catch (error) {
-    console.error('Error iniciando asesoría:', error);
+    console.error("Error iniciando asesoría:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -516,11 +530,11 @@ const finalizarAsesoria = async (req, res) => {
     const { usuarioId, resumen, archivosEntregados = [] } = req.body;
 
     const asesoria = await Asesoria.findById(id);
-    
+
     if (!asesoria) {
       return res.status(404).json({
         success: false,
-        message: 'Asesoría no encontrada'
+        message: "Asesoría no encontrada",
       });
     }
 
@@ -528,57 +542,59 @@ const finalizarAsesoria = async (req, res) => {
     if (asesoria.experto.toString() !== usuarioId) {
       return res.status(403).json({
         success: false,
-        message: 'Solo el experto puede finalizar la asesoría'
+        message: "Solo el experto puede finalizar la asesoría",
       });
     }
 
     // Verificar estado
-    if (asesoria.estado !== 'en-curso') {
+    if (asesoria.estado !== "en-curso") {
       return res.status(400).json({
         success: false,
-        message: 'La asesoría debe estar en curso para poder finalizarla'
+        message: "La asesoría debe estar en curso para poder finalizarla",
       });
     }
 
     // Calcular tiempo efectivo
-    const tiempoEfectivo = asesoria.videollamada.iniciadaEn ? 
-      Math.round((Date.now() - asesoria.videollamada.iniciadaEn.getTime()) / (1000 * 60)) : 
-      asesoria.duracion;
+    const tiempoEfectivo = asesoria.videollamada.iniciadaEn
+      ? Math.round(
+          (Date.now() - asesoria.videollamada.iniciadaEn.getTime()) /
+            (1000 * 60)
+        )
+      : asesoria.duracion;
 
     // Actualizar estado y resultado
-    asesoria.estado = 'completada';
+    asesoria.estado = "completada";
     asesoria.videollamada.finalizadaEn = new Date();
     asesoria.resultado = {
-      resumen: resumen || '',
+      resumen: resumen || "",
       archivosEntregados,
-      tiempoEfectivo
+      tiempoEfectivo,
     };
     asesoria._cambiadoPor = usuarioId;
-    
+
     await asesoria.save();
 
     // Notificar al cliente
     await Notificacion.crearNotificacionAsesoria(
-      'asesoria-completada',
+      "asesoria-completada",
       asesoria.cliente,
       asesoria._id,
       {
-        descripcionCorta: 'Asesoría finalizada exitosamente'
+        descripcionCorta: "Asesoría finalizada exitosamente",
       }
     );
 
     res.json({
       success: true,
-      message: 'Asesoría finalizada exitosamente',
-      data: asesoria
+      message: "Asesoría finalizada exitosamente",
+      data: asesoria,
     });
-
   } catch (error) {
-    console.error('Error finalizando asesoría:', error);
+    console.error("Error finalizando asesoría:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -597,7 +613,7 @@ const obtenerEstadisticas = async (req, res) => {
 
     // Filtro base
     let filtro = {
-      fechaHora: { $gte: fechaInicio, $lte: fechaFin }
+      fechaHora: { $gte: fechaInicio, $lte: fechaFin },
     };
 
     if (usuarioId && rol) {
@@ -610,17 +626,17 @@ const obtenerEstadisticas = async (req, res) => {
     // Asesorías próximas
     const proximasQuery = { ...filtro };
     proximasQuery.fechaHora = { $gte: new Date() };
-    proximasQuery.estado = { $in: ['confirmada', 'en-curso'] };
-    
+    proximasQuery.estado = { $in: ["confirmada", "en-curso"] };
+
     const proximas = await Asesoria.find(proximasQuery)
-      .populate('cliente experto categoria')
+      .populate("cliente experto categoria")
       .sort({ fechaHora: 1 })
       .limit(5);
 
     // Conteos por estado
     const porEstado = await Asesoria.aggregate([
       { $match: filtro },
-      { $group: { _id: '$estado', total: { $sum: 1 } } }
+      { $group: { _id: "$estado", total: { $sum: 1 } } },
     ]);
 
     res.json({
@@ -629,16 +645,15 @@ const obtenerEstadisticas = async (req, res) => {
         estadisticas,
         proximasAsesorias: proximas,
         distribucionEstados: porEstado,
-        periodo: `${periodo} días`
-      }
+        periodo: `${periodo} días`,
+      },
     });
-
   } catch (error) {
-    console.error('Error obteniendo estadísticas:', error);
+    console.error("Error obteniendo estadísticas:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -654,12 +669,16 @@ const verificarDisponibilidadExperto = async (req, res) => {
     if (!fecha) {
       return res.status(400).json({
         success: false,
-        message: 'La fecha es requerida'
+        message: "La fecha es requerida",
       });
     }
 
     const fechaCita = new Date(fecha);
-    const disponible = await verificarDisponibilidad(expertoId, fechaCita, parseInt(duracion));
+    const disponible = await verificarDisponibilidad(
+      expertoId,
+      fechaCita,
+      parseInt(duracion)
+    );
 
     res.json({
       success: true,
@@ -667,16 +686,15 @@ const verificarDisponibilidadExperto = async (req, res) => {
         disponible,
         experto: expertoId,
         fecha: fechaCita,
-        duracion: parseInt(duracion)
-      }
+        duracion: parseInt(duracion),
+      },
     });
-
   } catch (error) {
-    console.error('Error verificando disponibilidad:', error);
+    console.error("Error verificando disponibilidad:", error);
     res.status(500).json({
       success: false,
-      message: 'Error interno del servidor',
-      error: error.message
+      message: "Error interno del servidor",
+      error: error.message,
     });
   }
 };
@@ -687,25 +705,30 @@ const verificarDisponibilidadExperto = async (req, res) => {
  * Verificar disponibilidad de un experto
  */
 async function verificarDisponibilidad(expertoId, fechaHora, duracion) {
-  const inicioVentana = new Date(fechaHora.getTime() - (duracion * 60 * 1000));
-  const finVentana = new Date(fechaHora.getTime() + (duracion * 60 * 1000));
+  const inicioVentana = new Date(fechaHora.getTime() - duracion * 60 * 1000);
+  const finVentana = new Date(fechaHora.getTime() + duracion * 60 * 1000);
 
   const conflictos = await Asesoria.find({
     experto: expertoId,
-    estado: { $in: ['pagada', 'confirmada', 'en-curso'] },
+    estado: { $in: ["pagada", "confirmada", "en-curso"] },
     $or: [
       {
-        fechaHora: { $gte: inicioVentana, $lte: finVentana }
+        fechaHora: { $gte: inicioVentana, $lte: finVentana },
       },
       {
         $expr: {
           $and: [
-            { $lte: ['$fechaHora', fechaHora] },
-            { $gte: [{ $add: ['$fechaHora', { $multiply: ['$duracion', 60000] }] }, fechaHora] }
-          ]
-        }
-      }
-    ]
+            { $lte: ["$fechaHora", fechaHora] },
+            {
+              $gte: [
+                { $add: ["$fechaHora", { $multiply: ["$duracion", 60000] }] },
+                fechaHora,
+              ],
+            },
+          ],
+        },
+      },
+    ],
   });
 
   return conflictos.length === 0;
@@ -716,48 +739,49 @@ async function verificarDisponibilidad(expertoId, fechaHora, duracion) {
  */
 async function programarRecordatorio(asesoria) {
   try {
-    const tiempoRecordatorio = await ConfiguracionSistema.findOne({ 
-      clave: 'notificaciones.recordatorio_default' 
+    const tiempoRecordatorio = await ConfiguracionSistema.findOne({
+      clave: "notificaciones.recordatorio_default",
     });
-    
+
     const minutos = tiempoRecordatorio ? tiempoRecordatorio.valor : 30;
-    const fechaRecordatorio = new Date(asesoria.fechaHora.getTime() - (minutos * 60 * 1000));
+    const fechaRecordatorio = new Date(
+      asesoria.fechaHora.getTime() - minutos * 60 * 1000
+    );
 
     // Crear notificaciones programadas para cliente y experto
     await Notificacion.crear({
       usuario: asesoria.cliente,
-      tipo: 'recordatorio',
-      titulo: 'Recordatorio de asesoría',
+      tipo: "recordatorio",
+      titulo: "Recordatorio de asesoría",
       mensaje: `Tu asesoría con ${asesoria.experto.nombre} está programada para dentro de ${minutos} minutos.`,
-      categoria: 'warning',
+      categoria: "warning",
       programada: {
         esProgramada: true,
-        fechaEnvio: fechaRecordatorio
+        fechaEnvio: fechaRecordatorio,
       },
       referencia: {
-        modelo: 'Asesoria',
-        id: asesoria._id
-      }
+        modelo: "Asesoria",
+        id: asesoria._id,
+      },
     });
 
     await Notificacion.crear({
       usuario: asesoria.experto,
-      tipo: 'recordatorio',
-      titulo: 'Recordatorio de asesoría',
+      tipo: "recordatorio",
+      titulo: "Recordatorio de asesoría",
       mensaje: `Tu asesoría con ${asesoria.cliente.nombre} está programada para dentro de ${minutos} minutos.`,
-      categoria: 'warning',
+      categoria: "warning",
       programada: {
         esProgramada: true,
-        fechaEnvio: fechaRecordatorio
+        fechaEnvio: fechaRecordatorio,
       },
       referencia: {
-        modelo: 'Asesoria',
-        id: asesoria._id
-      }
+        modelo: "Asesoria",
+        id: asesoria._id,
+      },
     });
-
   } catch (error) {
-    console.error('Error programando recordatorio:', error);
+    console.error("Error programando recordatorio:", error);
   }
 }
 
@@ -770,5 +794,5 @@ module.exports = {
   iniciarAsesoria,
   finalizarAsesoria,
   obtenerEstadisticas,
-  verificarDisponibilidadExperto
+  verificarDisponibilidadExperto,
 };

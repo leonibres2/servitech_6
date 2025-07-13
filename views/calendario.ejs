@@ -20,16 +20,26 @@
     <%- include('componentes/header') %>
 
         <main class="container mt-3">
-            <section>
-                <br>
-                <% if (typeof expertoSeleccionado !=='undefined' && expertoSeleccionado) { %>
-                    <h1 class="text-center mb-4">Agenda tu asesoría con <strong>
+            <section class="mb-4">
+                <% if (typeof expertoSeleccionado !== 'undefined' && expertoSeleccionado) { %>
+                    <h1 class="text-center fw-bold">
+                        Agenda tu asesoría con 
+                        <span class="text-primary">
                             <%= expertoSeleccionado.nombre || 'tu experto' %>
-                                <%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %>
-                        </strong><br>aquí</h1>
-                    <% } else { %>
-                        <h1 class="text-center mb-4">Agenda tu asesoría con tu experto<br>aquí</h1>
-                        <% } %>
+                            <%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %>
+                        </span>
+                    </h1>
+                    <p class="text-center mt-2" style="font-size: 1.15rem; font-weight: 500; color: #1a73e8;">
+                        Selecciona la fecha y hora que más te convenga para tu cita personalizada.
+                    </p>
+                <% } else { %>
+                    <h1 class="text-center fw-bold">
+                        Agenda tu asesoría con tu experto
+                    </h1>
+                    <p class="text-center mt-2" style="font-size: 1.15rem; font-weight: 500; color: #1a73e8;"></p>
+                        Selecciona la fecha y hora que más te convenga para tu cita personalizada.
+                    </p>
+                <% } %>
             </section>
             <br>
             <!-- Calendario -->

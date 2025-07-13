@@ -17,18 +17,235 @@
         <section class="hero-banner">
             <div class="banner-content">
                 <h1>Conocimiento experto a tu alcance</h1>
-                <p>Conéctate con profesionales en informática para recibir asesorías personalizadas y seguras.<br>
-                    ¿Eres experto? Comparte tu conocimiento, asesora por videollamada y gana dinero a tu ritmo.
-                    ¡Regístrate gratis a Servitech y transforma tu aprendizaje!</p>
+                <p>
+                    Accede a asesorías personalizadas y seguras con profesionales en informática.<br>
+                    ¿Eres experto? Comparte tu experiencia, asesora por videollamada y genera ingresos a tu ritmo.<br>
+                    ¡Regístrate gratis en Servitech y potencia tu aprendizaje!
+                </p>
                 <div class="banner-buttons">
-                    <a href="/expertos.html" class="btn btn-primary btn-lg">Buscar expertos</a>
-                    <a href="/registro.html" class="btn btn-secondary btn-lg">Convertirse en experto</a>
+                    <a href="/expertos.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-search"></i> Buscar expertos
+                    </a>
+                    <a href="/registro.html" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-user-plus"></i> Convertirse en experto
+                    </a>
                 </div>
             </div>
             <div class="banner-image">
-                <img src="/assets/img/cuadro-animado.gif" alt="Animación cubo azul" class="banner-gif">
+                <img src="/assets/img/cuadro-animado.gif" alt="Animación cubo azul" class="banner-gif" loading="lazy">
             </div>
         </section>
+        <style>
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2.2rem;
+                width: 100%;
+                align-items: stretch;
+            }
+
+            .feature-card {
+                background: var(--background);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 2rem 1.2rem 1.7rem 1.2rem;
+                text-align: center;
+                transition: box-shadow 0.22s, transform 0.18s;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                height: 100%;
+            }
+
+            .feature-icon i {
+                font-size: 2.4rem;
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+
+            .feature-card h3 {
+                font-size: 1.18rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                color: var(--text-color);
+            }
+
+            .feature-card p {
+                font-size: 1.02rem;
+                color: var(--text-secondary);
+            }
+
+            .feature-card:hover {
+                box-shadow: 0 8px 32px #3a8eff22, 0 2px 8px var(--primary-color);
+                transform: translateY(-6px) scale(1.03);
+            }
+
+            @media (max-width: 900px) {
+                .feature-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1.2rem;
+                }
+
+                .feature-card {
+                    padding: 1.3rem 0.7rem 1.1rem 0.7rem;
+                }
+
+                .feature-icon i {
+                    font-size: 1.7rem;
+                }
+
+                .feature-card h3 {
+                    font-size: 1rem;
+                }
+
+                .feature-card p {
+                    font-size: 0.93rem;
+                }
+            }
+
+            .hero-banner {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem 1rem;
+                background: var(--background);
+                gap: 2rem;
+            }
+
+            .banner-content {
+                flex: 1 1 320px;
+                min-width: 260px;
+                max-width: 500px;
+                text-align: center;
+                color: var(--text-color);
+            }
+
+            .banner-content h1 {
+                font-size: 2.2rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+                color: var(--primary-color);
+            }
+
+            .banner-content p {
+                font-size: 1.1rem;
+                margin-bottom: 1.5rem;
+                color: var(--text-secondary);
+            }
+
+            .banner-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 0.8rem;
+                align-items: center;
+            }
+
+            .banner-buttons .btn {
+                width: 90%;
+                max-width: 320px;
+                font-size: 1rem;
+                padding: 0.8rem 1.2rem;
+                border-radius: var(--btn-radius);
+                transition: var(--transition);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+                box-shadow: var(--btn-shadow);
+            }
+
+            .btn-primary {
+                background: var(--primary-color);
+                color: var(--text-color);
+                border: none;
+            }
+
+            .btn-primary:hover {
+                background: var(--primary-hover);
+            }
+
+            .btn-secondary {
+                background: var(--card-bg);
+                color: var(--primary-color);
+                border: 2px solid var(--primary-color);
+            }
+
+            .btn-secondary:hover {
+                background: var(--input-bg);
+            }
+
+            .banner-image {
+                flex: 1 1 220px;
+                min-width: 180px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .banner-gif {
+                width: 100%;
+                max-width: 260px;
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                background: var(--card-bg);
+            }
+
+            @media (max-width: 900px) {
+                .hero-banner {
+                    flex-direction: column;
+                    gap: 1.5rem;
+                    padding: 1.5rem 0.5rem;
+                }
+
+                .banner-content,
+                .banner-image {
+                    max-width: 100%;
+                }
+
+                .banner-content h1 {
+                    font-size: 1.6rem;
+                }
+
+                .banner-content p {
+                    font-size: 1rem;
+                }
+
+                .banner-gif {
+                    max-width: 180px;
+                }
+
+                .banner-buttons .btn {
+                    font-size: 0.95rem;
+                    padding: 0.7rem 1rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .hero-banner {
+                    padding: 1rem 0.2rem;
+                }
+
+                .banner-content h1 {
+                    font-size: 1.2rem;
+                }
+
+                .banner-content p {
+                    font-size: 0.95rem;
+                }
+
+                .banner-buttons .btn {
+                    font-size: 0.9rem;
+                    padding: 0.6rem 0.8rem;
+                }
+
+                .banner-gif {
+                    max-width: 120px;
+                }
+            }
+        </style>
 
         <section class="categories">
             <div class="section-header">
@@ -68,6 +285,117 @@
                 </div>
             </div>
         </section>
+        <style>
+            .categories {
+                width: 100%;
+                padding: 2.5rem 1.5rem;
+                background: var(--card-bg);
+            }
+
+            .categories .section-header {
+                text-align: center;
+                margin-bottom: 2.2rem;
+            }
+
+            .category-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2.2rem;
+                width: 100%;
+                align-items: stretch;
+            }
+
+            .category-card {
+                background: var(--background);
+                border-radius: var(--border-radius);
+                box-shadow: var(--card-shadow);
+                padding: 2rem 1.2rem 1.7rem 1.2rem;
+                text-align: center;
+                transition: box-shadow 0.22s, transform 0.18s;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                height: 100%;
+            }
+
+            .category-card i {
+                font-size: 2.4rem;
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+
+            .category-card h3 {
+                font-size: 1.18rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+                color: var(--text-color);
+            }
+
+            .category-card p {
+                font-size: 1.02rem;
+                color: var(--text-secondary);
+            }
+
+            .category-card:hover {
+                box-shadow: 0 8px 32px #3a8eff22, 0 2px 8px var(--primary-color);
+                transform: translateY(-6px) scale(1.03);
+            }
+
+            @media (max-width: 1200px) {
+                .category-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 1.5rem;
+                }
+
+                .category-card {
+                    padding: 1.3rem 0.7rem 1.1rem 0.7rem;
+                }
+
+                .category-card i {
+                    font-size: 1.7rem;
+                }
+            }
+
+            @media (max-width: 800px) {
+                .categories {
+                    padding: 1.2rem 0.3rem;
+                }
+
+                .category-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
+                }
+
+                .category-card {
+                    padding: 1rem 0.5rem;
+                }
+
+                .category-card i {
+                    font-size: 1.3rem;
+                }
+
+                .category-card h3 {
+                    font-size: 1rem;
+                }
+
+                .category-card p {
+                    font-size: 0.93rem;
+                }
+            }
+
+            @media (max-width: 500px) {
+                .category-grid {
+                    grid-template-columns: 1fr;
+                    gap: 0.7rem;
+                }
+
+                .category-card {
+                    padding: 0.8rem 0.3rem;
+                }
+            }
+        </style>
 
         <section class="features">
             <div class="section-header">
@@ -119,8 +447,9 @@
         </main>
         <!-- Footer -->
         <%- include('componentes/footer') %>
-        <script src="/assets/js/common.js"></script>
-        <!-- Script de prueba para autenticación (remover en producción) -->
-        <script src="assets/js/test-auth.js"></script>
+            <script src="/assets/js/common.js"></script>
+            <!-- Script de prueba para autenticación (remover en producción) -->
+            <script src="assets/js/test-auth.js"></script>
 </body>
+
 </html>

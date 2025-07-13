@@ -219,10 +219,12 @@
                         apellido: '<%= expertoSeleccionado.apellido || "" %>',
                         especialidad: '<%= expertoSeleccionado.especialidad || "Consultoría Técnica" %>',
                         email: '<%= expertoSeleccionado.email || "" %>'
+
                     };
                     <% if (typeof categoriaSeleccionadaId !== 'undefined' && categoriaSeleccionadaId) { %>
                         window.categoriaSeleccionadaId = <% - JSON.stringify(categoriaSeleccionadaId) %>;
                     <% } %>
+                    
 
                         // Función para confirmar la cita
                         function confirmarCita() {

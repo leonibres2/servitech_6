@@ -104,7 +104,7 @@
 
                         <!-- Disponibilidad de horas  -->
                         <div class="time-slots">
-                            <h3>Horarios disponibles - 17 Mayo</h3>
+                            <h3>Horarios disponibles - <span id="selected-date-display">17 Mayo</span></h3>
                             <div class="slots-container">
                                 <div class="time-slot booked">09:00</div>
                                 <div class="time-slot">10:00</div>
@@ -165,11 +165,11 @@
                             <h3>Resumen de tu cita</h3>
                             <div class="summary-item">
                                 <div class="summary-label">Fecha: </div>
-                                <div class="summary-value"> 17 de Mayo 2025</div>
+                                <div class="summary-value" id="summary-date">17 de Mayo 2025</div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">Hora:</div>
-                                <div class="summary-value"> 11:00</div>
+                                <div class="summary-value" id="summary-time">11:00</div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label">Experto:</div>
@@ -225,40 +225,86 @@
                         window.categoriaSeleccionadaId = <% - JSON.stringify(categoriaSeleccionadaId) %>;
                     <% } %>
 
+                        // Variables para almacenar selección
+                        let fechaSeleccionada = '17 de Mayo 2025';
+                    let horaSeleccionada = '11:00';
 
-                        // Función para confirmar la cita
-                        function confirmarCita() {
-                            // Obtener la fecha y hora seleccionadas (por ahora estático, luego se hará dinámico)
-                            const fechaSeleccionada = '17 de Mayo 2025';
-                            const horaSeleccionada = '11:00';
-
-                            // Crear objeto con todos los datos de la cita
-                            const citaData = {
-                                experto: {
-                                    id: window.expertoSeleccionado.id,
-                                    nombre: window.expertoSeleccionado.nombre,
-                                    apellido: window.expertoSeleccionado.apellido,
-                                    especialidad: window.expertoSeleccionado.especialidad,
-                                    email: window.expertoSeleccionado.email
-                                },
-                                fecha: fechaSeleccionada,
-                                hora: horaSeleccionada,
-                                servicio: window.expertoSeleccionado.especialidad || 'Consultoría Técnica',
-                                duracion: '60 minutos',
-                                precio: '$20.000 COP'
-                            };
-
-                            // Guardar datos en localStorage para la pasarela (como espera el código existente)
-                            localStorage.setItem('citaSeleccionada', JSON.stringify(citaData));
-
-                            // También mantener en sessionStorage para compatibilidad
-                            sessionStorage.setItem('datosExperto', JSON.stringify(window.expertoSeleccionado));
-                            sessionStorage.setItem('fechaCita', fechaSeleccionada);
-                            sessionStorage.setItem('horaCita', horaSeleccionada);
-
-                            // Ir a la pasarela de pagos (ruta dinámica)
-                            window.location.href = `/expertos/${window.expertoSeleccionado.id}/pasarela-pagos`;
+                    // Función para confirmar la cita
+                    function confirmarCita() {
+                        // Validar que hay una hora seleccionada
+                        if (!horaSeleccionada) {
+                            alert('Por favor selecciona un horario disponible');
+                            return;
                         }
+
+                        // Crear objeto con todos los datos de la cita
+                        const citaData = {
+                            experto: {
+                                id: window.expertoSeleccionado.id,
+                                nombre: window.expertoSeleccionado.nombre,
+                                apellido: window.expertoSeleccionado.apellido,
+                                especialidad: window.expertoSeleccionado.especialidad,
+                                email: window.expertoSeleccionado.email
+                            },
+                            fecha: fechaSeleccionada,
+                            hora: horaSeleccionada,
+                            servicio: window.expertoSeleccionado.especialidad || 'Consultoría Técnica',
+                            duracion: '60 minutos',
+                            precio: '$20.000 COP'
+                        };
+
+                        // Guardar datos en localStorage para la pasarela
+                        localStorage.setItem('citaSeleccionada', JSON.stringify(citaData));
+
+                        // También mantener en sessionStorage para compatibilidad
+                        sessionStorage.setItem('datosExperto', JSON.stringify(window.expertoSeleccionado));
+                        sessionStorage.setItem('fechaCita', fechaSeleccionada);
+                        sessionStorage.setItem('horaCita', horaSeleccionada);
+
+                        // Ir a la pasarela de pagos (ruta dinámica)
+                        window.location.href = `/expertos/${window.expertoSeleccionado.id}/pasarela-pagos`;
+                    }
+
+                    // Event listeners para selección de fecha y hora (simplificado)
+                    document.addEventListener('DOMContentLoaded', function () {
+                        // Selección de fecha
+                        const days = document.querySelectorAll('.day:not(.inactive)');
+                        days.forEach(day => {
+                            day.addEventListener('click', function () {
+                                // Quitar selección anterior
+                                document.querySelectorAll('.day.selected').forEach(el => {
+                                    el.classList.remove('selected');
+                                });
+
+                                // Marcar nuevo día seleccionado
+                                this.classList.add('selected');
+
+                                // Actualizar fecha en el resumen
+                                const dayNumber = this.textContent;
+                                fechaSeleccionada = `${dayNumber} de Mayo 2025`;
+                                document.getElementById('summary-date').textContent = fechaSeleccionada;
+                                document.getElementById('selected-date-display').textContent = `${dayNumber} Mayo`;
+                            });
+                        });
+
+                        // Selección de hora
+                        const timeSlots = document.querySelectorAll('.time-slot:not(.booked)');
+                        timeSlots.forEach(slot => {
+                            slot.addEventListener('click', function () {
+                                // Quitar selección anterior
+                                document.querySelectorAll('.time-slot.selected').forEach(el => {
+                                    el.classList.remove('selected');
+                                });
+
+                                // Marcar nueva hora seleccionada
+                                this.classList.add('selected');
+
+                                // Actualizar hora en el resumen
+                                horaSeleccionada = this.textContent;
+                                document.getElementById('summary-time').textContent = horaSeleccionada;
+                            });
+                        });
+                    });
                 </script>
                 <% } else { %>
                     <script>

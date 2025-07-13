@@ -14,442 +14,382 @@
 <body>
     <!-- Header -->
     <%- include('componentes/header') %>
+
         <section class="hero-banner">
-            <div class="banner-content">
-                <h1>Conocimiento experto a tu alcance</h1>
-                <p>
-                    Accede a asesorías personalizadas y seguras con profesionales en informática.<br>
-                    ¿Eres experto? Comparte tu experiencia, asesora por videollamada y genera ingresos a tu ritmo.<br>
-                    ¡Regístrate gratis en Servitech y potencia tu aprendizaje!
-                </p>
-                <div class="banner-buttons">
-                    <a href="/expertos.html" class="btn btn-primary btn-lg">
-                        <i class="fas fa-search"></i> Buscar expertos
+            <div class="banner-container">
+                <div class="banner-content">
+                    <h1>Conecta con expertos en tecnología</h1>
+                    <p class="highlight-text">
+                        Plataforma líder para asesorías personalizadas en informática y desarrollo.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Asesoría 1:1 con profesionales certificados</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-video"></i>
+                            <span>Sesiones por videollamada seguras</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-coins"></i>
+                            <span>Genera ingresos compartiendo tu conocimiento</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-search"></i>
+                            <span>Encuentra expertos</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a href="/expertos.html" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Buscar expertos
+                        </a>
+                        <a href="/registro.html" class="btn btn-secondary">
+                            <i class="fas fa-user-plus"></i> Registrarse como experto
+                        </a>
+                    </div>
+
+                    <div class="trust-features">
+                        <div class="trust-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Plataforma segura</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Horarios flexibles</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="banner-image">
+                    <img src="/assets/img/cuadro-animado.gif" alt="Animación cubo azul" class="banner-gif"
+                        loading="lazy">
+                </div>
+            </div>
+        </section>
+
+        <section class="expert-categories">
+            <div class="expert-categories-container">
+                <div class="categories-header">
+                    <h2>Explora nuestras categorías</h2>
+                    <p class="categories-subtitle">Encuentra expertos en las principales áreas de tecnología</p>
+                </div>
+
+                <div class="expert-categories-grid">
+                    <!-- Fila 1 - 3 columnas -->
+                    <div class="expert-categories-row">
+                        <div class="expert-category-card">
+                            <h3>Programación</h3>
+                            <p>Desarrollo web, móvil y de software</p>
+                            <span class="experts-counter">18 expertos</span>
+                        </div>
+
+                        <div class="expert-category-card">
+                            <h3>Bases de datos</h3>
+                            <p>SQL, NoSQL, administración</p>
+                            <span class="experts-counter">15 expertos</span>
+                        </div>
+
+                        <div class="expert-category-card">
+                            <h3>Redes</h3>
+                            <p>Configuración y seguridad</p>
+                            <span class="experts-counter">12 expertos</span>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2 - 3 columnas -->
+                    <div class="expert-categories-row">
+                        <div class="expert-category-card">
+                            <h3>Ciberseguridad</h3>
+                            <p>Protección y auditorías</p>
+                            <span class="experts-counter">20 expertos</span>
+                        </div>
+
+                        <div class="expert-category-card">
+                            <h3>Cloud Computing</h3>
+                            <p>AWS, Azure, Google Cloud</p>
+                            <span class="experts-counter">22 expertos</span>
+                        </div>
+
+                        <div class="expert-category-card">
+                            <h3>Inteligencia Artificial</h3>
+                            <p>ML y análisis de datos</p>
+                            <span class="experts-counter">25 expertos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-categories">
+            <div class="categories-container">
+                <div class="section-header">
+                    <h2>Encuentra expertos en las principales áreas de tecnología</h2>
+                </div>
+
+                <div class="categories-grid">
+                    <!-- Fila 1 -->
+                    <div class="category-group">
+                        <div class="category-card">
+                            <h3>Programación</h3>
+                            <p>Desarrollo web, móvil y de software</p>
+                            <div class="expert-count">18 expertos</div>
+                        </div>
+
+                        <div class="category-card">
+                            <h3>Bases de datos</h3>
+                            <p>SQL, NoSQL, administración</p>
+                            <div class="expert-count">15 expertos</div>
+                        </div>
+
+                        <div class="category-card">
+                            <h3>Redes</h3>
+                            <p>Configuración y seguridad</p>
+                            <div class="expert-count">12 expertos</div>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2 -->
+                    <div class="category-group">
+                        <div class="category-card">
+                            <h3>Ciberseguridad</h3>
+                            <p>Protección y auditorías</p>
+                            <div class="expert-count">20 expertos</div>
+                        </div>
+
+                        <div class="category-card">
+                            <h3>Cloud Computing</h3>
+                            <p>AWS, Azure, Google Cloud</p>
+                            <div class="expert-count">22 expertos</div>
+                        </div>
+
+                        <div class="category-card">
+                            <h3>Inteligencia Artificial</h3>
+                            <p>ML y análisis de datos</p>
+                            <div class="expert-count">25 expertos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="testimonials-container">
+                <div class="section-header">
+                    <h2>Testimonios</h2>
+                    <p class="section-description">Lo que dicen nuestros usuarios</p>
+                </div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <span class="quote-icon">“</span>
+                            <div class="testimonial-text">
+                                <p>Gracias a Servitech encontré un experto que me ayudó a aprobar mi proyecto final.
+                                    ¡100% recomendado!</p>
+                            </div>
+                        </div>
+                        <div class="user-info">
+                            <div class="user-avatar">L</div>
+                            <div class="user-details">
+                                <span class="user-name">Laura G.</span>
+                                <span class="user-role">Estudiante de Ingeniería</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <span class="quote-icon">“</span>
+                            <div class="testimonial-text">
+                                <p>La plataforma es muy fácil de usar y los expertos son realmente profesionales.</p>
+                            </div>
+                        </div>
+                        <div class="user-info">
+                            <div class="user-avatar">A</div>
+                            <div class="user-details">
+                                <span class="user-name">Andrés P.</span>
+                                <span class="user-role">Desarrollador Junior</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <span class="quote-icon">“</span>
+                            <div class="testimonial-text">
+                                <p>Me gustó la rapidez y la seguridad en los pagos. Volveré a usarla.</p>
+                            </div>
+                        </div>
+                        <div class="user-info">
+                            <div class="user-avatar">C</div>
+                            <div class="user-details">
+                                <span class="user-name">Camila R.</span>
+                                <span class="user-role">Freelancer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq">
+            <div class="faq-container">
+                <div class="section-header">
+                    <h2>Preguntas frecuentes</h2>
+                    <p class="section-description">Resuelve tus dudas sobre cómo funciona Servitech</p>
+                </div>
+
+                <div class="faq-accordion">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <div class="faq-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <span class="faq-title">¿Cómo me registro como experto?</span>
+                            <div class="faq-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Haz clic en <strong>"Convertirse en experto"</strong>, completa el formulario y nuestro
+                                equipo verificará tu perfil para que puedas comenzar a asesorar.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <div class="faq-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <span class="faq-title">¿Es seguro el pago?</span>
+                            <div class="faq-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Sí, todos los pagos se procesan mediante pasarelas certificadas y tus datos están
+                                protegidos con tecnología de cifrado.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <div class="faq-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <span class="faq-title">¿Puedo recibir asesoría en cualquier horario?</span>
+                            <div class="faq-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Servitech cuenta con expertos disponibles <strong>24/7</strong>. Puedes agendar tu
+                                asesoría según la disponibilidad del experto que elijas.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <div class="faq-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <span class="faq-title">¿Las asesorías son por videollamada?</span>
+                            <div class="faq-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Sí, puedes elegir la plataforma de videollamada que prefieras (Google Meet, Teams, Zoom,
+                                etc.) para tu sesión.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <div class="faq-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <span class="faq-title">¿Qué hago si tengo un problema con mi asesoría?</span>
+                            <div class="faq-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Contáctanos a través del soporte 24/7 y te ayudaremos a resolver cualquier inconveniente
+                                rápidamente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-improved">
+            <div class="cta-improved-content">
+                <h2>Transforma tu futuro en tecnología</h2>
+                <p>Únete a la comunidad Servitech y accede a mentorías personalizadas, networking con profesionales y
+                    recursos exclusivos para acelerar tu carrera en informática.</p>
+
+                <div class="cta-improved-actions">
+                    <a href="/registro.html" class="action-btn primary-action">
+                        <i class="fas fa-rocket"></i> Comienza gratis hoy
                     </a>
-                    <a href="/registro.html" class="btn btn-secondary btn-lg">
-                        <i class="fas fa-user-plus"></i> Convertirse en experto
+                    <a href="/demo.html" class="action-btn secondary-action">
+                        <i class="fas fa-play-circle"></i> Ver demostración
                     </a>
                 </div>
-            </div>
-            <div class="banner-image">
-                <img src="/assets/img/cuadro-animado.gif" alt="Animación cubo azul" class="banner-gif" loading="lazy">
-            </div>
-        </section>
-        <style>
-            .feature-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2.2rem;
-                width: 100%;
-                align-items: stretch;
-            }
 
-            .feature-card {
-                background: var(--background);
-                border-radius: var(--border-radius);
-                box-shadow: var(--card-shadow);
-                padding: 2rem 1.2rem 1.7rem 1.2rem;
-                text-align: center;
-                transition: box-shadow 0.22s, transform 0.18s;
-                min-width: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                height: 100%;
-            }
-
-            .feature-icon i {
-                font-size: 2.4rem;
-                color: var(--primary-color);
-                margin-bottom: 1rem;
-            }
-
-            .feature-card h3 {
-                font-size: 1.18rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                color: var(--text-color);
-            }
-
-            .feature-card p {
-                font-size: 1.02rem;
-                color: var(--text-secondary);
-            }
-
-            .feature-card:hover {
-                box-shadow: 0 8px 32px #3a8eff22, 0 2px 8px var(--primary-color);
-                transform: translateY(-6px) scale(1.03);
-            }
-
-            @media (max-width: 900px) {
-                .feature-grid {
-                    grid-template-columns: 1fr;
-                    gap: 1.2rem;
-                }
-
-                .feature-card {
-                    padding: 1.3rem 0.7rem 1.1rem 0.7rem;
-                }
-
-                .feature-icon i {
-                    font-size: 1.7rem;
-                }
-
-                .feature-card h3 {
-                    font-size: 1rem;
-                }
-
-                .feature-card p {
-                    font-size: 0.93rem;
-                }
-            }
-
-            .hero-banner {
-                display: flex;
-                flex-wrap: wrap;
-                align-items: center;
-                justify-content: center;
-                padding: 2rem 1rem;
-                background: var(--background);
-                gap: 2rem;
-            }
-
-            .banner-content {
-                flex: 1 1 320px;
-                min-width: 260px;
-                max-width: 500px;
-                text-align: center;
-                color: var(--text-color);
-            }
-
-            .banner-content h1 {
-                font-size: 2.2rem;
-                font-weight: 700;
-                margin-bottom: 1rem;
-                color: var(--primary-color);
-            }
-
-            .banner-content p {
-                font-size: 1.1rem;
-                margin-bottom: 1.5rem;
-                color: var(--text-secondary);
-            }
-
-            .banner-buttons {
-                display: flex;
-                flex-direction: column;
-                gap: 0.8rem;
-                align-items: center;
-            }
-
-            .banner-buttons .btn {
-                width: 90%;
-                max-width: 320px;
-                font-size: 1rem;
-                padding: 0.8rem 1.2rem;
-                border-radius: var(--btn-radius);
-                transition: var(--transition);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                box-shadow: var(--btn-shadow);
-            }
-
-            .btn-primary {
-                background: var(--primary-color);
-                color: var(--text-color);
-                border: none;
-            }
-
-            .btn-primary:hover {
-                background: var(--primary-hover);
-            }
-
-            .btn-secondary {
-                background: var(--card-bg);
-                color: var(--primary-color);
-                border: 2px solid var(--primary-color);
-            }
-
-            .btn-secondary:hover {
-                background: var(--input-bg);
-            }
-
-            .banner-image {
-                flex: 1 1 220px;
-                min-width: 180px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .banner-gif {
-                width: 100%;
-                max-width: 260px;
-                border-radius: var(--border-radius);
-                box-shadow: var(--card-shadow);
-                background: var(--card-bg);
-            }
-
-            @media (max-width: 900px) {
-                .hero-banner {
-                    flex-direction: column;
-                    gap: 1.5rem;
-                    padding: 1.5rem 0.5rem;
-                }
-
-                .banner-content,
-                .banner-image {
-                    max-width: 100%;
-                }
-
-                .banner-content h1 {
-                    font-size: 1.6rem;
-                }
-
-                .banner-content p {
-                    font-size: 1rem;
-                }
-
-                .banner-gif {
-                    max-width: 180px;
-                }
-
-                .banner-buttons .btn {
-                    font-size: 0.95rem;
-                    padding: 0.7rem 1rem;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .hero-banner {
-                    padding: 1rem 0.2rem;
-                }
-
-                .banner-content h1 {
-                    font-size: 1.2rem;
-                }
-
-                .banner-content p {
-                    font-size: 0.95rem;
-                }
-
-                .banner-buttons .btn {
-                    font-size: 0.9rem;
-                    padding: 0.6rem 0.8rem;
-                }
-
-                .banner-gif {
-                    max-width: 120px;
-                }
-            }
-        </style>
-
-        <section class="categories">
-            <div class="section-header">
-                <h2>Categorías disponibles</h2>
-                <p class="section-description">Encuentra expertos en diversas áreas de la informática</p>
-            </div>
-            <div class="category-grid">
-                <div class="category-card">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>Programación</h3>
-                    <p>Desarrollo web, apps, software</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-database"></i>
-                    <h3>Bases de datos</h3>
-                    <p>SQL, NoSQL, administración</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-network-wired"></i>
-                    <h3>Redes</h3>
-                    <p>Configuración, seguridad, solución de problemas</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Ciberseguridad</h3>
-                    <p>Protección de datos, auditorías</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-cloud"></i>
-                    <h3>Cloud Computing</h3>
-                    <p>AWS, Azure, Google Cloud</p>
-                </div>
-                <div class="category-card">
-                    <i class="fas fa-robot"></i>
-                    <h3>Inteligencia Artificial</h3>
-                    <p>Machine Learning, análisis de datos</p>
-                </div>
-            </div>
-        </section>
-        <style>
-            .categories {
-                width: 100%;
-                padding: 2.5rem 1.5rem;
-                background: var(--card-bg);
-            }
-
-            .categories .section-header {
-                text-align: center;
-                margin-bottom: 2.2rem;
-            }
-
-            .category-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 2.2rem;
-                width: 100%;
-                align-items: stretch;
-            }
-
-            .category-card {
-                background: var(--background);
-                border-radius: var(--border-radius);
-                box-shadow: var(--card-shadow);
-                padding: 2rem 1.2rem 1.7rem 1.2rem;
-                text-align: center;
-                transition: box-shadow 0.22s, transform 0.18s;
-                min-width: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                height: 100%;
-            }
-
-            .category-card i {
-                font-size: 2.4rem;
-                color: var(--primary-color);
-                margin-bottom: 1rem;
-            }
-
-            .category-card h3 {
-                font-size: 1.18rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                color: var(--text-color);
-            }
-
-            .category-card p {
-                font-size: 1.02rem;
-                color: var(--text-secondary);
-            }
-
-            .category-card:hover {
-                box-shadow: 0 8px 32px #3a8eff22, 0 2px 8px var(--primary-color);
-                transform: translateY(-6px) scale(1.03);
-            }
-
-            @media (max-width: 1200px) {
-                .category-grid {
-                    grid-template-columns: repeat(2, 1fr);
-                    gap: 1.5rem;
-                }
-
-                .category-card {
-                    padding: 1.3rem 0.7rem 1.1rem 0.7rem;
-                }
-
-                .category-card i {
-                    font-size: 1.7rem;
-                }
-            }
-
-            @media (max-width: 800px) {
-                .categories {
-                    padding: 1.2rem 0.3rem;
-                }
-
-                .category-grid {
-                    grid-template-columns: 1fr;
-                    gap: 1rem;
-                }
-
-                .category-card {
-                    padding: 1rem 0.5rem;
-                }
-
-                .category-card i {
-                    font-size: 1.3rem;
-                }
-
-                .category-card h3 {
-                    font-size: 1rem;
-                }
-
-                .category-card p {
-                    font-size: 0.93rem;
-                }
-            }
-
-            @media (max-width: 500px) {
-                .category-grid {
-                    grid-template-columns: 1fr;
-                    gap: 0.7rem;
-                }
-
-                .category-card {
-                    padding: 0.8rem 0.3rem;
-                }
-            }
-        </style>
-
-        <section class="features">
-            <div class="section-header">
-                <h2>¿Por qué elegir Servitech?</h2>
-                <p class="section-description">La plataforma que conecta expertos con estudiantes</p>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-video"></i>
+                <div class="cta-improved-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span>Acceso inmediato</span>
                     </div>
-                    <h3>Videollamadas privadas</h3>
-                    <p>Reúnete con tu asesor en la plataforma que más te guste como meet o teams.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
+                    <div class="feature-card active">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span>Plataforma segura</span>
                     </div>
-                    <h3>Soporte 24/7</h3>
-                    <p>Si necesitas resolver alguna duda o problema, tenemos soporte los 7 días de la
-                        semana.<br>¡Estaremos encantados de atenderte!</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-lock"></i>
+                    <div class="feature-card active">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span>Comunidad activa</span>
                     </div>
-                    <h3>Pagos seguros</h3>
-                    <p>Todos los pagos que se realizan dentro de nuestra plataforma se efectúan a través de pasarelas de
-                        pago totalmente seguras.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                    <h3>Expertos verificados</h3>
-                    <p>Todos nuestros expertos pasan por un riguroso proceso de verificación para garantizar la mejor
-                        calidad en las asesorías.</p>
                 </div>
             </div>
         </section>
 
-        <section class="cta">
-            <div class="cta-content">
-                <h2>¿Listo para comenzar?</h2>
-                <p>¡Únete a nuestra comunidad de expertos y estudiantes y transforma tu futuro y aprendizaje!</p>
-                <a href="/registro.html" class="btn btn-light btn-lg">Registrarse ahora</a>
-            </div>
-        </section>
         </main>
         <!-- Footer -->
         <%- include('componentes/footer') %>
             <script src="/assets/js/common.js"></script>
+
             <!-- Script de prueba para autenticación (remover en producción) -->
             <script src="assets/js/test-auth.js"></script>
+
+            <script>
+                // FAQ Accordion Functionality
+                document.querySelectorAll('.faq-question').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const expanded = button.getAttribute('aria-expanded') === 'true';
+                        button.setAttribute('aria-expanded', !expanded);
+
+                        // Close other open items
+                        if (!expanded) {
+                            document.querySelectorAll('.faq-question').forEach(otherButton => {
+                                if (otherButton !== button) {
+                                    otherButton.setAttribute('aria-expanded', 'false');
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
 </body>
 
 </html>

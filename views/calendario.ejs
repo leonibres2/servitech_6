@@ -220,10 +220,9 @@
                         especialidad: '<%= expertoSeleccionado.especialidad || "Consultoría Técnica" %>',
                         email: '<%= expertoSeleccionado.email || "" %>'
                     };
-        // Inyectar también el id de la categoría si está disponible
-        <% if (typeof categoriaSeleccionadaId !== 'undefined' && categoriaSeleccionadaId) { %>
-                        window.categoriaSeleccionadaId = '<%= categoriaSeleccionadaId %>';
-        <% } %>
+                    <% if (typeof categoriaSeleccionadaId !== 'undefined' && categoriaSeleccionadaId) { %>
+                        window.categoriaSeleccionadaId = <% - JSON.stringify(categoriaSeleccionadaId) %>;
+                    <% } %>
 
                         // Función para confirmar la cita
                         function confirmarCita() {

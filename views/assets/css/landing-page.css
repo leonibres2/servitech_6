@@ -18,7 +18,7 @@
   flex-wrap: wrap;
   gap: 2rem;
   max-width: var(--content-max-width);
-  margin: 0 auto;
+  margin: 1.5rem auto 2.5rem auto;
   padding: 0 1.5rem;
   box-sizing: border-box;
 }
@@ -176,6 +176,9 @@
 }
 
 @media (max-width: 768px) {
+  .banner-image {
+    display: none;
+  }
   .hero-banner {
     padding: 2rem 0;
   }
@@ -233,7 +236,6 @@
     font-size: 1.8rem;
   }
 }
-
 
 /* =========================
   EXPERT CATEGORIES SECTION - UNIQUE VARIABLES
@@ -407,7 +409,6 @@
     transform: scaleX(0);
   }
 }
-
 
 /* =========================
   TESTIMONIALS SECTION - IMPROVED
@@ -636,7 +637,11 @@
 .section-header h2 {
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   margin-bottom: 0.8rem;
-  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--accent-color)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -761,21 +766,21 @@
   .faq {
     padding: 3rem 0;
   }
-  
+
   .faq-question {
     padding: 1rem;
   }
-  
+
   .faq-icon {
     width: 26px;
     height: 26px;
     margin-right: 0.8rem;
   }
-  
+
   .faq-title {
     font-size: 1rem;
   }
-  
+
   .faq-question[aria-expanded="true"] + .faq-answer {
     padding: 0 1rem 1rem 3.5rem;
   }
@@ -785,28 +790,27 @@
   .faq {
     padding: 2rem 0;
   }
-  
+
   .section-header {
     margin-bottom: 2rem;
   }
-  
+
   .faq-question {
     padding: 0.9rem;
   }
-  
+
   .faq-title {
     font-size: 0.95rem;
   }
-  
+
   .faq-answer p {
     font-size: 0.9rem;
   }
-  
+
   .faq-question[aria-expanded="true"] + .faq-answer {
     padding: 0 0.8rem 0.8rem 3rem;
   }
 }
-
 
 /* =========================
       IMPROVED CTA SECTION
@@ -1002,7 +1006,6 @@
   }
 }
 
-
 /* =========================
   TECH CATEGORIES SECTION - TABLE STYLE
   ========================= */
@@ -1089,11 +1092,11 @@
   .category-group {
     grid-template-columns: 1fr;
   }
-  
+
   .category-card {
     padding: 1.2rem;
   }
-  
+
   .section-header h2 {
     font-size: 1.6rem;
   }

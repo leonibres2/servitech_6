@@ -30,9 +30,10 @@
       box-shadow: 0 4px 24px rgba(58, 142, 255, 0.10), 0 1.5px 4px rgba(0, 0, 0, 0.04);
       padding: 32px 28px 18px 28px;
       width: 100%;
-      max-width: 420px;
+      max-width: 600px;
       min-width: 320px;
       margin: 0 auto;
+      transition: max-width 0.3s;
     }
 
     .mensajes-container h1 {
@@ -183,7 +184,8 @@
             <button type="button" id="videoCallBtn" title="Videollamada"
               style="background:#fff;color:#3a8eff;border:1.5px solid #3a8eff;padding:0 12px;font-size:1.2em;display:flex;align-items:center;gap:0.5em;"><i
                 class="fas fa-video"></i></button>
-            <button type="submit"><i class="fas fa-paper-plane"></i> Enviar</button>
+            <button type="submit" style="margin-left:12px;padding-left:22px;padding-right:22px;"><i
+                class="fas fa-paper-plane"></i> Enviar</button>
           </form>
           <!-- Modal de videollamada Jitsi -->
           <div id="videoCallModal"

@@ -53,12 +53,21 @@
   flex-grow: 1; /* Permite que ocupen el espacio disponible */
 }
 
+
 .mobile-menu-toggle {
   display: none;
   font-size: 1.5rem;
   color: var(--text-secondary);
   cursor: pointer;
   transition: color 0.3s ease;
+}
+
+@media (max-width: 992px) {
+  .mobile-menu-toggle {
+    display: block;
+    position: relative;
+    z-index: 1001;
+  }
 }
 
 .mobile-menu-toggle:hover {
@@ -69,6 +78,8 @@
   .navbar {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
+    min-height: 56px;
   }
 
   .logo {
@@ -94,29 +105,31 @@
   
   .nav-container {
     position: fixed;
-    top: var(--header-height);
+    top: var(--header-height, 56px);
     left: 0;
     right: 0;
-    width: 100%;
+    width: 100vw;
     background-color: var(--header-bg-color, #0f0f0f);
     backdrop-filter: blur(var(--header-blur, 0.3125rem));
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
     margin-left: 0;
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
     transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
-    z-index: 999;
+    z-index: 1001;
     order: 4;
     flex-basis: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
   
   .nav-container.active {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
+    pointer-events: auto;
   }
   
   .nav-links {

@@ -49,3 +49,15 @@
         </div>
     </nav>
 </header>
+<script>
+    // Inicializa el menú móvil tras el render del header
+    if (typeof setupMobileMenu === 'function') {
+        setupMobileMenu();
+    } else {
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof setupMobileMenu === 'function') {
+                setupMobileMenu();
+            }
+        });
+    }
+</script>

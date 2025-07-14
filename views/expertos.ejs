@@ -1,123 +1,156 @@
 <!DOCTYPE html>
+<!-- Declaración del tipo de documento HTML5 -->
+
 <html lang="es">
+<!-- Inicio del documento HTML en español -->
 
 <head>
+  <!-- Metadatos y enlaces a recursos externos -->
   <meta charset="UTF-8" />
+  <!-- Codificación de caracteres UTF-8 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Diseño responsivo para dispositivos móviles -->
   <title>Expertos - Servitech</title>
+  <!-- Título de la pestaña del navegador -->
   <link rel="stylesheet" href="/assets/css/base.css" />
+  <!-- Estilos base de la aplicación -->
   <link rel="stylesheet" href="/assets/css/expertos.css" />
+  <!-- Estilos específicos para la página de expertos -->
   <link rel="stylesheet" href="/assets/css/componentes.css" />
+  <!-- Estilos para componentes reutilizables -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Iconos de Font Awesome -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Fuente Inter para mejorar la tipografía -->
 </head>
 
 <body>
-  <!-- Header -->
+  <!-- Cuerpo principal de la página -->
+
+  <!-- Header: barra superior de navegación -->
   <%- include('componentes/header') %>
 
     <main class="container">
-      <!-- Hero Section -->
+      <!-- Contenedor principal de la página -->
+
+      <!-- Hero Section: sección introductoria con título y descripción -->
       <section class="hero-section">
         <h1 class="hero-title">Encuentra tu Experto</h1>
+        <!-- Título principal de la página -->
         <p class="hero-subtitle">Filtra entre nuestros profesionales certificados para encontrar el que mejor se adapte
           a tus necesidades</p>
+        <!-- Descripción breve de la funcionalidad -->
       </section>
 
-      <!-- Filtros Sidebar y Lista de Expertos -->
+      <!-- Layout principal con filtros y lista de expertos -->
       <div class="expert-layout">
-        <!-- Sidebar de Filtros -->
+        <!-- Sidebar de Filtros: permite filtrar expertos por diferentes criterios -->
         <aside class="filter-sidebar">
           <div class="filter-card">
             <h3 class="filter-title">Filtrar Expertos</h3>
+            <!-- Título de la sección de filtros -->
             <form class="filter-form">
+              <!-- Formulario para aplicar filtros -->
               <div class="filter-group">
                 <label class="filter-label">Por nombre o especialización</label>
                 <input type="text" class="filter-input" placeholder="JavaScript, React, Bases de datos..." />
+                <!-- Campo de texto para buscar por nombre o especialidad -->
               </div>
-
               <div class="filter-group">
                 <label class="filter-label">Precio por hora</label>
                 <div class="price-range">
                   <input type="range" class="price-slider" min="10" max="100" step="5" value="20" />
                   <div class="price-value">$15 - $20</div>
+                  <!-- Slider para seleccionar rango de precio -->
                 </div>
               </div>
-
               <div class="filter-group">
                 <label class="filter-label">Disponibilidad</label>
                 <div class="availability-options">
                   <label class="availability-option">
                     <input type="checkbox" checked />
                     <span>Todos los horarios</span>
+                    <!-- Opción para mostrar todos los horarios -->
                   </label>
                   <label class="availability-option">
                     <input type="checkbox" />
                     <span>Diurna</span>
+                    <!-- Opción para disponibilidad diurna -->
                   </label>
                   <label class="availability-option">
                     <input type="checkbox" />
                     <span>Nocturna</span>
+                    <!-- Opción para disponibilidad nocturna -->
                   </label>
                 </div>
               </div>
-
               <div class="filter-group">
                 <label class="filter-label">Puntuación mínima</label>
                 <div class="rating-options">
                   <label class="rating-option">
                     <input type="radio" name="rating" checked />
                     <span>Todas las puntuaciones</span>
+                    <!-- Opción para mostrar todas las puntuaciones -->
                   </label>
                   <label class="rating-option">
                     <input type="radio" name="rating" />
                     <span>⭐⭐⭐⭐⭐ (5 estrellas)</span>
+                    <!-- Opción para mostrar solo expertos con 5 estrellas -->
                   </label>
                   <label class="rating-option">
                     <input type="radio" name="rating" />
                     <span>⭐⭐⭐⭐ (4+ estrellas)</span>
+                    <!-- Opción para mostrar expertos con 4 o más estrellas -->
                   </label>
                 </div>
               </div>
-
-              <!-- Botones de filtros mejorados -->
               <div class="filter-actions">
                 <button type="submit" class="btn btn-primary btn-apply">
                   <i class="fas fa-filter"></i> Aplicar filtros
+                  <!-- Botón para aplicar los filtros seleccionados -->
                 </button>
                 <button type="reset" class="btn btn-secondary btn-reset">
                   <i class="fas fa-undo"></i> Limpiar
+                  <!-- Botón para limpiar todos los filtros -->
                 </button>
               </div>
             </form>
           </div>
         </aside>
 
-        <!-- Lista de Expertos -->
+        <!-- Sección de lista de expertos -->
         <section class="expert-list-section">
           <div class="expert-list-header">
             <h2 class="expert-list-title">Expertos disponibles <span class="expert-count">(4 resultados)</span></h2>
+            <!-- Título y contador de expertos encontrados -->
             <div class="sort-options">
               <select class="sort-select">
                 <option>Mejor puntuados</option>
                 <option>Precio: menor a mayor</option>
                 <option>Precio: mayor a menor</option>
                 <option>Nombre (A-Z)</option>
+                <!-- Opciones para ordenar la lista de expertos -->
               </select>
             </div>
           </div>
 
           <div class="expert-grid">
+            <!-- Grid que contiene las tarjetas de expertos -->
+
             <!-- Tarjeta de Experto 1 -->
             <article class="expert-card">
               <div class="expert-card-header">
                 <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Camilo Martínez" class="expert-photo">
+                <!-- Foto del experto -->
                 <div class="expert-info">
                   <h3 class="expert-name">Camilo Martínez Fernández</h3>
+                  <!-- Nombre del experto -->
                   <p class="expert-specialty">Experto Servitech</p>
+                  <!-- Especialidad del experto -->
                   <div class="expert-rating">
                     <span class="rating-stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-value">5.0</span>
+                    <!-- Calificación del experto -->
                   </div>
                 </div>
               </div>
@@ -125,18 +158,21 @@
                 <p class="expert-description">
                   Especialización en desarrollo web y edición, con experiencia en React, Node.js y bases de datos. Más
                   de 5 años de experiencia en proyectos internacionales.
+                  <!-- Descripción del perfil y experiencia del experto -->
                 </p>
                 <div class="expert-skills">
                   <span class="skill-tag">Frontend</span>
                   <span class="skill-tag">Backend</span>
                   <span class="skill-tag">Fullstack</span>
+                  <!-- Etiquetas de habilidades principales del experto -->
                 </div>
               </div>
               <div class="expert-card-footer">
                 <div class="expert-price">$35/h</div>
-                <!-- Botón de ver perfil mejorado -->
+                <!-- Precio por hora del experto -->
                 <a href="/expertos/686a818a472f969f21baa8ba/calendario" class="btn btn-primary btn-profile">
                   <i class="fas fa-user-circle"></i> Ver perfil
+                  <!-- Botón para ver el perfil completo del experto -->
                 </a>
               </div>
             </article>
@@ -145,12 +181,16 @@
             <article class="expert-card">
               <div class="expert-card-header">
                 <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ana García" class="expert-photo">
+                <!-- Foto de la experta -->
                 <div class="expert-info">
                   <h3 class="expert-name">Ana García López</h3>
+                  <!-- Nombre de la experta -->
                   <p class="expert-specialty">Experta en UX/UI</p>
+                  <!-- Especialidad de la experta -->
                   <div class="expert-rating">
                     <span class="rating-stars">⭐⭐⭐⭐⭐</span>
                     <span class="rating-value">5.0</span>
+                    <!-- Calificación de la experta -->
                   </div>
                 </div>
               </div>
@@ -158,17 +198,21 @@
                 <p class="expert-description">
                   Especialista en diseño de experiencia de usuario e interfaces. Amplia experiencia en Figma, Adobe XD,
                   y prototipado. Enfoque en diseño centrado en el usuario.
+                  <!-- Descripción del perfil y experiencia de la experta -->
                 </p>
                 <div class="expert-skills">
                   <span class="skill-tag">UX Research</span>
                   <span class="skill-tag">UI Design</span>
                   <span class="skill-tag">Prototipado</span>
+                  <!-- Habilidades principales de la experta -->
                 </div>
               </div>
               <div class="expert-card-footer">
                 <div class="expert-price">$40/h</div>
+                <!-- Precio por hora de la experta -->
                 <a href="/expertos/686a818a472f969f21baa8ba/calendario" class="btn btn-primary btn-profile">
                   <i class="fas fa-user-circle"></i> Ver perfil
+                  <!-- Botón para ver el perfil completo de la experta -->
                 </a>
               </div>
             </article>
@@ -179,11 +223,13 @@
       </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer: pie de página con información adicional -->
     <%- include('componentes/footer') %>
 
       <script src="/assets/js/common.js"></script>
+      <!-- Script común para funcionalidades generales -->
       <script src="/assets/js/expertos.js"></script>
+      <!-- Script específico para la página de expertos -->
 </body>
 
 </html>

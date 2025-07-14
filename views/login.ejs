@@ -1,58 +1,96 @@
 <!DOCTYPE html>
+<!-- Declaración del tipo de documento HTML5 -->
+
 <html lang="es">
+<!-- Inicio del documento HTML en español -->
+
 <head>
+    <!-- Metadatos y enlaces a recursos externos -->
     <meta charset="UTF-8">
+    <!-- Codificación de caracteres UTF-8 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Diseño responsivo para dispositivos móviles -->
     <title>Iniciar sesión | Servitech</title>
+    <!-- Título de la pestaña del navegador -->
     <link rel="stylesheet" href="/assets/css/auth.css">
+    <!-- Estilos específicos para autenticación -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Iconos de Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fuente Inter para mejorar la tipografía -->
 </head>
+
 <body>
+    <!-- Cuerpo principal de la página -->
     <div class="auth-container">
+        <!-- Contenedor principal de autenticación -->
         <div class="auth-card">
+            <!-- Tarjeta de login -->
             <div class="auth-header">
+                <!-- Encabezado con logo y título -->
                 <img src="assets/img/logo.png" alt="logo" class="logo-img">
+                <!-- Logo de la empresa -->
                 <h1>Iniciar sesión</h1>
+                <!-- Título principal -->
                 <p class="subtitle">La plataforma de expertos en informática</p>
+                <!-- Subtítulo descriptivo -->
             </div>
             <div class="auth-form">
+                <!-- Formulario de login -->
                 <form id="loginForm" action="#" method="post">
+                    <!-- Formulario para iniciar sesión -->
                     <div class="input-group">
                         <label for="email">Correo electrónico</label>
+                        <!-- Etiqueta para el campo de email -->
                         <div class="input-wrapper">
                             <i class="fas fa-envelope input-icon"></i>
+                            <!-- Icono de email -->
                             <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
+                            <!-- Campo de email -->
                         </div>
                         <p class="error-message" id="emailError">Ingresa un correo electrónico válido</p>
+                        <!-- Mensaje de error para email -->
                     </div>
                     <div class="input-group">
                         <label for="password">Contraseña</label>
+                        <!-- Etiqueta para el campo de contraseña -->
                         <div class="input-wrapper">
                             <i class="fas fa-lock input-icon"></i>
-                            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
+                            <!-- Icono de contraseña -->
+                            <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña"
+                                required>
+                            <!-- Campo de contraseña -->
                             <i class="fas fa-eye-slash toggle-password"></i>
+                            <!-- Icono para mostrar/ocultar contraseña -->
                         </div>
                         <p class="error-message" id="passwordError">La contraseña debe tener al menos 8 caracteres</p>
+                        <!-- Mensaje de error para contraseña -->
                         <a href="recuperar-password.html" class="forgot-password">¿Olvidaste tu contraseña</a>
+                        <!-- Enlace para recuperar contraseña -->
                     </div>
                     <div class="remember-me">
+                        <!-- Opción para recordar usuario -->
                         <label class="checkbox-container">
                             <input type="checkbox" id="remember" name="remember">
                             <span class="checkmark"></span>
                             Recordarme
                         </label>
                     </div>
-                    <p class="error-message" id="loginError" style="text-align: center; margin-bottom: 10px;">Credenciales incorrectas. Verifica tu correo y contraseña.</p>
+                    <p class="error-message" id="loginError" style="text-align: center; margin-bottom: 10px;">
+                        Credenciales incorrectas. Verifica tu correo y contraseña.</p>
+                    <!-- Mensaje de error general de login -->
                     <button type="submit" class="auth-button">
                         <span>Iniciar sesión</span>
                         <i class="fas fa-arrow-right"></i>
+                        <!-- Botón para enviar el formulario -->
                     </button>
                 </form>
                 <div class="divider">
                     <span>O</span>
+                    <!-- Separador entre login tradicional y social -->
                 </div>
                 <div class="social-login">
+                    <!-- Botones para login social -->
                     <button class="google-login">
                         <i class="fab fa-google"></i>
                         <span>Continuar con Google</span>
@@ -64,13 +102,21 @@
                 </div>
             </div>
             <div class="auth-footer">
+                <!-- Pie de página de la tarjeta de login -->
                 <p>¿No tienes una cuenta? <a href="registro.html">Regístrate</a></p>
-                <p class="back-home"><a href="index.html"><i class="fas fa-long-arrow-alt-left"></i> Volver a la página principal</a></p>
+                <!-- Enlace para registro -->
+                <p class="back-home"><a href="index.html"><i class="fas fa-long-arrow-alt-left"></i> Volver a la página
+                        principal</a></p>
+                <!-- Enlace para volver al inicio -->
             </div>
         </div>
     </div>
     <script src="assets/js/common.js"></script>
+    <!-- Script común para funcionalidades generales -->
     <script src="assets/js/auth.js"></script>
+    <!-- Script específico para autenticación -->
     <script src="assets/js/login.js"></script>
+    <!-- Script específico para la página de login -->
 </body>
+
 </html>

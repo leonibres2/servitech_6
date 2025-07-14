@@ -1,30 +1,51 @@
 <!DOCTYPE html>
+<!-- Declaración del tipo de documento HTML5 para asegurar compatibilidad y buenas prácticas -->
+
 <html lang="es">
+<!-- Indica que el contenido está en español -->
 
 <head>
+  <!-- Metadatos y enlaces a recursos externos para estilos y fuentes -->
   <meta charset="UTF-8" />
+  <!-- Codificación de caracteres para soportar caracteres especiales -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Permite que la página sea responsiva en dispositivos móviles -->
   <title>Pasarela de Pago | Servitech</title>
+  <!-- Título que aparece en la pestaña del navegador -->
   <link rel="stylesheet" href="/assets/css/base.css" />
+  <!-- Estilos base para toda la aplicación -->
   <link rel="stylesheet" href="/assets/css/pasarela-pagos.css" />
+  <!-- Estilos específicos para la página de pagos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Iconos vectoriales para mejorar la interfaz visual -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Fuente Inter para una mejor legibilidad y estética -->
 </head>
 
 <body>
   <div class="container">
+    <!-- Contenedor principal para centrar y dar formato a la página -->
     <div class="payment-container">
+      <!-- Contenedor específico para la sección de pago -->
       <% if (typeof expertoSeleccionado !=='undefined' && expertoSeleccionado && expertoSeleccionado.id) { %>
-        <a href="/expertos/<%= expertoSeleccionado.id %>/calendario" class="back-link"><i class="fas fa-arrow-left"></i>
-          Volver al calendario</a>
+        <a href="/expertos/<%= expertoSeleccionado.id %>/calendario" class="back-link">
+          <i class="fas fa-arrow-left"></i> Volver al calendario
+        </a>
+        <!-- Enlace para regresar al calendario del experto seleccionado -->
         <% } else { %>
-          <a href="/expertos.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver a expertos</a>
+          <a href="/expertos.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Volver a expertos
+          </a>
+          <!-- Enlace para regresar al listado de expertos si no hay experto seleccionado -->
           <% } %>
 
             <div class="payment-card">
+              <!-- Tarjeta principal que contiene todo el proceso de pago -->
               <div class="payment-header">
                 <img src="/assets/img/logo.png" alt="Servitech Logo" class="logo-img" />
+                <!-- Logo de la empresa para reforzar identidad -->
                 <h1>Pasarela de Pago</h1>
+                <!-- Título principal de la página de pago -->
                 <div class="service-info">
                   <% if (typeof expertoSeleccionado !=='undefined' && expertoSeleccionado) { %>
                     <p>
@@ -32,57 +53,76 @@
                           expertoSeleccionado.nombre %>
                           <%= expertoSeleccionado.apellido ? ' ' + expertoSeleccionado.apellido : '' %>
                     </p>
+                    <!-- Muestra la especialidad y nombre del experto seleccionado -->
                     <% } else { %>
                       <p>Pago de 1h de asesoría técnica</p>
+                      <!-- Mensaje genérico si no hay experto seleccionado -->
                       <% } %>
                         <div class="price">$20.000 COP</div>
+                        <!-- Monto a pagar por la asesoría -->
                 </div>
               </div>
 
               <div class="payment-steps">
+                <!-- Visualización de los pasos del proceso de pago -->
                 <div class="step active">
                   <div class="step-number">1</div>
                   <span class="step-text">Método de pago</span>
+                  <!-- Paso actual: selección del método de pago -->
                 </div>
                 <div class="step-line"></div>
                 <div class="step">
                   <div class="step-number">2</div>
                   <span class="step-text">Datos del pago</span>
+                  <!-- Paso siguiente: ingreso de datos del pago -->
                 </div>
                 <div class="step-line"></div>
                 <div class="step">
                   <div class="step-number">3</div>
                   <span class="step-text">Confirmación</span>
+                  <!-- Último paso: confirmación del pago -->
                 </div>
               </div>
 
               <div class="payment-body">
+                <!-- Cuerpo principal del formulario de pago -->
                 <form id="paymentMethodForm">
+                  <!-- Formulario para seleccionar método y datos de pago -->
+
                   <div class="input-group">
                     <label for="country">País</label>
+                    <!-- Etiqueta para el campo de país -->
                     <div class="input-wrapper">
                       <i class="fas fa-globe-americas input-icon"></i>
+                      <!-- Icono de país -->
                       <select id="country" name="country">
                         <option value="colombia" selected>Colombia</option>
+                        <!-- Solo Colombia disponible por defecto -->
                       </select>
                     </div>
                   </div>
 
                   <div class="input-group">
                     <label for="email">Correo electrónico</label>
+                    <!-- Etiqueta para el campo de email -->
                     <div class="input-wrapper">
                       <i class="fas fa-envelope input-icon"></i>
+                      <!-- Icono de email -->
                       <input type="email" id="email" name="email" placeholder="nombre@ejemplo.com" required />
+                      <!-- Campo para ingresar el correo electrónico -->
                     </div>
                     <p class="error-message" id="emailError">
                       Ingresa un correo electrónico válido
                     </p>
+                    <!-- Mensaje de error para email inválido -->
                   </div>
 
                   <div class="payment-method-section">
                     <h3>Elige tu método de pago:</h3>
+                    <!-- Título para la selección de método de pago -->
 
                     <div class="payment-methods">
+                      <!-- Lista de métodos de pago disponibles -->
                       <div class="payment-method" data-method="credit-card">
                         <div class="payment-method-icon">
                           <i class="fas fa-credit-card"></i>
@@ -95,9 +135,11 @@
                             <i class="fab fa-cc-visa"></i>
                             <i class="fab fa-cc-mastercard"></i>
                             <i class="fab fa-cc-amex"></i>
+                            <!-- Marcas de tarjetas aceptadas -->
                           </div>
                         </div>
                         <i class="fas fa-chevron-right payment-method-arrow"></i>
+                        <!-- Icono para indicar selección -->
                       </div>
 
                       <div class="payment-method" data-method="pse">
@@ -172,31 +214,32 @@
                   <!-- Formulario para Tarjeta de Crédito/Débito (inicialmente oculto) -->
                   <div id="creditCardForm" class="payment-detail-form" style="display: none">
                     <h3>Detalles de la tarjeta</h3>
-
+                    <!-- Título del formulario de tarjeta -->
                     <div class="input-group">
                       <label for="cardName">Nombre en la tarjeta</label>
                       <div class="input-wrapper">
                         <i class="fas fa-user input-icon"></i>
                         <input type="text" id="cardName" name="cardName" placeholder="Nombre como aparece en la tarjeta"
                           required />
+                        <!-- Campo para el nombre del titular de la tarjeta -->
                       </div>
                     </div>
-
                     <div class="input-group">
                       <label for="cardNumber">Número de tarjeta</label>
                       <div class="input-wrapper">
                         <i class="fas fa-credit-card input-icon"></i>
                         <input type="text" id="cardNumber" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX"
                           required />
+                        <!-- Campo para el número de la tarjeta -->
                       </div>
                     </div>
-
                     <div class="input-row">
                       <div class="input-group">
                         <label for="expiryDate">Fecha de vencimiento</label>
                         <div class="input-wrapper">
                           <i class="fas fa-calendar-alt input-icon"></i>
                           <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA" required />
+                          <!-- Campo para la fecha de vencimiento -->
                         </div>
                       </div>
                       <div class="input-group">
@@ -204,10 +247,10 @@
                         <div class="input-wrapper">
                           <i class="fas fa-lock input-icon"></i>
                           <input type="text" id="cvv" name="cvv" placeholder="CVV" required />
+                          <!-- Campo para el código de seguridad de la tarjeta -->
                         </div>
                       </div>
                     </div>
-
                     <div class="input-group">
                       <label for="cuotas">Número de cuotas</label>
                       <div class="input-wrapper">
@@ -218,6 +261,7 @@
                           <option value="6">6 cuotas</option>
                           <option value="12">12 cuotas</option>
                         </select>
+                        <!-- Selección de número de cuotas para el pago -->
                       </div>
                     </div>
                   </div>
@@ -252,6 +296,7 @@
                           <option value="coopcentral">Coopcentral</option>
                           <option value="otras">Otras entidades</option>
                         </select>
+                        <!-- Selección del banco para la transferencia PSE -->
                       </div>
                     </div>
 
@@ -264,6 +309,7 @@
                           <option value="natural">Persona Natural</option>
                           <option value="juridica">Persona Jurídica</option>
                         </select>
+                        <!-- Selección del tipo de persona (natural o jurídica) -->
                       </div>
                     </div>
 
@@ -279,6 +325,7 @@
                           <option value="nit">NIT</option>
                           <option value="pp">Pasaporte</option>
                         </select>
+                        <!-- Selección del tipo de documento -->
                       </div>
                     </div>
 
@@ -288,6 +335,7 @@
                         <i class="fas fa-hashtag input-icon"></i>
                         <input type="text" id="documentNumber" name="documentNumber"
                           placeholder="Ingresa tu número de documento" required />
+                        <!-- Campo para ingresar el número de documento -->
                       </div>
                     </div>
 
@@ -330,6 +378,7 @@
                       <div class="input-wrapper">
                         <i class="fas fa-phone input-icon"></i>
                         <input type="tel" id="nequiPhone" name="nequiPhone" placeholder="3001234567" required />
+                        <!-- Campo para el número de celular -->
                       </div>
                       <p class="input-help">
                         Ingresa tu número de celular registrado en Nequi
@@ -342,6 +391,7 @@
                         <i class="fas fa-lock input-icon"></i>
                         <input type="password" id="nequiPin" name="nequiPin" placeholder="••••" maxlength="4"
                           required />
+                        <!-- Campo para el PIN de Nequi -->
                       </div>
                       <p class="input-help">Tu PIN de 4 dígitos de la app Nequi</p>
                     </div>
@@ -406,6 +456,7 @@
                       <div class="input-wrapper">
                         <i class="fas fa-envelope input-icon"></i>
                         <input type="email" id="payuEmail" name="payuEmail" placeholder="correo@ejemplo.com" required />
+                        <!-- Campo para el email de confirmación -->
                       </div>
                       <p class="input-help">
                         Recibirás la confirmación del pago en este email
@@ -417,6 +468,7 @@
                       <div class="input-wrapper">
                         <i class="fas fa-id-card input-icon"></i>
                         <input type="text" id="payuDocument" name="payuDocument" placeholder="12345678" required />
+                        <!-- Campo para el número de documento -->
                       </div>
                       <p class="input-help">
                         Tu número de cédula o documento de identidad
@@ -505,6 +557,7 @@
                       <div class="input-wrapper">
                         <i class="fas fa-phone input-icon"></i>
                         <input type="tel" id="daviplataPhone" name="daviplataPhone" placeholder="3001234567" required />
+                        <!-- Campo para el número de celular -->
                       </div>
                       <p class="input-help">
                         Ingresa tu número registrado en Daviplata
@@ -517,6 +570,7 @@
                         <i class="fas fa-lock input-icon"></i>
                         <input type="password" id="daviplataPin" name="daviplataPin" placeholder="••••" maxlength="4"
                           required />
+                        <!-- Campo para el PIN de Daviplata -->
                       </div>
                       <p class="input-help">Tu PIN de seguridad de Daviplata</p>
                     </div>
@@ -612,21 +666,25 @@
                     <button type="button" id="continueBtn" class="btn btn-primary">
                       Continuar
                     </button>
+                    <!-- Botones para navegar entre los pasos del proceso de pago -->
                   </div>
 
-                  <!-- Sección de seguridad y garantías -->
                   <div class="payment-security">
+                    <!-- Sección de garantías y seguridad para el usuario -->
                     <div class="security-item">
                       <i class="fas fa-lock"></i>
                       <span>Pago seguro</span>
+                      <!-- Indica que la transacción es segura -->
                     </div>
                     <div class="security-item">
                       <i class="fas fa-shield-alt"></i>
                       <span>Datos encriptados</span>
+                      <!-- Indica que los datos están protegidos -->
                     </div>
                     <div class="security-item">
                       <i class="fas fa-check-circle"></i>
                       <span>Garantía Servitech</span>
+                      <!-- Refuerza la confianza en la plataforma -->
                     </div>
                   </div>
                 </form>
@@ -635,7 +693,9 @@
     </div>
   </div>
   <script src="/assets/js/common.js"></script>
+  <!-- Script común para funcionalidades generales (validaciones, menús, etc.) -->
   <script src="/assets/js/pasarela-pagos.js"></script>
+  <!-- Script específico para la lógica de la pasarela de pagos (mostrar formularios, validaciones, integración con APIs) -->
 </body>
 
 </html>

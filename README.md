@@ -4,12 +4,12 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-brightgreen.svg)](https://mongodb.com/)
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8.1-blue.svg)](https://socket.io/)
 [![Express](https://img.shields.io/badge/Express-5.1.0-lightgrey.svg)](https://expressjs.com/)
-[![License](https://img.shields.io/badge/L# Probar conexión API
+[![License]Probar conexión API
 curl http://localhost:3001/api/categorias
 # Debe retornar JSON con categorías
 
 # 5. Verificar Socket.IO
-curl http://localhost:3001/socket.io/
+
 # Debe retornar respuesta de Socket.IOMIT-yellow.svg)](LICENSE)
 
 **Sistema web profesional** para conectar usuarios con expertos en servicios técnicos informáticos, featuring **mensajería en tiempo real con Socket.IO**, **sistema avanzado de citas**, **pagos PSE integrados**, **panel de administración completo** y **arquitectura moderna escalable**.
@@ -66,8 +66,6 @@ npm start
 ### 🚀 **Acceso al Sistema**
 Una vez instalado, acceder a:
 - **🏠 Aplicación Principal:** http://localhost:3001
-- **👑 Panel Admin:** http://localhost:3001/admin
-- **📡 API REST:** http://localhost:3001/api
 - **🧪 Test Socket.IO:** Abrir `test_mensajeria_completa.html`
 
 > **⚠️ Nota Importante:** El sistema ahora opera en el **puerto 3001** (actualizado desde puerto 9999 para mejor estabilidad).
@@ -444,8 +442,6 @@ curl http://localhost:3001/api/categorias
 - **🏠 Página Principal:** http://localhost:3001
 - **👥 Lista de Expertos:** http://localhost:3001/expertos.html
 - **📅 Sistema de Citas:** http://localhost:3001/calendario.html
-- **👑 Panel de Administración:** http://localhost:3001/admin
-- **📡 API REST:** http://localhost:3001/api
 - **🧪 Test de Mensajería:** Abrir `test_mensajeria_completa.html` en navegador
 
 ---
@@ -932,15 +928,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ### **Diana Carolina Jiménez**
 - 🌐 **GitHub:** [@DianaJJ0](https://github.com/DianaJJ0)
-- 📧 **Email:** diana.jimenez@servitech.com
-- 💼 **LinkedIn:** [Diana Carolina Jiménez](https://linkedin.com/in/diana-jimenez)
-- 🐦 **Twitter:** [@DianaJJ_Dev](https://twitter.com/DianaJJ_Dev)
 
-### **🚀 ServiTech Team**
-- 📧 **Soporte:** soporte@servitech.com
-- 💬 **WhatsApp:** [+57 300 123 4567](https://wa.me/573001234567)
-- 🌐 **Website:** [https://servitech.com](https://servitech.com)
-- 📚 **Documentación:** [https://docs.servitech.com](https://docs.servitech.com)
 
 ---
 
@@ -1057,8 +1045,6 @@ README.md                             # Documentación actualizada
 #### **🌐 URLS FINALES OPERATIVAS:**
 
 - **🏠 Aplicación:** http://localhost:3001
-- **👑 Admin:** http://localhost:3001/admin
-- **📡 API:** http://localhost:3001/api
 - **📅 Calendario:** http://localhost:3001/expertos/1/calendario
 - **💳 Pagos:** http://localhost:3001/expertos/1/pasarela-pagos
 

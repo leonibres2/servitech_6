@@ -4,8 +4,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-brightgreen.svg)](https://mongodb.com/)
 [![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8.1-blue.svg)](https://socket.io/)
 [![Express](https://img.shields.io/badge/Express-5.1.0-lightgrey.svg)](https://expressjs.com/)
-[![License]Probar conexión API
-curl http://localhost:3001/api/categorias
+
 # Debe retornar JSON con categorías
 
 # 5. Verificar Socket.IO

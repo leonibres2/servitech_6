@@ -1,12 +1,21 @@
 /**
  * 💬 CONTROLADOR DE MENSAJERÍA EN TIEMPO REAL - SERVITECH
- * Gestiona todas las operaciones de mensajería y conversaciones
+ * Gestiona todas las operaciones de mensajería y conversaciones.
+ * Este archivo contiene la lógica para listar, crear, obtener, enviar, editar y eliminar mensajes y conversaciones en tiempo real.
  * Fecha: 6 de julio de 2025
+ *
+ * Cada método de la clase MensajeriaController está diseñado para interactuar con los modelos de la base de datos y manejar la lógica de negocio
+ * relacionada con la mensajería, incluyendo validaciones, control de acceso, paginación, notificaciones y estadísticas.
  */
 
+// Importa los modelos de mensajería desde el archivo correspondiente.
+// Conversacion: modelo que representa una conversación entre usuarios (individual o grupal).
+// Mensaje: modelo que representa los mensajes enviados dentro de una conversación.
 const { Conversacion, Mensaje } = require("../models/mensajeria");
+// Importa el modelo de usuarios para validar participantes y permisos.
 const { Usuario } = require("../models/models");
 
+// Define la clase controladora de mensajería, que agrupa todos los métodos estáticos para gestionar la mensajería en tiempo real.
 class MensajeriaController {
   // 📋 Listar conversaciones de un usuario
   static async listarConversaciones(req, res) {

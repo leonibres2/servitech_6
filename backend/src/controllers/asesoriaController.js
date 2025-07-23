@@ -1,33 +1,50 @@
 /**
  * 📅 CONTROLADOR DE ASESORÍAS - SERVITECH
- * Gestiona todas las operaciones relacionadas con asesorías/citas
+ * Gestiona todas las operaciones relacionadas con asesorías/citas.
+ * Este archivo contiene las funciones principales para crear, consultar, actualizar y cancelar asesorías.
  * Fecha: 6 de julio de 2025
+ *
+ * Cada función está diseñada para interactuar con los modelos de la base de datos y manejar la lógica de negocio
+ * relacionada con el ciclo de vida de una asesoría, incluyendo notificaciones, validaciones y control de estados.
  */
 
+// Importa los modelos principales desde el archivo centralizado de modelos.
+// Estos modelos representan las colecciones de la base de datos y permiten realizar operaciones CRUD sobre ellas.
 const {
-  Asesoria,
-  Usuario,
-  Notificacion,
-  Conversacion,
-  ConfiguracionSistema,
-  TransaccionPSE,
+  Asesoria, // Modelo de asesorías, almacena la información de cada cita/asesoría.
+  Usuario, // Modelo de usuarios, representa tanto a clientes como a expertos.
+  Notificacion, // Modelo para gestionar notificaciones del sistema.
+  Conversacion, // Modelo para manejar las conversaciones asociadas a asesorías.
+  ConfiguracionSistema, // Modelo para acceder a configuraciones globales del sistema.
+  TransaccionPSE, // Modelo para registrar transacciones de pago PSE.
 } = require("../models/models");
+// Importa el modelo de categorías, que permite clasificar las asesorías.
 const Categoria = require("../models/categorias");
 
 /**
  * 📋 Obtener todas las asesorías con filtros
+ * Esta función permite consultar asesorías aplicando filtros por usuario, rol, estado, categoría y rango de fechas.
+ * Implementa paginación para optimizar la consulta en grandes volúmenes de datos.
+ *
+ * Paso a paso:
+ * 1. Extrae los filtros desde la query del request.
+ * 2. Construye el objeto de filtro para la consulta.
+ * 3. Aplica filtros adicionales según los parámetros recibidos.
+ * 4. Realiza la consulta a la base de datos con paginación y poblado de referencias.
+ * 5. Devuelve los resultados junto con información de paginación.
  */
 const obtenerAsesorias = async (req, res) => {
   try {
+    // Extrae los parámetros de filtro y paginación desde la query del request.
     const {
-      usuario,
-      rol = "cliente",
-      estado,
-      categoria,
-      fechaDesde,
-      fechaHasta,
-      pagina = 1,
-      limite = 10,
+      usuario, // ID del usuario (cliente o experto) para filtrar asesorías asociadas.
+      rol = "cliente", // Rol del usuario (por defecto 'cliente'). Determina el campo a filtrar.
+      estado, // Estado de la asesoría (ej: 'pendiente', 'confirmada', etc).
+      categoria, // ID de la categoría para filtrar asesorías de una categoría específica.
+      fechaDesde, // Fecha de inicio del rango de búsqueda.
+      fechaHasta, // Fecha de fin del rango de búsqueda.
+      pagina = 1, // Número de página para paginación (por defecto 1).
+      limite = 10, // Cantidad de resultados por página (por defecto 10).
     } = req.query;
 
     // Construir filtro base

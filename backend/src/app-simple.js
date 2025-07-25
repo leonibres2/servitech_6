@@ -31,9 +31,9 @@ const MONGODB_URI =
 const PORT = process.env.PORT || 8080;
 
 // Muestra en consola información de arranque
-console.log("🔧 Iniciando servidor simplificado...");
-console.log("📊 Puerto:", PORT);
-console.log("🗄️ MongoDB URI:", MONGODB_URI);
+console.log("Iniciando servidor simplificado...");
+console.log("Puerto:", PORT);
+console.log("MongoDB URI:", MONGODB_URI);
 
 // ===============================
 // Conectar a MongoDB usando Mongoose
@@ -45,7 +45,7 @@ mongoose
   })
   .catch((err) => {
     // Si ocurre un error, lo muestra y termina el proceso
-    console.error("❌ Error al conectar a MongoDB:", err);
+    console.error("Error al conectar a MongoDB:", err);
     process.exit(1);
   });
 

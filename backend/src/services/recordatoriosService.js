@@ -1,5 +1,5 @@
 /**
- * ⏰ SISTEMA DE RECORDATORIOS - SERVITECH
+ * SISTEMA DE RECORDATORIOS - SERVITECH
  * Gestiona recordatorios automáticos para asesorías
  * Fecha: 6 de julio de 2025
  */
@@ -14,15 +14,15 @@ class SistemaRecordatorios {
   }
 
   /**
-   * 🚀 Inicializar sistema de recordatorios
+   * Inicializar sistema de recordatorios
    */
   async inicializar() {
     if (this.inicializado) {
-      console.log('⚠️ Sistema de recordatorios ya inicializado');
+      console.log('Sistema de recordatorios ya inicializado');
       return;
     }
 
-    console.log('🚀 Iniciando sistema de recordatorios...');
+    console.log('Iniciando sistema de recordatorios...');
 
     try {
       // Programar tarea cada 5 minutos para procesar notificaciones pendientes
@@ -52,22 +52,22 @@ class SistemaRecordatorios {
   }
 
   /**
-   * 🛑 Detener sistema de recordatorios
+   * Detener sistema de recordatorios
    */
   detener() {
-    console.log('🛑 Deteniendo sistema de recordatorios...');
+    console.log('Deteniendo sistema de recordatorios...');
     
     this.tareas.forEach((tarea, nombre) => {
       tarea.stop();
-      console.log(`📅 Tarea ${nombre} detenida`);
+      console.log(`Tarea ${nombre} detenida`);
     });
 
     this.inicializado = false;
-    console.log('✅ Sistema de recordatorios detenido');
+    console.log('Sistema de recordatorios detenido');
   }
 
   /**
-   * 📬 Procesar notificaciones programadas pendientes
+   * Procesar notificaciones programadas pendientes
    */
   async procesarNotificacionesPendientes() {
     try {
@@ -80,7 +80,7 @@ class SistemaRecordatorios {
         'programada.fechaEnvio': { $lte: ahora }
       }).populate('usuario', 'nombre apellido email');
 
-      console.log(`📬 Procesando ${notificacionesPendientes.length} notificaciones pendientes`);
+      console.log(`Procesando ${notificacionesPendientes.length} notificaciones pendientes`);
 
       for (const notificacion of notificacionesPendientes) {
         try {
@@ -92,17 +92,17 @@ class SistemaRecordatorios {
           await notificacion.save();
 
         } catch (error) {
-          console.error(`❌ Error enviando notificación ${notificacion._id}:`, error);
+          console.error(` Error enviando notificación ${notificacion._id}:`, error);
         }
       }
 
     } catch (error) {
-      console.error('❌ Error procesando notificaciones pendientes:', error);
+      console.error(' Error procesando notificaciones pendientes:', error);
     }
   }
 
   /**
-   * 🔍 Verificar asesorías próximas y crear recordatorios
+   *  Verificar asesorías próximas y crear recordatorios
    */
   async verificarAsesoriaProximas() {
     try {
@@ -139,7 +139,7 @@ class SistemaRecordatorios {
           await asesoria.save();
 
         } catch (error) {
-          console.error(`❌ Error creando recordatorios para asesoría ${asesoria._id}:`, error);
+          console.error(` Error creando recordatorios para asesoría ${asesoria._id}:`, error);
         }
       }
 
@@ -147,12 +147,12 @@ class SistemaRecordatorios {
       await this.verificarAsesoriasSinIniciar();
 
     } catch (error) {
-      console.error('❌ Error verificando asesorías próximas:', error);
+      console.error(' Error verificando asesorías próximas:', error);
     }
   }
 
   /**
-   * 📱 Crear recordatorios para una asesoría específica
+   * Crear recordatorios para una asesoría específica
    */
   async crearRecordatoriosAsesoria(asesoria, minutosAntes) {
     const tiempoRestante = Math.round((asesoria.fechaHora.getTime() - Date.now()) / (1000 * 60));
@@ -162,7 +162,7 @@ class SistemaRecordatorios {
       usuario: asesoria.cliente._id,
       tipo: 'recordatorio',
       categoria: 'warning',
-      titulo: '⏰ Recordatorio de asesoría',
+      titulo: ' Recordatorio de asesoría',
       mensaje: `Tu asesoría con ${asesoria.experto.nombre} ${asesoria.experto.apellido} está programada para dentro de ${tiempoRestante} minutos.`,
       descripcionCorta: `Asesoría en ${tiempoRestante} minutos`,
       icono: 'clock',
@@ -194,7 +194,7 @@ class SistemaRecordatorios {
       usuario: asesoria.experto._id,
       tipo: 'recordatorio',
       categoria: 'warning',
-      titulo: '⏰ Recordatorio de asesoría',
+      titulo: ' Recordatorio de asesoría',
       mensaje: `Tu asesoría con ${asesoria.cliente.nombre} ${asesoria.cliente.apellido} está programada para dentro de ${tiempoRestante} minutos.`,
       descripcionCorta: `Asesoría en ${tiempoRestante} minutos`,
       icono: 'clock',
@@ -221,11 +221,11 @@ class SistemaRecordatorios {
       }
     });
 
-    console.log(`✅ Recordatorios creados para asesoría ${asesoria.codigoAsesoria}`);
+    console.log(` Recordatorios creados para asesoría ${asesoria.codigoAsesoria}`);
   }
 
   /**
-   * 🔍 Verificar asesorías que no han iniciado a tiempo
+   *  Verificar asesorías que no han iniciado a tiempo
    */
   async verificarAsesoriasSinIniciar() {
     try {
@@ -256,31 +256,31 @@ class SistemaRecordatorios {
           }
         });
 
-        console.log(`⚠️ Asesoría ${asesoria.codigoAsesoria} marcada como no-show`);
+        console.log(` Asesoría ${asesoria.codigoAsesoria} marcada como no-show`);
       }
 
     } catch (error) {
-      console.error('❌ Error verificando asesorías sin iniciar:', error);
+      console.error(' Error verificando asesorías sin iniciar:', error);
     }
   }
 
   /**
-   * 📧 Enviar notificación (placeholder para integración real)
+   * Enviar notificación (placeholder para integración real)
    */
   async enviarNotificacion(notificacion) {
     // Aquí se integrarían los servicios reales de email, SMS, push, etc.
-    console.log(`📧 Enviando notificación: ${notificacion.titulo} a ${notificacion.usuario.nombre}`);
+    console.log(`Enviando notificación: ${notificacion.titulo} a ${notificacion.usuario.nombre}`);
 
     // Simular envío de email
     if (notificacion.canales.email.enviar) {
-      console.log(`📨 Email enviado a ${notificacion.usuario.email}`);
+      console.log(` Email enviado a ${notificacion.usuario.email}`);
       notificacion.canales.email.enviado = true;
       notificacion.canales.email.fechaEnvio = new Date();
     }
 
     // Simular envío de push
     if (notificacion.canales.push.enviar) {
-      console.log(`📱 Push notification enviada`);
+      console.log(` Push notification enviada`);
       notificacion.canales.push.enviado = true;
       notificacion.canales.push.fechaEnvio = new Date();
     }
@@ -290,7 +290,7 @@ class SistemaRecordatorios {
   }
 
   /**
-   * 🧹 Limpiar notificaciones antiguas
+   *  Limpiar notificaciones antiguas
    */
   async limpiarNotificacionesAntiguas() {
     try {
@@ -303,10 +303,10 @@ class SistemaRecordatorios {
         fechaCreacion: { $lte: treintaDiasAtras }
       });
 
-      console.log(`🧹 Limpieza: ${resultado.deletedCount} notificaciones antiguas eliminadas`);
+      console.log(` Limpieza: ${resultado.deletedCount} notificaciones antiguas eliminadas`);
 
     } catch (error) {
-      console.error('❌ Error limpiando notificaciones:', error);
+      console.error(' Error limpiando notificaciones:', error);
     }
   }
 

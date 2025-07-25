@@ -57,11 +57,11 @@ mongoose
     // Si la conexión es exitosa, muestra mensaje en consola
     console.log("Conectado a MongoDB:", MONGODB_URI);
 
-    // 🚀 Inicializar sistema de recordatorios (temporalmente deshabilitado)
+    // Inicializar sistema de recordatorios (temporalmente deshabilitado)
     // const sistemaRecordatorios = require('./services/recordatoriosService');
     // sistemaRecordatorios.inicializar()
-    //   .then(() => console.log('✅ Sistema de recordatorios iniciado'))
-    //   .catch(err => console.error('❌ Error iniciando recordatorios:', err));
+    //   .then(() => console.log('Sistema de recordatorios iniciado'))
+    //   .catch(err => console.error('Error iniciando recordatorios:', err));
 
     // 🔔 Inicializar sistema de notificaciones (temporalmente deshabilitado)
     // const notificacionesService = require('./services/notificacionesService');
@@ -105,19 +105,19 @@ app.use("/api/usuarios", userRoutes);
 const categoriasRoutes = require("./routes/categorias");
 const expertosRoutes = require("./routes/expertos");
 
-// 🏦 Importa las rutas de PSE (Pagos Seguros en Línea)
+// Importa las rutas de PSE (Pagos Seguros en Línea)
 const pseRoutes = require("./routes/pse");
 
-// 📅 Importa las rutas de asesorías y disponibilidad
+// Importa las rutas de asesorías y disponibilidad
 const asesoriasRoutes = require("./routes/asesorias");
 const disponibilidadRoutes = require("./routes/disponibilidad");
-// 🐞 Endpoint temporal para debug de asesorías
+// Endpoint temporal para debug de asesorías
 const asesoriasDebugRoutes = require("./routes/asesorias-debug");
 
-// 💬 Importa las rutas de mensajería
+// Importa las rutas de mensajería
 const mensajeriaRoutes = require("./routes/mensajeria");
 
-// 🐞 Endpoint temporal para debug de usuarios
+// Endpoint temporal para debug de usuarios
 const usuariosDebugRoutes = require("./routes/usuarios-debug");
 
 // ===============================

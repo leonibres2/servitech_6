@@ -1,5 +1,5 @@
 /**
- * 🚀 SERVICIO DE SOCKET.IO PARA MENSAJERÍA EN TIEMPO REAL - SERVITECH
+ * SERVICIO DE SOCKET.IO PARA MENSAJERÍA EN TIEMPO REAL - SERVITECH
  * Gestiona todas las conexiones y eventos de Socket.IO
  * Fecha: 6 de julio de 2025
  */
@@ -14,7 +14,7 @@ class SocketMensajeriaService {
     this.salas_conversaciones = new Map(); // Map de conversacionId -> Set de socketIds
   }
 
-  // 🚀 Inicializar Socket.IO
+  // Inicializar Socket.IO
   inicializar(server) {
     this.io = new Server(server, {
       cors: {
@@ -27,12 +27,12 @@ class SocketMensajeriaService {
     console.log('✅ Socket.IO para mensajería inicializado');
   }
 
-  // ⚙️ Configurar todos los eventos de Socket.IO
+  // Configurar todos los eventos de Socket.IO
   configurarEventos() {
     this.io.on('connection', (socket) => {
-      console.log(`🔌 Usuario conectado: ${socket.id}`);
+      console.log(`Usuario conectado: ${socket.id}`);
 
-      // 🔐 Autenticación del usuario
+      // Autenticación del usuario
       socket.on('autenticar', async (data) => {
         try {
           const { usuarioId, token } = data;
@@ -68,7 +68,7 @@ class SocketMensajeriaService {
         }
       });
 
-      // 💬 Unirse a una conversación específica
+      // Unirse a una conversación específica
       socket.on('unirse_conversacion', async (data) => {
         try {
           const { conversacionId } = data;
@@ -110,7 +110,7 @@ class SocketMensajeriaService {
             participantes_conectados: await this.obtenerParticipantesConectados(conversacionId)
           });
 
-          console.log(`👥 Usuario ${usuarioId} se unió a conversación ${conversacionId}`);
+          console.log(`Usuario ${usuarioId} se unió a conversación ${conversacionId}`);
 
         } catch (error) {
           console.error('Error al unirse a conversación:', error);
@@ -118,7 +118,7 @@ class SocketMensajeriaService {
         }
       });
 
-      // 📤 Enviar mensaje en tiempo real
+      // Enviar mensaje en tiempo real
       socket.on('enviar_mensaje', async (data) => {
         try {
           const { conversacionId, contenido, tipo = 'texto', respuestaA, prioridad = 'normal' } = data;
@@ -191,7 +191,7 @@ class SocketMensajeriaService {
             });
           }, 100);
 
-          console.log(`📨 Mensaje enviado en conversación ${conversacionId} por ${usuarioId}`);
+          console.log(`Mensaje enviado en conversación ${conversacionId} por ${usuarioId}`);
 
         } catch (error) {
           console.error('Error al enviar mensaje:', error);
@@ -199,7 +199,7 @@ class SocketMensajeriaService {
         }
       });
 
-      // 👁️ Marcar mensaje como leído
+      // Marcar mensaje como leído
       socket.on('marcar_leido', async (data) => {
         try {
           const { mensajeId, conversacionId } = data;
@@ -258,7 +258,7 @@ class SocketMensajeriaService {
         }
       });
 
-      // ⭐ Agregar reacción en tiempo real
+      // Agregar reacción en tiempo real
       socket.on('agregar_reaccion', async (data) => {
         try {
           const { mensajeId, tipo } = data;
@@ -287,7 +287,7 @@ class SocketMensajeriaService {
         }
       });
 
-      // 🔄 Salir de conversación
+      // Salir de conversación
       socket.on('salir_conversacion', async (data) => {
         try {
           const { conversacionId } = data;
@@ -314,7 +314,7 @@ class SocketMensajeriaService {
               timestamp: new Date().toISOString()
             });
 
-            console.log(`👋 Usuario ${usuarioId} salió de conversación ${conversacionId}`);
+            console.log(` Usuario ${usuarioId} salió de conversación ${conversacionId}`);
           }
 
         } catch (error) {
@@ -322,7 +322,7 @@ class SocketMensajeriaService {
         }
       });
 
-      // 🔌 Desconexión del usuario
+      // Desconexión del usuario
       socket.on('disconnect', async () => {
         try {
           const usuarioId = this.usuarios_conectados.get(socket.id);
@@ -354,7 +354,7 @@ class SocketMensajeriaService {
               }
             }
 
-            console.log(`🔌 Usuario desconectado: ${usuarioId} (${socket.id})`);
+            console.log(` Usuario desconectado: ${usuarioId} (${socket.id})`);
           }
 
         } catch (error) {
@@ -362,14 +362,14 @@ class SocketMensajeriaService {
         }
       });
 
-      // 🔧 Ping/Pong para mantener conexión
+      // Ping/Pong para mantener conexión
       socket.on('ping', () => {
         socket.emit('pong', { timestamp: new Date().toISOString() });
       });
     });
   }
 
-  // 👥 Unir usuario a todas sus conversaciones
+  // Unir usuario a todas sus conversaciones
   async unirUsuarioASusConversaciones(socket, usuarioId) {
     try {
       const conversaciones = await Conversacion.find({
@@ -392,14 +392,14 @@ class SocketMensajeriaService {
         await conversacion.actualizarEstadoConexion(usuarioId, true);
       }
 
-      console.log(`👥 Usuario ${usuarioId} unido a ${conversaciones.length} conversaciones`);
+      console.log(`Usuario ${usuarioId} unido a ${conversaciones.length} conversaciones`);
 
     } catch (error) {
       console.error('Error al unir a conversaciones:', error);
     }
   }
 
-  // 📡 Notificar cambio de estado de conexión
+  // Notificar cambio de estado de conexión
   notificarEstadoConexion(usuarioId, conectado) {
     this.io.emit('estado_usuario_cambiado', {
       usuarioId,
@@ -408,7 +408,7 @@ class SocketMensajeriaService {
     });
   }
 
-  // 👥 Obtener participantes conectados en una conversación
+  // Obtener participantes conectados en una conversación
   async obtenerParticipantesConectados(conversacionId) {
     try {
       const sockets = this.salas_conversaciones.get(conversacionId) || new Set();
@@ -429,7 +429,7 @@ class SocketMensajeriaService {
     }
   }
 
-  // 📤 Enviar notificación push a usuario específico
+  // Enviar notificación push a usuario específico
   enviarNotificacionAUsuario(usuarioId, notificacion) {
     // Buscar todos los sockets del usuario
     const socketsUsuario = [];
@@ -447,10 +447,10 @@ class SocketMensajeriaService {
       });
     });
 
-    console.log(`🔔 Notificación enviada a usuario ${usuarioId} (${socketsUsuario.length} dispositivos)`);
+    console.log(`Notificación enviada a usuario ${usuarioId} (${socketsUsuario.length} dispositivos)`);
   }
 
-  // 📊 Obtener estadísticas en tiempo real
+  // Obtener estadísticas en tiempo real
   obtenerEstadisticas() {
     return {
       usuariosConectados: this.usuarios_conectados.size,
@@ -460,7 +460,7 @@ class SocketMensajeriaService {
     };
   }
 
-  // 🚀 Obtener instancia de Socket.IO
+  // Obtener instancia de Socket.IO
   getIO() {
     return this.io;
   }

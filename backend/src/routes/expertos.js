@@ -84,7 +84,128 @@ router.get("/", async (req, res) => {
 });
 
 // ===============================
-// 📅 OBTENER CALENDARIO DE UN EXPERTO POR ID
+// � FILTRAR EXPERTOS
+// POST /api/expertos/filtrar
+// Filtra la lista de expertos según los criterios especificados
+router.post("/filtrar", async (req, res) => {
+  try {
+    const { search, precio, disponibilidad, rating, orderBy } = req.body;
+
+    // Construir query base
+    let query = Experto.find().populate("userId");
+
+    // Filtrar por búsqueda (nombre, especialidad o skills)
+    if (search) {
+      const searchRegex = new RegExp(search, "i");
+      query = query.or([
+        { especialidad: searchRegex },
+        { skills: searchRegex },
+        { "userId.nombre": searchRegex },
+        { "userId.apellido": searchRegex },
+      ]);
+    }
+
+    // Filtrar por precio
+    if (precio) {
+      const valorPrecio = parseInt(precio);
+      // Permitir un margen del 20% arriba y abajo del precio seleccionado
+      const precioMin = Math.floor(valorPrecio * 0.8);
+      const precioMax = Math.ceil(valorPrecio * 1.2);
+
+      query = query.where("precio").gte(precioMin).lte(precioMax);
+
+      console.log("Filtrando por precio en pesos:", {
+        precioSeleccionado: valorPrecio.toLocaleString("es-CO"),
+        precioMin: precioMin.toLocaleString("es-CO"),
+        precioMax: precioMax.toLocaleString("es-CO"),
+      });
+    }
+
+    // Filtrar por disponibilidad
+    if (disponibilidad && !disponibilidad.includes("Todos los horarios")) {
+      query = query.where("activo").equals(true);
+      // Aquí puedes agregar más lógica específica para horarios diurnos/nocturnos
+    }
+
+    // Filtrar por calificación
+    if (rating) {
+      let minRating = 0;
+      if (rating.includes("5 estrellas")) minRating = 5;
+      else if (rating.includes("4+ estrellas")) minRating = 4;
+
+      if (minRating > 0) {
+        query = query.where("calificacion.promedio").gte(minRating);
+      }
+    }
+
+    // Ejecutar query
+    let expertos = await query.lean();
+
+    // Formatear resultados
+    const expertosFormateados = expertos.map((experto) => ({
+      _id: experto._id,
+      nombre: experto.userId?.nombre || "Nombre no disponible",
+      apellido: experto.userId?.apellido || "",
+      usuario: experto.userId?.usuario || "Usuario no disponible",
+      foto: "/assets/img/default-avatar.png",
+      especialidad: experto.especialidad || "Especialista Servitech",
+      descripcion: experto.descripcion || "Descripción no disponible",
+      precio: experto.precio
+        ? `$${experto.precio.toLocaleString("es-CO")}`
+        : "Consultar precio",
+      skills: experto.skills || [],
+      activo: experto.activo !== false,
+      calificacion: {
+        promedio: Number(experto.calificacion?.promedio || 5.0),
+        total_reviews: experto.calificacion?.total_reviews || 0,
+        total: experto.calificacion?.total_reviews || 0,
+        estrellas: Math.round(experto.calificacion?.promedio || 5.0),
+      },
+    }));
+
+    // Ordenar resultados
+    if (orderBy) {
+      expertosFormateados.sort((a, b) => {
+        switch (orderBy) {
+          case "Mejor puntuados":
+            return b.calificacion.promedio - a.calificacion.promedio;
+          case "Precio: menor a mayor":
+            return (
+              parseFloat(a.precio.replace(/[^0-9]/g, "")) -
+              parseFloat(b.precio.replace(/[^0-9]/g, ""))
+            );
+          case "Precio: mayor a menor":
+            return (
+              parseFloat(b.precio.replace(/[^0-9]/g, "")) -
+              parseFloat(a.precio.replace(/[^0-9]/g, ""))
+            );
+          case "Nombre (A-Z)":
+            return `${a.nombre} ${a.apellido}`.localeCompare(
+              `${b.nombre} ${b.apellido}`
+            );
+          default:
+            return 0;
+        }
+      });
+    }
+
+    res.json({
+      success: true,
+      expertos: expertosFormateados,
+      total: expertosFormateados.length,
+    });
+  } catch (error) {
+    console.error("Error al filtrar expertos:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error al filtrar expertos",
+      error: error.message,
+    });
+  }
+});
+
+// ===============================
+// �📅 OBTENER CALENDARIO DE UN EXPERTO POR ID
 // GET /expertos/calendario/:id
 // Muestra la vista de calendario para agendar con un experto específico.
 router.get("/calendario/:id", async (req, res) => {

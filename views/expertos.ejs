@@ -59,9 +59,20 @@
               <div class="filter-group">
                 <label class="filter-label">Precio por hora</label>
                 <div class="price-range">
-                  <input type="range" class="price-slider" min="10" max="100" step="5" value="20" />
-                  <div class="price-value">$15 - $20</div>
-                  <!-- Slider para seleccionar rango de precio -->
+                  <div class="price-ranges">
+                    <label class="price-option">
+                      <input type="radio" name="precio" value="350" checked>
+                      Hasta $350.000 (24)
+                    </label>
+                    <label class="price-option">
+                      <input type="radio" name="precio" value="350-650">
+                      $350.000 a $650.000 (28)
+                    </label>
+                    <label class="price-option">
+                      <input type="radio" name="precio" value="650">
+                      Más de $650.000 (24)
+                    </label>
+                  </div>
                 </div>
               </div>
               <div class="filter-group">
@@ -237,6 +248,8 @@
       <!-- Script común para funcionalidades generales -->
       <script src="/assets/js/expertos.js"></script>
       <!-- Script específico para la página de expertos -->
+      <script src="/assets/js/expertos-filtros.js"></script>
+      <!-- Script para el manejo de filtros -->
 </body>
 
 </html>

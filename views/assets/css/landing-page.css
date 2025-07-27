@@ -146,20 +146,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, rgba(58,142,255,0.08) 0%, rgba(18,216,250,0.06) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(58, 142, 255, 0.08) 0%,
+    rgba(18, 216, 250, 0.06) 100%
+  );
   border-radius: 2rem;
-  box-shadow: 0 8px 32px rgba(58,142,255,0.10);
+  box-shadow: 0 8px 32px rgba(58, 142, 255, 0.1);
   padding: 1.2rem 1.2rem 1.2rem 1.2rem;
   margin: 0 0.5rem;
   transition: box-shadow 0.3s, background 0.3s;
 }
 
-
 .banner-image img {
   width: 100%;
   max-width: 320px;
   border-radius: 1.5rem;
-  box-shadow: 0 4px 24px rgba(58,142,255,0.13);
+  box-shadow: 0 4px 24px rgba(58, 142, 255, 0.13);
   animation: float 4s ease-in-out infinite;
   background: transparent;
   object-fit: cover;
@@ -167,7 +170,6 @@
   display: block;
   transition: box-shadow 0.3s, transform 0.3s;
 }
-
 
 @keyframes float {
   0% {
@@ -253,9 +255,24 @@
     font-size: 0.9rem;
   }
 }
+
+/* Ocultar animación cuando el ancho sea 996px o menos */
+@media (max-width: 1050px) {
+  .banner-image {
+    display: none !important;
+  }
+}
+
+/* Evitar que la pantalla se reduzca por debajo de 320px */
+body,
+.banner-container,
+.hero-banner {
+  min-width: 320px;
+}
+
 /* =========================
-  SECTION HEADER
-  ========================= */
+SECTION HEADER
+========================= */
 .section-header {
   text-align: center;
   max-width: 50rem;

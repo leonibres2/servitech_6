@@ -82,7 +82,7 @@ app.use(express.static(path.join(__dirname, "../../views")));
 // ===============================
 // Configura EJS como motor de vistas y define la carpeta de vistas
 // Cargar la versión del proyecto desde package.json
-const packageJson = require('../../package.json');
+const packageJson = require("../../package.json");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../../views"));
 
@@ -139,10 +139,18 @@ app.use("/expertos", expertosRoutes);
 
 // ===============================
 // Rutas para renderizar vistas EJS (cada una asocia una vista .ejs)
-app.get("/", (req, res) => res.render("index", { version: packageJson.version }));
-app.get("/expertos.html", (req, res) => res.render("expertos", { version: packageJson.version }));
-app.get("/registro.html", (req, res) => res.render("registro", { version: packageJson.version }));
-app.get("/login.html", (req, res) => res.render("login", { version: packageJson.version }));
+app.get("/", (req, res) =>
+  res.render("index", { version: packageJson.version })
+);
+app.get("/expertos.html", (req, res) =>
+  res.render("expertos", { version: packageJson.version })
+);
+app.get("/registro.html", (req, res) =>
+  res.render("registro", { version: packageJson.version })
+);
+app.get("/login.html", (req, res) =>
+  res.render("login", { version: packageJson.version })
+);
 app.get("/recuperar-password.html", (req, res) =>
   res.render("recuperar-password", { version: packageJson.version })
 );
@@ -150,13 +158,21 @@ app.get("/calendario.html", (req, res) =>
   res.render("calendario", {
     pageTitle: "Calendario - Agendar Cita",
     expertoSeleccionado: null,
-    version: packageJson.version
+    version: packageJson.version,
   })
 );
-app.get("/perfil.html", (req, res) => res.render("perfil", { version: packageJson.version }));
-app.get("/terminos.html", (req, res) => res.render("terminos", { version: packageJson.version }));
-app.get("/privacidad.html", (req, res) => res.render("privacidad", { version: packageJson.version }));
-app.get("/contacto.html", (req, res) => res.render("contacto", { version: packageJson.version }));
+app.get("/perfil.html", (req, res) =>
+  res.render("perfil", { version: packageJson.version })
+);
+app.get("/terminos.html", (req, res) =>
+  res.render("terminos", { version: packageJson.version })
+);
+app.get("/privacidad.html", (req, res) =>
+  res.render("privacidad", { version: packageJson.version })
+);
+app.get("/contacto.html", (req, res) =>
+  res.render("contacto", { version: packageJson.version })
+);
 app.get("/confirmacion-asesoria.html", (req, res) =>
   res.render("confirmacion-asesoria", { version: packageJson.version })
 );
@@ -164,7 +180,7 @@ app.get("/pasarela-pagos.html", (req, res) =>
   res.render("pasarela-pagos", {
     pageTitle: "Pasarela de Pago - Servitech",
     expertoSeleccionado: null,
-    version: packageJson.version
+    version: packageJson.version,
   })
 );
 // Ruta protegida: Mis Asesorías (debe recibir usuario autenticado)
@@ -173,7 +189,11 @@ app.get("/mis-asesorias.html", (req, res) => {
   // Aquí se simula un usuario autenticado para pruebas
   const usuarioId = req.session?.usuarioId || "64f1e2c1234567890abcdef1"; // <-- reemplaza por tu lógica real
   const rolUsuario = req.session?.rolUsuario || "cliente";
-  res.render("mis-asesorias", { usuarioId, rolUsuario, version: packageJson.version });
+  res.render("mis-asesorias", {
+    usuarioId,
+    rolUsuario,
+    version: packageJson.version,
+  });
 });
 app.get("/mensajes.html", (req, res) => {
   res.render("mensajes", { version: packageJson.version });

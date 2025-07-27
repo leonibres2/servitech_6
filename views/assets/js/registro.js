@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Validación y gestión del formulario de registro
-  const form = document.getElementById("registroForm");
+  const form = document.getElementById("registerForm");
   if (form) {
     // Elementos de entrada y mensajes de error
     const emailInput = document.getElementById("email");

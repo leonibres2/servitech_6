@@ -82,7 +82,7 @@ app.use(express.static(path.join(__dirname, "../../views")));
 // ===============================
 // Configura EJS como motor de vistas y define la carpeta de vistas
 // Cargar la versión del proyecto desde package.json
-const packageJson = require("../../package.json");
+const packageJson = require("../package.json");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../../views"));
 

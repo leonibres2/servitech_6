@@ -7,26 +7,19 @@ const { Schema, model } = mongoose;
 // Este esquema representa a los usuarios registrados en la plataforma, tanto clientes como expertos.
 const UsuarioSchema = new Schema(
   {
+    usuario: { type: String, required: true, unique: true }, // Nombre de usuario único
     nombre: { type: String, required: true }, // Nombre del usuario (obligatorio)
-
     apellido: { type: String, required: true }, // Apellido del usuario (obligatorio)
-
     email: { type: String, required: true, unique: true }, // Email único (obligatorio, usado para login y notificaciones)
-
     password_hash: { type: String, required: true }, // Hash de la contraseña (nunca se almacena la contraseña en texto plano)
-
     avatar_url: String, // URL del avatar del usuario (opcional)
-
     es_experto: { type: Boolean, default: false }, // Indica si el usuario es un experto (permite acceso a funcionalidades de experto)
-
     fecha_registro: { type: Date, default: Date.now }, // Fecha de registro del usuario en la plataforma
-
     estado: {
       type: String,
       enum: ["activo", "inactivo", "suspendido"],
       default: "activo",
     }, // Estado del usuario (control de acceso)
-
     experto: { type: Schema.Types.Mixed, default: null }, // Información adicional si es experto (configuración, especialidades, etc)
   },
   { collection: "usuarios" }

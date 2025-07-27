@@ -5,6 +5,15 @@ require("dotenv").config();
 // Importa mongoose para conectar y gestionar la base de datos MongoDB
 const mongoose = require("mongoose");
 
+// Configura el manejo de errores de mongoose
+mongoose.connection.on("error", (err) => {
+  console.error("Error de conexión a MongoDB:", err);
+});
+
+mongoose.connection.once("open", () => {
+  console.log("Conectado exitosamente a MongoDB");
+});
+
 // Importa express para crear el servidor web y definir rutas
 const express = require("express");
 
@@ -45,6 +54,13 @@ app.use(
 
 // Permite recibir y procesar JSON en las solicitudes entrantes
 app.use(express.json());
+
+// Configuración del motor de vistas EJS
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "../../views"));
+
+// Servir archivos estáticos
+app.use(express.static(path.join(__dirname, "../../views/assets")));
 
 // ===============================
 // Obtiene la URI de MongoDB desde variables de entorno
@@ -142,9 +158,29 @@ app.use("/expertos", expertosRoutes);
 app.get("/", (req, res) =>
   res.render("index", { version: packageJson.version })
 );
-app.get("/expertos.html", (req, res) =>
-  res.render("expertos", { version: packageJson.version })
-);
+
+const Experto = require("./models/expertos");
+app.get("/expertos.html", async (req, res) => {
+  try {
+    const expertos = await Experto.find().populate("userId");
+    const expertosAdaptados = expertos.map((exp) => ({
+      _id: exp._id,
+      nombre: exp.userId ? exp.userId.nombre : exp.nombre,
+      apellido: exp.userId ? exp.userId.apellido : exp.apellido,
+      especialidad: exp.especialidad,
+      descripcion: exp.descripcion,
+      foto: exp.userId ? exp.userId.foto : exp.foto,
+      precio: exp.precio,
+      skills: exp.skills || [],
+    }));
+    res.render("expertos", {
+      expertos: expertosAdaptados || [],
+      version: packageJson.version,
+    });
+  } catch (err) {
+    res.status(500).send("Error interno al cargar expertos");
+  }
+});
 app.get("/registro.html", (req, res) =>
   res.render("registro", { version: packageJson.version })
 );
@@ -223,7 +259,7 @@ app.get("/", (req, res) => {
 
 // ===============================
 // Puerto de escucha del servidor
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // ===============================
 // 🚀 Crear servidor HTTP para Socket.IO y tiempo real
@@ -234,15 +270,54 @@ const server = http.createServer(app);
 const socketMensajeriaService = require("./services/socketMensajeriaService");
 socketMensajeriaService.inicializar(server);
 
+// Conectar a MongoDB antes de iniciar el servidor
+mongoose
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/servitech")
+  .then(() => {
+    console.log("✅ Conectado exitosamente a MongoDB");
+  })
+  .catch((err) => {
+    console.error("❌ Error al conectar con MongoDB:", err);
+    process.exit(1);
+  });
+
 // ===============================
-// Inicia el servidor y muestra un mensaje en consola con información útil
-server.listen(PORT, () => {
-  const actualPort = server.address().port;
-  console.log(`🚀 Servidor backend escuchando en puerto ${actualPort}`);
-  console.log(`💬 Socket.IO para mensajería activo`);
-  console.log(`📡 WebSockets disponibles en ws://localhost:${actualPort}`);
-  console.log(`🌐 Accede a la aplicación en: http://localhost:${actualPort}`);
+// Función para intentar iniciar el servidor en diferentes puertos
+const startServer = (port) => {
+  try {
+    server.listen(port, () => {
+      const actualPort = server.address().port;
+      console.log(`🚀 Servidor backend escuchando en puerto ${actualPort}`);
+      console.log(`💬 Socket.IO para mensajería activo`);
+      console.log(`📡 WebSockets disponibles en ws://localhost:${actualPort}`);
+      console.log(
+        `🌐 Accede a la aplicación en: http://localhost:${actualPort}`
+      );
+    });
+  } catch (error) {
+    if (error.code === "EADDRINUSE") {
+      console.log(`Puerto ${port} en uso, intentando con puerto ${port + 1}`);
+      startServer(port + 1);
+    } else {
+      console.error("Error al iniciar el servidor:", error);
+      process.exit(1);
+    }
+  }
+};
+
+// Manejo de errores del servidor
+server.on("error", (error) => {
+  if (error.code === "EADDRINUSE") {
+    console.log(`Puerto ${PORT} en uso, intentando con puerto ${PORT + 1}`);
+    startServer(PORT + 1);
+  } else {
+    console.error("Error en el servidor:", error);
+    process.exit(1);
+  }
 });
+
+// Inicia el servidor
+startServer(PORT);
 
 // ===============================
 // Exporta la app y el servidor para pruebas y testeo

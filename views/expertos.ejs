@@ -5,7 +5,7 @@
 <!-- Inicio del documento HTML en español -->
 
 <head>
-  <!-- Metadatos y enlaces a recursos externos -->
+  <!-- Metadatos y recursos externos -->
   <meta charset="UTF-8" />
   <!-- Codificación de caracteres UTF-8 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -135,89 +135,96 @@
           </div>
 
           <div class="expert-grid">
-            <!-- Grid que contiene las tarjetas de expertos -->
-
-            <!-- Tarjeta de Experto 1 -->
-            <article class="expert-card">
-              <div class="expert-card-header">
-                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Camilo Martínez" class="expert-photo">
-                <!-- Foto del experto -->
-                <div class="expert-info">
-                  <h3 class="expert-name">Camilo Martínez Fernández</h3>
-                  <!-- Nombre del experto -->
-                  <p class="expert-specialty">Experto Servitech</p>
-                  <!-- Especialidad del experto -->
-                  <div class="expert-rating">
-                    <span class="rating-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-value">5.0</span>
-                    <!-- Calificación del experto -->
+            <% if (expertos && expertos.length> 0) { %>
+              <% expertos.forEach(function(experto) { %>
+                <article class="expert-card">
+                  <div class="expert-card-header">
+                    <img src="<%= experto.foto %>" alt="<%= experto.nombre %> <%= experto.apellido %>"
+                      class="expert-photo">
+                    <div class="expert-info">
+                      <h3 class="expert-name">
+                        <%= experto.nombre %>
+                          <%= experto.apellido %>
+                      </h3>
+                      <p class="expert-usuario">
+                        <strong>Usuario:</strong> @<%= experto.usuario %>
+                      </p>
+                      <p class="expert-specialty">
+                        <%= experto.especialidad %>
+                      </p>
+                      <div class="expert-rating">
+                        <span class="rating-stars">
+                          <% for(let i=0; i < Math.round(experto.calificacion?.promedio || 0); i++) { %>⭐<% } %>
+                        </span>
+                        <span class="rating-value">
+                          <%= experto.calificacion?.promedio?.toFixed(1) || '0.0' %>
+                        </span>
+                        <% if (experto.calificacion?.total_reviews> 0) { %>
+                          <span class="rating-count">(<%= experto.calificacion.total_reviews %> reseñas)</span>
+                          <% } %>
+                      </div>
+                      <div class="expert-status">
+                        <% if (experto.activo !==false) { %>
+                          <span class="badge badge-success">Disponible</span>
+                          <% } else { %>
+                            <span class="badge badge-warning">No disponible</span>
+                            <% } %>
+                              <!-- Debug info -->
+                              <small style="display:inline-block; font-size: 10px; color: #666;">
+                                Debug - activo: <%= JSON.stringify(experto.activo) %>
+                              </small>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="expert-card-body">
-                <p class="expert-description">
-                  Especialización en desarrollo web y edición, con experiencia en React, Node.js y bases de datos. Más
-                  de 5 años de experiencia en proyectos internacionales.
-                  <!-- Descripción del perfil y experiencia del experto -->
-                </p>
-                <div class="expert-skills">
-                  <span class="skill-tag">Frontend</span>
-                  <span class="skill-tag">Backend</span>
-                  <span class="skill-tag">Fullstack</span>
-                  <!-- Etiquetas de habilidades principales del experto -->
-                </div>
-              </div>
-              <div class="expert-card-footer">
-                <div class="expert-price">$35/h</div>
-                <!-- Precio por hora del experto -->
-                <a href="/expertos/686a818a472f969f21baa8ba/calendario" class="btn btn-primary btn-profile">
-                  <i class="fas fa-user-circle"></i> Ver perfil
-                  <!-- Botón para ver el perfil completo del experto -->
-                </a>
-              </div>
-            </article>
-
-            <!-- Tarjeta de Experto 2 -->
-            <article class="expert-card">
-              <div class="expert-card-header">
-                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Ana García" class="expert-photo">
-                <!-- Foto de la experta -->
-                <div class="expert-info">
-                  <h3 class="expert-name">Ana García López</h3>
-                  <!-- Nombre de la experta -->
-                  <p class="expert-specialty">Experta en UX/UI</p>
-                  <!-- Especialidad de la experta -->
-                  <div class="expert-rating">
-                    <span class="rating-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="rating-value">5.0</span>
-                    <!-- Calificación de la experta -->
+                  <div class="expert-card-body">
+                    <p class="expert-description">
+                      <%= experto.descripcion %>
+                    </p>
+                    <% if (experto.skills && experto.skills.length> 0) { %>
+                      <div class="expert-skills">
+                        <h4>Habilidades:</h4>
+                        <div class="skills-container">
+                          <% experto.skills.forEach(function(skill) { %>
+                            <span class="skill-tag">
+                              <%= skill %>
+                            </span>
+                            <% }); %>
+                        </div>
+                      </div>
+                      <% } %> <!-- Sección de depuración -->
+                        <% if (typeof debug !=='undefined' && debug===true) { %>
+                          <div class="debug-info">
+                            <pre
+                              style="background:#222;color:#fff;padding:8px;font-size:12px;overflow-x:auto;"><%= JSON.stringify(experto, null, 2) %></pre>
+                          </div>
+                          <% } %>
                   </div>
-                </div>
-              </div>
-              <div class="expert-card-body">
-                <p class="expert-description">
-                  Especialista en diseño de experiencia de usuario e interfaces. Amplia experiencia en Figma, Adobe XD,
-                  y prototipado. Enfoque en diseño centrado en el usuario.
-                  <!-- Descripción del perfil y experiencia de la experta -->
-                </p>
-                <div class="expert-skills">
-                  <span class="skill-tag">UX Research</span>
-                  <span class="skill-tag">UI Design</span>
-                  <span class="skill-tag">Prototipado</span>
-                  <!-- Habilidades principales de la experta -->
-                </div>
-              </div>
-              <div class="expert-card-footer">
-                <div class="expert-price">$40/h</div>
-                <!-- Precio por hora de la experta -->
-                <a href="/expertos/686a818a472f969f21baa8ba/calendario" class="btn btn-primary btn-profile">
-                  <i class="fas fa-user-circle"></i> Ver perfil
-                  <!-- Botón para ver el perfil completo de la experta -->
-                </a>
-              </div>
-            </article>
-
-            <!-- Más tarjetas de expertos... -->
+                  <div class="expert-card-footer">
+                    <div class="expert-price">
+                      <span class="price-value">
+                        <%= experto.precio %>
+                      </span>
+                      <span class="price-period">/hora</span>
+                    </div>
+                    <div class="expert-actions">
+                      <% if (experto.activo !==false) { %>
+                        <a href="/expertos/<%= experto._id %>/calendario" class="btn btn-primary btn-profile">
+                          <i class="fas fa-calendar-alt"></i> Agendar cita
+                        </a>
+                        <% } else { %>
+                          <button class="btn btn-secondary btn-profile" disabled>
+                            <i class="fas fa-clock"></i> No disponible
+                          </button>
+                          <% } %>
+                    </div>
+                  </div>
+                </article>
+                <% }); %>
+                  <% } else { %>
+                    <div class="no-expertos">
+                      <p>No hay expertos disponibles en este momento.</p>
+                    </div>
+                    <% } %>
           </div>
         </section>
       </div>
